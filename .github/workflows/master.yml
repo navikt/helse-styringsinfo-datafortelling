@@ -5,30 +5,18 @@ on:
       - main
 
 jobs:
-  set_version:
-    name: set image name
-    runs-on: ubuntu-latest
-    steps:
-      - name: create docker tag
-        run: echo "TAG=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
-    outputs:
-      image: ghcr.io/${{ github.repository }}/styringsinfo-datafortelling:${{ env.TAG }}
-
   build:
     permissions:
       contents: "read"
       id-token: "write"
     name: build docker image
     runs-on: ubuntu-latest
-    needs: [set_version]
     steps:
       - uses: actions/checkout@v3
       - uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: 'tbd'
-          dockerfile: Dockerfile
-          tag: ${{ needs.set_version.outputs.image }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
     outputs:
@@ -36,7 +24,7 @@ jobs:
 
   deployDev:
     name: deploy to dev
-    needs: [set_version, build]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
