@@ -1,6 +1,6 @@
 from google.cloud import bigquery
 
-client = bigquery.Client()
+client = bigquery.Client(project="tbd-dev-7ff9")
 
 QUERY = """--sql
 SELECT dato, verdi FROM `tbd-dev-7ff9.hvilepuls.styringsinformasjon`
