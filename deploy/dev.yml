@@ -18,11 +18,6 @@ spec:
           kind: Project
           name: tbd-dev-7ff9
         role: roles/bigquery.dataViewer
-      - resource:
-          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-          kind: Project
-          name: tbd-dev-7ff9
-        role: roles/bigquery.jobUser
   accessPolicy:
     outbound:
       external:
