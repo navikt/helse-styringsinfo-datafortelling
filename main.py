@@ -10,4 +10,4 @@ query_job = client.query(QUERY)
 rows = query_job.result()
 
 for row in rows:
-    print(row.values[0], row.values[1])
+    print(row.values())
