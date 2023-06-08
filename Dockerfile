@@ -1,7 +1,6 @@
 FROM navikt/python:3.11
 
 USER root
-RUN python -m pip install --upgrade pip wheel
 
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
@@ -23,11 +22,8 @@ COPY index.qmd .
 COPY publish.sh .
 COPY requirements.txt .
 
-
 RUN python -m pip install --upgrade pip wheel
 RUN python -m pip install -r requirements.txt
 RUN ipython kernel install --name "python3"
-
-COPY main.py .
 
 CMD ["./publish.sh"]
