@@ -1,5 +1,6 @@
 ---
 title: "Hello styringsinfo"
+date-modified: last-modified
 format:
     html:
         self-contained: true
