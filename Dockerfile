@@ -24,7 +24,7 @@ COPY publish.sh .
 COPY requirements.txt .
 
 
-RUN python -m pip install --upgrade pip wheels
+RUN python -m pip install --upgrade pip wheel
 RUN python -m pip install -r requirements.txt
 RUN ipython kernel install --name "python3"
 
