@@ -5,6 +5,9 @@ metadata:
     team: tbd
   name: styringsinfo-datafortelling
   namespace: tbd
+  metadata:
+  annotations:
+    nais.io/read-only-file-system: "false"
 spec:
   image: {{image}}
   schedule: "0 */1 * * *"
