@@ -21,3 +21,10 @@ rows = query_job.result()
 for row in rows:
     print(row.values())
 ```
+
+Sist oppdatert:
+```{python}
+import datetime as dt
+
+dt.datetime.now()
+```
