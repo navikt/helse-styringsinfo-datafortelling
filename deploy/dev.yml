@@ -15,7 +15,7 @@ spec:
     - name: NADA_URL
       value: nada.intern.dev.nav.no
     - name: QUARTO_ID
-      value: 29726852-4afe-42da-a3a4-c932d6234fb6
+      value: f9a63635-60dc-4fb0-87aa-104f18e0e3e2
   envFrom:
     - secret: nada-token
 
