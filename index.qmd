@@ -1,5 +1,5 @@
 ---
-title: "Hello styringsinfo"
+title: "Styringsinformasjon - sykepengeløsningen"
 date-modified: last-modified
 format:
     html:
