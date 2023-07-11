@@ -9,10 +9,10 @@ format:
 ```{python}
 from google.cloud import bigquery
 
-client = bigquery.Client(project="tbd-dev-7ff9")
+client = bigquery.Client(location="europe-north1", project="tbd-prod-eacd")
 
 QUERY = """--sql
-SELECT dato, verdi FROM `tbd-dev-7ff9.hvilepuls.styringsinformasjon`
+SELECT count(1) FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """
 
 query_job = client.query(QUERY)
