@@ -1,1 +1,1 @@
-Styringsinfo
+# Rapportgenerering - styringsinformasjon for sykepengeløsningen
