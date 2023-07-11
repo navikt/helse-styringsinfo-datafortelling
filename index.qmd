@@ -18,11 +18,41 @@ warnings.filterwarnings("ignore", "Your application has authenticated using end 
 from google.cloud import bigquery
 
 client = bigquery.Client(location="europe-north1", project="tbd-prod-eacd")
+```
 
+# 1. Mottatte søknader ny sykepengeløsning
+
+```{python}
+#| echo: false
+import datetime as dt
+
+print(f"Nøkkeltall per {dt.datetime.now().date()}")
+```
+
+## Nøkkeltall - inneværende måned
+
+```{python}
 QUERY = """--sql
-SELECT count(1) FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+SELECT 18629 as `Mottatt denne måneden`, 187 as `Mottatt i dag`, 456 as `Mottatt i går`, 46372 as `Innsendt forrige uke`
 """
+query_job = client.query(QUERY)
+rows = query_job.result()
 
+stats = [dict(row) for row in rows][0]
+```
+
+```{python}
+
+for key, value in stats.items():
+    print(f'### {key}')
+    print(f'{value}')
+```
+
+
+```{python}
+QUERY = """--sql
+SELECT count(1) FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view` 
+"""
 query_job = client.query(QUERY)
 rows = query_job.result()
 
@@ -30,9 +60,10 @@ for row in rows:
     print(row.values())
 ```
 
-Sist oppdatert:
+
 ```{python}
+
 import datetime as dt
 
-dt.datetime.now()
+print(f'Sist oppdatert: {dt.datetime.now()}')
 ```
