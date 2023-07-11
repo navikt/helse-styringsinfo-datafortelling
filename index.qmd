@@ -8,11 +8,13 @@ format:
 ---
 
 ```{python}
+#| echo: false
 import warnings
 warnings.filterwarnings("ignore", "Your application has authenticated using end user credentials")
 ```
 
 ```{python}
+#| echo: false
 from google.cloud import bigquery
 
 client = bigquery.Client(location="europe-north1", project="tbd-prod-eacd")
