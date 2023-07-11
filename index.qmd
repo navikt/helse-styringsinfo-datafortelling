@@ -3,6 +3,7 @@ title: "Styringsinformasjon - sykepengeløsningen"
 date-modified: last-modified
 format:
     html:
+        code-fold: true
         self-contained: true
 ---
 
