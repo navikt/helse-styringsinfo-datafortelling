@@ -9,6 +9,10 @@ format:
 
 ```{python}
 #| echo: false
+import pandas as pd
+```
+```{python}
+#| echo: false
 import warnings
 warnings.filterwarnings("ignore", "Your application has authenticated using end user credentials")
 ```
@@ -60,6 +64,36 @@ for row in rows:
     print(row.values())
 ```
 
+```{python}
+
+QUERY = f"""
+    SELECT
+        FORMAT_TIMESTAMP('%G-%V', soknad_mottatt, 'Europe/Oslo') as week,
+        COUNT(*) as total,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Monday') as Monday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Tuesday') as Tuesday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Wednesday') as Wednesday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Thursday') as Thursday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Friday') as Friday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Saturday') as Saturday,
+        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Sunday') as Sunday
+    FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    GROUP BY week
+    ORDER BY week DESC
+"""
+
+query_job = client.query(QUERY)
+
+df = query_job.to_dataframe()
+
+```
+
+```{python}
+# Usikker på hvordan jeg får til å rendre Markdown med Quarto
+from IPython.display import display_markdown
+display_markdown(df.to_markdown())
+print(df.to_markdown())
+```
 
 ```{python}
 
