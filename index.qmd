@@ -42,8 +42,14 @@ print(f"Nøkkeltall per {dt.datetime.now().date()}")
 
 ```{python}
 QUERY = """--sql
-SELECT 18629 as `Mottatt denne måneden`, 187 as `Mottatt i dag`, 456 as `Mottatt i går`, 46372 as `Innsendt forrige uke`
+    SELECT
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `Mottatt denne måneden`,
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt i dag`,
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `Mottatt i går`,
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 WEEK) AND DATE(soknad_mottatt, 'Europe/Oslo') < DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt siste 7 dager`
+    FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """
+
 query_job = client.query(QUERY)
 rows = query_job.result()
 
