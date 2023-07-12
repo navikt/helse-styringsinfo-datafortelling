@@ -63,18 +63,6 @@ for key, value in stats.items():
     print(f'{value}')
 ```
 
-
-```{python}
-QUERY = """--sql
-SELECT count(1) FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view` 
-"""
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-for row in rows:
-    print(row.values())
-```
-
 ```{python}
 
 QUERY = f"""
