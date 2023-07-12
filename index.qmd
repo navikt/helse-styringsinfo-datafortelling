@@ -24,7 +24,12 @@ from google.cloud import bigquery
 client = bigquery.Client(location="europe-north1", project="tbd-prod-eacd")
 ```
 
-# 1. Mottatte søknader ny sykepengeløsning
+# 1. Mottatte søknader ny sykepengeløsning*
+
+Dette handler om sykepengesøknader som leveres fra sykepengesøknadsmottaket og til ny sykepengeløsning.
+Per juli 2023 omfatter dette arbeidstaker-søknader, med unntak av kode 6 (og altså ikke frilansere, næringsdrivende etc).
+Søknader som er korrigeringer på tidligere søknader telles, både korrigert og korrigerende.
+
 
 ```{python}
 #| echo: false
