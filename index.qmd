@@ -96,7 +96,7 @@ df = query_job.to_dataframe()
 # Usikker på hvordan jeg får til å rendre Markdown med Quarto
 from IPython.display import display_markdown
 display_markdown(df.to_markdown())
-print(df.to_markdown())
+df
 ```
 
 ```{python}
