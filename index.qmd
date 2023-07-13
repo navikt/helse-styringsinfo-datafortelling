@@ -89,7 +89,6 @@ QUERY = f"""
 query_job = client.query(QUERY)
 
 df = query_job.to_dataframe()
-
 ```
 
 ```{python}
@@ -99,6 +98,27 @@ display_markdown(df.to_markdown())
 df
 ```
 
+```{python}
+import plotly.graph_objects as go
+
+# Create a new plotly figure
+fig = go.Figure()
+
+# Create a line for each weekday
+for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+    fig.add_trace(go.Scatter(x=df['week'], y=df[day], mode='lines', name=day))
+
+# Update the layout
+fig.update_layout(
+    title="Number of rows per day for each week",
+    xaxis_title="Week",
+    yaxis_title="Count",
+)
+
+# Show the figure
+fig.show()
+
+```
 ```{python}
 
 import datetime as dt
