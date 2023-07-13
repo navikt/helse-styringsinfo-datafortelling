@@ -8,20 +8,25 @@ format:
 ---
 
 ```{python}
-#| echo: false
+# | echo: false
 import pandas as pd
-```
-```{python}
-#| echo: false
 import warnings
-warnings.filterwarnings("ignore", "Your application has authenticated using end user credentials")
-```
-
-```{python}
-#| echo: false
+from dotenv import load_dotenv
 from google.cloud import bigquery
 
-client = bigquery.Client(location="europe-north1", project="tbd-prod-eacd")
+warnings.filterwarnings(
+    "ignore", "Your application has authenticated using end user credentials"
+)
+
+load_dotenv()
+LOCATION = "europe-north-1"
+PROJECT = os.environ["GCP_TEAM_PROJECT_ID"]
+PROJECT
+```
+
+```{python}
+# | echo: false
+client = bigquery.Client(location=LOCATION, project=PROJECT)
 ```
 
 # 1. Mottatte søknader ny sykepengeløsning*
