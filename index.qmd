@@ -11,6 +11,7 @@ format:
 # | echo: false
 import pandas as pd
 import warnings
+import os
 from dotenv import load_dotenv
 from google.cloud import bigquery
 
@@ -19,9 +20,8 @@ warnings.filterwarnings(
 )
 
 load_dotenv()
-LOCATION = "europe-north-1"
+LOCATION = "europe-north1"
 PROJECT = os.environ["GCP_TEAM_PROJECT_ID"]
-PROJECT
 ```
 
 ```{python}
@@ -52,7 +52,7 @@ QUERY = """--sql
         COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt i dag`,
         COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `Mottatt i går`,
         COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 WEEK) AND DATE(soknad_mottatt, 'Europe/Oslo') < DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt siste 7 dager`
-    FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """
 
 query_job = client.query(QUERY)
@@ -81,7 +81,7 @@ QUERY = f"""
         COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Friday') as Friday,
         COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Saturday') as Saturday,
         COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Sunday') as Sunday
-    FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
     GROUP BY week
     ORDER BY week DESC
 """
