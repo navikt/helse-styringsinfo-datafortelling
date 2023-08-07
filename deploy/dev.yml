@@ -16,6 +16,8 @@ spec:
       value: nada.intern.dev.nav.no
     - name: QUARTO_ID
       value: f9a63635-60dc-4fb0-87aa-104f18e0e3e2
+    - name: GCP_TEAM_PROJECT_ID
+      value: tbd-dev-7ff9
   envFrom:
     - secret: nada-token
 
