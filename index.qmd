@@ -136,7 +136,7 @@ fig.add_trace(
     secondary_y=False,
 )
 
-# Add line chart for 7 day moving average
+# Add line chart for 7 day moving average TODO: Den tar bare hensyn til dager med data!
 fig.add_trace(
     go.Scatter(x=df['date'], y=df['moving_avg'], name='Snitt over 7 dager'),
     secondary_y=False,
