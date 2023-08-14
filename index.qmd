@@ -114,13 +114,21 @@ SELECT
     ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
   ) AS moving_avg
 FROM (
-  SELECT 
-    DATE(soknad_mottatt) AS date,
-    COUNT(*) AS count
-  FROM 
-    `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-  GROUP BY 
-    DATE(soknad_mottatt)
+    SELECT date_range.date AS date, IFNULL(original_table.count, 0) AS count
+        FROM (
+            SELECT *
+            FROM UNNEST(GENERATE_DATE_ARRAY('2023-03-01', CURRENT_DATE())) AS date
+        ) AS date_range
+    LEFT JOIN (
+    SELECT
+        DATE(soknad_mottatt) AS date,
+        COUNT(*) AS count
+      FROM
+        `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+      GROUP BY
+        DATE(soknad_mottatt)
+        ) AS original_table
+    ON date_range.date = original_table.date
 )
 WHERE date > '2023-03-01'
 ORDER BY 
