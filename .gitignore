@@ -2,6 +2,10 @@
 .env
 index.ipynb
 
+# Bruker requirements.txt som master
+poetry.lock
+pyproject.toml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
