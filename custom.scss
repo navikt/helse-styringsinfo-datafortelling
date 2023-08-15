@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
 /*-- scss:defaults --*/
 $body-bg: #ffffff;
 $body-color: #262626;
@@ -7,14 +9,23 @@ $border-color: rgba(0, 0, 0, 0.1);
 
 $sidebar-fg: #0067c5;
 
-$h1-font-size: 40px;
+$h1-font-size: 35px;
 $h2-font-size: 32px;
 $h3-font-size: 24px;
 
 /*-- scss:rules --*/
 
+* {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
 .ingress {
     font-size: 20px;
+}
+
+.test {
+    font-size: 24px;
+    font-weight: 400;
 }
 
 
