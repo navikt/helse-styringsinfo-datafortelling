@@ -21,6 +21,9 @@ from google.cloud import bigquery
 warnings.filterwarnings(
     "ignore", "Your application has authenticated using end user credentials"
 )
+warnings.filterwarnings(
+    "ignore", "A progress bar was requested, but there was an error loading the tqdm library."
+)
 
 load_dotenv()
 LOCATION = "europe-north1"
