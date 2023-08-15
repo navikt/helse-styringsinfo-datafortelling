@@ -1,5 +1,6 @@
 .python-version
 .env
+index.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
