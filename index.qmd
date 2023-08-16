@@ -1,9 +1,9 @@
 ---
-title: "Styringsinformasjon - sykepengeløsningen"
+title: "Søknader om sykepenger i ny sykepengeløsning"
 date-modified: last-modified
 format:
     html:
-        code-fold: true
+        echo: false
         self-contained: true
         theme:
             - custom.scss
@@ -42,32 +42,38 @@ norsk_dag = {
 }
 ```
 
-# 1. Mottatte søknader ny sykepengeløsning
+### Mottatte søknader
 
-Dette handler om sykepengesøknader som leveres fra sykepengesøknadsmottaket og til ny sykepengeløsning.
-Per juli 2023 omfatter dette arbeidstaker-søknader, med unntak av kode 6 (og altså ikke frilansere, næringsdrivende etc).
-Søknader som er korrigeringer på tidligere søknader telles, både korrigert og korrigerende.
+Søknadene som vises gjelder de som mottas i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstaker-søknader, med unntak av kode 6 (ikke frilansere/næringsdrivende). Søknader som er korrigert på tidligere søknader telles, både korrigert og korrigerende.
 
 Datoen som refereres til er datoen for når søknaden ble sendt første gang (så dersom en søknad oppdateres så er datoen fortsatt den originale innsendingsdatoen).
 
+#
+
 
 ```{python}
+# | class: nokkeltall
 import datetime as dt
 
-print(f"Nøkkeltall per {dt.datetime.now().date()}")
+current_date = dt.datetime.now().date()
+formatted_date = current_date.strftime("%d. %B %Y")
+
+print(f"Nøkkeltall per {formatted_date}")
+
 ```
 
-## Nøkkeltall - inneværende måned
+
+:::: {layout-nrow="1" style="margin-bottom: 50px"}
+
 
 ```{python}
+# | class: nokkeltallbox
+
 QUERY = """--sql
     SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `Mottatt i går`,
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt i dag`,
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 WEEK) AND DATE(soknad_mottatt, 'Europe/Oslo') < DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `Mottatt siste syv hele dager`,
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `Mottatt denne måneden`
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `mottatt i dag`
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-"""
+""" 
 
 query_job = client.query(QUERY)
 rows = query_job.result()
@@ -75,7 +81,71 @@ rows = query_job.result()
 stats = [dict(row) for row in rows][0]
 
 for key, value in stats.items():
-    print(f"{key}: {value}")
+    print(f"{value}\n{key}")
+
+```
+
+
+```{python}
+# | class: nokkeltallbox
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `mottatt i går`
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+
+```{python}
+# | class: nokkeltallbox
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `totalt denne måneden`
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+::::
+
+```{python}
+
+QUERY = """
+    SELECT
+        FORMAT_TIMESTAMP('%Y-%m', soknad_mottatt, 'Europe/Oslo') as month,
+        COUNT(*) as total
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    WHERE soknad_mottatt >= TIMESTAMP('2023-01-01', 'Europe/Oslo')
+    GROUP BY month
+    ORDER BY month DESC
+"""
+
+query_job = client.query(QUERY)
+
+# set index to month
+df_months_total = query_job.to_dataframe().set_index("month")
+
+df_months_total
+
 ```
 
 ```{python}
@@ -99,7 +169,6 @@ query_job = client.query(QUERY)
 
 df_ukedager = query_job.to_dataframe()
 
-# Usikker på hvordan jeg får til å rendre Markdown med Quarto
 df_ukedager
 ```
 

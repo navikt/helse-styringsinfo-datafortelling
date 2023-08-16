@@ -1,27 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
 /*-- scss:defaults --*/
 $body-bg: #ffffff;
-$body-color: #262626;
+$body-color: #23262A;
 $link-color: #0067c5;
 $link-color-hover: #0056b4;
 $border-color: rgba(0, 0, 0, 0.1);
 
 $sidebar-fg: #0067c5;
 
-$h1-font-size: 40px;
+$h1-font-size: 35px;
 $h2-font-size: 32px;
 $h3-font-size: 24px;
 
 /*-- scss:rules --*/
 
-.ingress {
-    font-size: 20px;
+code {
+    font-family: 'Source Sans 3', sans-serif;
+    color: #23262A;
 }
 
+.ingress {
+    font-size: 35px;
+}
+
+.nokkeltall {
+    font-size: 24px;
+    font-weight: 500;
+    margin-top: 50px;
+}
+
+.nokkeltallbox pre > code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    gap: 10px;
+    background: rgba(213, 225, 221, 0.3);
+
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+}
 
 #title-block-header.quarto-title-block.default .quarto-title-meta > div {
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    margin-top: 20px;
 }
 
 #title-block-header.quarto-title-block.default .quarto-title-meta-heading {
@@ -37,6 +63,10 @@ $h3-font-size: 24px;
 
 #title-block-header.quarto-title-block.default .quarto-title-meta-contents {
     font-size: unset;
+}
+
+#mottatte-søknader h3 {
+    margin-top: 50px;
 }
 
 div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link, div.sidebar-item-container .sidebar-link > code {
