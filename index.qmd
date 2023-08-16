@@ -108,23 +108,44 @@ for key, value in stats.items():
 
 QUERY = """--sql
     SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `mottatt totalt i`
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `totalt denne måneden`
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """ 
 
 query_job = client.query(QUERY)
 rows = query_job.result()
-formatted_date = current_date.strftime("%B")
 
 stats = [dict(row) for row in rows][0]
 
 for key, value in stats.items():
-    print(f"{value}\n{key} {formatted_date}")
+    print(f"{value}\n{key}")
 
 ```
 
 ::::
 
+```{python}
+
+QUERY = """
+    SELECT
+        FORMAT_TIMESTAMP('%Y-%m', soknad_mottatt, 'Europe/Oslo') as month,
+        COUNT(*) as total
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    WHERE soknad_mottatt >= TIMESTAMP('2023-01-01', 'Europe/Oslo')
+    GROUP BY month
+    ORDER BY month DESC
+"""
+
+query_job = client.query(QUERY)
+
+df_months_total = query_job.to_dataframe()
+
+title_row = pd.DataFrame([["Måneder", None]], columns=["Måneder", "total"])
+df_months_total = pd.concat([title_row, df_months_total], ignore_index=True)
+
+df_months_total
+
+```
 
 ```{python}
 QUERY = f"""
@@ -147,7 +168,6 @@ query_job = client.query(QUERY)
 
 df_ukedager = query_job.to_dataframe()
 
-# Usikker på hvordan jeg får til å rendre Markdown med Quarto
 df_ukedager
 ```
 
