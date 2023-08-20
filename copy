@@ -1,0 +1,30 @@
+```{python}
+# | class: no-rows
+import datetime
+
+current_week = datetime.datetime.now().isocalendar()[1]
+
+QUERY = f"""
+    SELECT
+        EXTRACT(ISOWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS week_number,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 2) as Monday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 3) as Tuesday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 4) as Wednesday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 5) as Thursday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 6) as Friday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 7) as Saturday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 1) as Sunday,
+        COUNT(*) as Totalt
+    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    WHERE EXTRACT(ISOWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') <= {current_week}
+    GROUP BY week_number
+    ORDER BY week_number DESC
+"""
+
+query_job = client.query(QUERY)
+
+df_ukedager = query_job.to_dataframe()
+
+df_ukedager
+
+```

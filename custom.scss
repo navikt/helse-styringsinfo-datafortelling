@@ -13,16 +13,75 @@ $h1-font-size: 35px;
 $h2-font-size: 32px;
 $h3-font-size: 24px;
 
+
 /*-- scss:rules --*/
+
+
+/*-- Page layout --*/
+
+#quarto-content {
+    display: block;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#quarto-document-content {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+}
+
+#title-block-header {
+    max-width: 800px;
+}
+
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: flex;
+}
+
+#title-block-header.quarto-title-block.default .quarto-title-meta > div {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+}
+
+.quarto-title-meta-heading::after {
+    content: ":";
+}
+
+#title-block-header.quarto-title-block.default .quarto-title-meta-contents p,#title-block-header.quarto-title-block.default .quarto-title-authors p,#title-block-header.quarto-title-block.default .quarto-title-affiliations p {
+    margin-bottom: 0em;
+}
+
+
+#title-block-header.quarto-title-block.default .quarto-title-meta-heading {
+    text-transform: none;
+    margin-top: unset;
+    font-size: unset;
+    opacity: unset;
+}
+
+
+
+/*-- Page font --*/
+
 
 code {
     font-family: 'Source Sans 3', sans-serif;
     color: #23262A;
 }
 
-.ingress {
-    font-size: 35px;
+p {
+    font-size: 16px;
 }
+
+
+
+/*-- Nøkkeltall styling --*/
 
 .nokkeltall {
     font-size: 24px;
@@ -30,10 +89,16 @@ code {
     margin-top: 50px;
 }
 
+.nokkeltallboks-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+    gap: 1em;
+}
+
 .nokkeltallbox pre > code {
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 40px;
     gap: 10px;
     background: rgba(213, 225, 221, 0.3);
@@ -43,30 +108,41 @@ code {
     text-align: center;
 }
 
-#title-block-header.quarto-title-block.default .quarto-title-meta > div {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    margin-top: 20px;
+
+
+.tables pre > code {
+    margin-top: 50px;
 }
 
-#title-block-header.quarto-title-block.default .quarto-title-meta-heading {
-    text-transform: none;
-    margin-top: unset;
-    font-size: unset;
-    opacity: unset;
+.no-rows tr th:first-child,
+.no-rows tr td:first-child {
+    display: none;
 }
 
-.quarto-title-meta-heading::after {
-    content: ":"
-}
-
-#title-block-header.quarto-title-block.default .quarto-title-meta-contents {
-    font-size: unset;
-}
 
 #mottatte-søknader h3 {
     margin-top: 50px;
+}
+
+#section1 {
+    display: flex;
+    justify-content: center;
+    background: #FFFFFF;
+}
+
+#section1-content {
+    max-width: 800px;
+}
+
+#section2 {
+    display: flex;
+    justify-content: center;
+    background: #F8F8F8;
+    padding-top: 3rem;
+}
+
+#section2-content {
+    max-width: 800px;
 }
 
 div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link, div.sidebar-item-container .sidebar-link > code {

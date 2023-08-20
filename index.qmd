@@ -1,5 +1,5 @@
 ---
-title: "Søknader om sykepenger i ny sykepengeløsning"
+title: "Søknad om sykepenger i ny sykepengeløsning"
 date-modified: last-modified
 format:
     html:
@@ -42,6 +42,10 @@ norsk_dag = {
 }
 ```
 
+:::: {#section1}
+
+::: {#section1-content}
+
 ### Mottatte søknader
 
 Søknadene som vises gjelder de som mottas i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstaker-søknader, med unntak av kode 6 (ikke frilansere/næringsdrivende). Søknader som er korrigert på tidligere søknader telles, både korrigert og korrigerende.
@@ -56,15 +60,14 @@ Datoen som refereres til er datoen for når søknaden ble sendt første gang (s�
 import datetime as dt
 
 current_date = dt.datetime.now().date()
-formatted_date = current_date.strftime("%d. %B %Y")
+formatted_date = current_date.strftime("%d. %B %Y").replace(current_date.strftime("%B"), current_date.strftime("%B").lower())
 
 print(f"Nøkkeltall per {formatted_date}")
 
 ```
 
 
-:::: {layout-nrow="1" style="margin-bottom: 50px"}
-
+:::: {.nokkeltallboks-layout}
 
 ```{python}
 # | class: nokkeltallbox
@@ -129,47 +132,111 @@ for key, value in stats.items():
 
 ```{python}
 
-QUERY = """
+# | class: no-rows
+import datetime
+import plotly.graph_objects as go
+
+current_month = datetime.datetime.now().month
+current_year = datetime.datetime.now().year
+
+QUERY = f"""
     SELECT
-        FORMAT_TIMESTAMP('%Y-%m', soknad_mottatt, 'Europe/Oslo') as month,
-        COUNT(*) as total
+        EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS year,
+        EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS month,
+        COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-    WHERE soknad_mottatt >= TIMESTAMP('2023-01-01', 'Europe/Oslo')
-    GROUP BY month
-    ORDER BY month DESC
+    WHERE EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = {current_year}
+        AND EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') <= {current_month}
+    GROUP BY year, month
+    ORDER BY year DESC, month DESC
 """
 
 query_job = client.query(QUERY)
 
-# set index to month
-df_months_total = query_job.to_dataframe().set_index("month")
+df_months = query_job.to_dataframe()
 
-df_months_total
+# Create a new plotly figure
+fig = go.Figure()
+
+fig.add_trace(go.Bar(
+    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
+    y=df_months['Totalt'],
+    text=df_months['Totalt'],
+    textposition='auto',
+))
+
+fig.update_traces(marker_color = 'rgba(176, 193, 200, 1)',
+                  marker_line_width = 1, opacity = 1)
+
+fig.update_layout(
+    title="Mottatte søknader per måned",
+    xaxis_title="Måned",
+    yaxis_title="Antall",
+    xaxis_tickangle=-45,
+    paper_bgcolor='rgba(0,0,0,0)',
+)
+
+fig.show()
 
 ```
 
+
 ```{python}
+# | class: no-rows
+import datetime
+
+current_week = datetime.datetime.now().isocalendar()[1]
+
 QUERY = f"""
     SELECT
-        FORMAT_TIMESTAMP('%G%V', soknad_mottatt, 'Europe/Oslo') as week,
-        COUNT(*) as total,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Monday') as Monday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Tuesday') as Tuesday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Wednesday') as Wednesday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Thursday') as Thursday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Friday') as Friday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Saturday') as Saturday,
-        COUNTIF(FORMAT_TIMESTAMP('%A', soknad_mottatt, 'Europe/Oslo') = 'Sunday') as Sunday
+        EXTRACT(ISOWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS week_number,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 2) as Monday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 3) as Tuesday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 4) as Wednesday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 5) as Thursday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 6) as Friday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 7) as Saturday,
+        COUNTIF(EXTRACT(DAYOFWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = 1) as Sunday,
+        COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-    GROUP BY week
-    ORDER BY week DESC
+    WHERE EXTRACT(ISOWEEK FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') <= {current_week}
+    GROUP BY week_number
+    ORDER BY week_number DESC
 """
 
 query_job = client.query(QUERY)
 
 df_ukedager = query_job.to_dataframe()
 
-df_ukedager
+df = df_ukedager
+# Create a new plotly figure
+fig = go.Figure()
+
+# Create a line for each weekday
+for day in [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+]:
+    fig.add_trace(
+        go.Scatter(x=df["week_number"], y=df[day], mode="lines", name=norsk_dag[day])
+    )
+
+# Update the layout
+fig.update_layout(
+    title_text="Antall per dag for hver uke",
+    xaxis_title="Uke",
+    yaxis_title="Antall",
+    height=400
+)
+
+# Show the figure
+fig.show()
+
 ```
 
 ```{python}
@@ -237,35 +304,135 @@ fig.update_layout(
 fig.show()
 ```
 
+:::
+
+::::
+
+
+:::: {#section2}
+
+::: {#section2-content}
+
+### Fattede vedtak
+
+Et fattet vedtak betyr at saksbehandlingssystemet har vurdert en (eller fler) søknad om sykepenger med tilhørende dokumentasjon og avgjort om denne personen har krav, eller ikke krav på sykepenger. Når vedtaket er fattet får sykmeldt bruker resultatet skriftlig. Når et godkjent vedtak fattes, går det videre til utbetaling til sykmeldt bruker, eller refunderes til arbeidsgiver.
+
+Fattede vedtak som vises gjelder bare de som fattes i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstakere, med unntak av kode 6 (ikke frilansere, næringsdrivende etc.). 
+
+#
+
+::: {layout-nrow="1" style="margin-bottom: 50px"}
+
+```{python}
+# | class: nokkeltallbox
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `fattet i dag`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+
+```{python}
+# | class: nokkeltallbox
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `fattet i går`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+
+```{python}
+# | class: nokkeltallbox
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `fattet denne måneden`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+:::
+
 ```{python}
 
-df = df_ukedager
+# | class: no-rows
+import datetime
+import plotly.graph_objects as go
+
+current_month = datetime.datetime.now().month
+current_year = datetime.datetime.now().year
+
+QUERY = f"""
+    SELECT
+        EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
+        EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
+        COUNT(*) as Totalt
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
+    WHERE EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
+        AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
+    GROUP BY year, month
+    ORDER BY year DESC, month DESC
+"""
+
+query_job = client.query(QUERY)
+
+df_months = query_job.to_dataframe()
+
 # Create a new plotly figure
 fig = go.Figure()
 
-# Create a line for each weekday
-for day in [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-]:
-    fig.add_trace(
-        go.Scatter(x=df["week"], y=df[day], mode="lines", name=norsk_dag[day])
-    )
+fig.add_trace(go.Bar(
+    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
+    y=df_months['Totalt'],
+    text=df_months['Totalt'],
+    textposition='auto',
+))
 
-# Update the layout
+fig.update_traces(marker_color = 'rgba(176, 193, 200, 1)',
+                  marker_line_width = 1, opacity = 1)
+
 fig.update_layout(
-    title="Antall per ukedag for hver uke",
-    xaxis_title="Uke",
-    yaxis_title="Antall",
+    title="Fattede vedtak per måned",
+    xaxis_title="Måned",
+    yaxis_title="Antall fattede vedtak",
+    xaxis_tickangle=-45,
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)',
 )
 
-# Show the figure
 fig.show()
+
 ```
 
 ```{python}
@@ -333,10 +500,12 @@ fig.update_layout(
 fig.show()
 ```
 
-
 ```{python}
 import datetime as dt
 
 print(f"Sist oppdatert: {dt.datetime.now()}")
 ```
 
+:::
+
+::::
