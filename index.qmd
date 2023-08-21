@@ -54,6 +54,7 @@ Datoen som refereres til er datoen for når søknaden ble sendt første gang (s�
 
 #
 
+::: {.nokkeltall}
 
 ```{python}
 # | class: nokkeltall
@@ -66,8 +67,9 @@ print(f"Nøkkeltall per {formatted_date}")
 
 ```
 
+:::
 
-:::: {.nokkeltallboks-layout}
+::: {.nokkeltallboks-layout}
 
 ```{python}
 # | class: nokkeltallbox
@@ -128,7 +130,7 @@ for key, value in stats.items():
 
 ```
 
-::::
+:::
 
 ```{python}
 
