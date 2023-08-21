@@ -69,10 +69,10 @@ print(f"Nøkkeltall per {formatted_date}")
 
 :::
 
-::: {.nokkeltallboks-layout}
+:::: {.nokkeltallboks-layout}
 
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -90,9 +90,8 @@ for key, value in stats.items():
 
 ```
 
-
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -112,7 +111,7 @@ for key, value in stats.items():
 
 
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -130,7 +129,7 @@ for key, value in stats.items():
 
 ```
 
-:::
+::::
 
 ```{python}
 
@@ -323,10 +322,25 @@ Fattede vedtak som vises gjelder bare de som fattes i ny sykepengeløsning. Per 
 
 #
 
-::: {layout-nrow="1" style="margin-bottom: 50px"}
+::: {.nokkeltall}
 
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltall
+import datetime as dt
+
+current_date = dt.datetime.now().date()
+formatted_date = current_date.strftime("%d. %B %Y").replace(current_date.strftime("%B"), current_date.strftime("%B").lower())
+
+print(f"Nøkkeltall per {formatted_date}")
+
+```
+
+:::
+
+::: {.nokkeltallboks-layout}
+
+```{python}
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -346,7 +360,7 @@ for key, value in stats.items():
 
 
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -366,7 +380,7 @@ for key, value in stats.items():
 
 
 ```{python}
-# | class: nokkeltallbox
+# | class: nokkeltallboks-innhold
 
 QUERY = """--sql
     SELECT
@@ -385,6 +399,8 @@ for key, value in stats.items():
 ```
 
 :::
+
+#
 
 ```{python}
 
@@ -496,11 +512,15 @@ fig.update_layout(
     xaxis_title="Dato",
     yaxis_title="Antall per dag",
     yaxis2_title="7-dagers glidende gjennomsnitt",
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)',
 )
 
 # Show the figure
 fig.show()
 ```
+
+#
 
 ```{python}
 import datetime as dt

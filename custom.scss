@@ -27,10 +27,6 @@ div, p {
     font-size: 16px;
 }
 
-code, pre {
-    display: flex;
-}
-
 
 /*-- Layout tweaking --*/
 
@@ -92,13 +88,17 @@ code, pre {
     opacity: unset;
 }
 
+pre {
+    display: flex;
+}
+
 
 /*-- Nøkkeltall styling --*/
 
 .nokkeltall pre > code {
     font-size: 24px;
     font-weight: 500;
-    margin-top: 50px;
+    margin-top: 25px;
     padding: 0;
 }
 
@@ -106,13 +106,13 @@ code, pre {
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
+
+    max-width: 800px;
 }
 
-.nokkeltallbox pre > code {
+.nokkeltallboks-innhold pre > code {
     display: flex;
-    flex-direction: column;
     padding: 40px;
-    gap: 10px;
     background: rgba(213, 225, 221, 0.3);
 
     font-weight: 500;
