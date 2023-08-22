@@ -523,21 +523,28 @@ fig.show()
 ```{python}
 import pandas_gbq
 
-QUERY = """
-with agg as (SELECT count(*) as antall_vedtak, dager_brukt FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_vedtak_tidsbruk` 
-group by(dager_brukt)
-order by dager_brukt desc)
-select sum(antall_vedtak) as sum_vedtak, 'alle' as vindu from agg
-union all
-select sum(antall_vedtak), 'under én dag' from agg where dager_brukt = 0
-union all
-select sum(antall_vedtak), 'én dag til én uke' from agg where dager_brukt > 0 and dager_brukt <7
-union all
-select sum(antall_vedtak), 'én til fire uker' from agg where dager_brukt >= 7 and dager_brukt < 28
-union all
-select sum(antall_vedtak), 'fire til åtte uker' from agg where dager_brukt >= 28 and dager_brukt < 56
-union all
-select sum(antall_vedtak), 'åtte uker eller mer' from agg where dager_brukt >= 56;
+QUERY = f"""
+WITH agg as (
+    SELECT COUNT(*) AS antall_vedtak, dager_brukt
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_tidsbruk`
+    WHERE vedtak_fattet_dato = CURRENT_DATE() -1
+    GROUP BY dager_brukt
+    ORDER BY dager_brukt desc
+),
+    agg_buckets AS (
+    SELECT SUM(antall_vedtak) AS sum_vedtak, '1 - alle' AS vindu from agg
+    UNION ALL
+    select SUM(antall_vedtak), '2 - under én dag' from agg WHERE dager_brukt = 0
+    UNION ALL
+    select SUM(antall_vedtak), '3 - én dag til én uke' from agg WHERE dager_brukt > 0 AND dager_brukt <7
+    UNION ALL
+    select SUM(antall_vedtak), '4 - én til fire uker' from agg WHERE dager_brukt >= 7 AND dager_brukt < 28
+    UNION ALL
+    select SUM(antall_vedtak), '5 - fire til åtte uker' from agg WHERE dager_brukt >= 28 AND dager_brukt < 56
+    UNION ALL
+    SELECT SUM(antall_vedtak), '6 - åtte uker eller mer' FROM agg WHERE dager_brukt >= 56
+)
+SELECT sum_vedtak, vindu FROM agg_buckets ORDER BY vindu;
 """
 
 df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
@@ -550,9 +557,10 @@ fig.add_trace(
 )
 
 fig.update_layout(
-    title_text="Hvor mange dager har det gått fra vi mottok en søknad til vi fattet et vedtak",
+    title_text="Hvor mange dager har det gått fra vi mottok en søknad for vedtak fattet i går",
     xaxis_title="",
     yaxis_title="Antall vedtak",
+    xaxis_tickangle=-45,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
 )
@@ -560,8 +568,6 @@ fig.update_layout(
 fig.show()
 
 ```
-
-
 
 #
 
