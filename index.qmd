@@ -520,6 +520,49 @@ fig.update_layout(
 fig.show()
 ```
 
+```{python}
+import pandas_gbq
+
+QUERY = """
+with agg as (SELECT count(*) as antall_vedtak, dager_brukt FROM `tbd-prod-eacd.styringsinfo_dataset.styringsinfo_vedtak_tidsbruk` 
+group by(dager_brukt)
+order by dager_brukt desc)
+select sum(antall_vedtak) as sum_vedtak, 'alle' as vindu from agg
+union all
+select sum(antall_vedtak), 'under én dag' from agg where dager_brukt = 0
+union all
+select sum(antall_vedtak), 'én dag til én uke' from agg where dager_brukt > 0 and dager_brukt <7
+union all
+select sum(antall_vedtak), 'én til fire uker' from agg where dager_brukt >= 7 and dager_brukt < 28
+union all
+select sum(antall_vedtak), 'fire til åtte uker' from agg where dager_brukt >= 28 and dager_brukt < 56
+union all
+select sum(antall_vedtak), 'åtte uker eller mer' from agg where dager_brukt >= 56;
+"""
+
+df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
+
+fig = make_subplots()
+
+fig.add_trace(
+    go.Bar(x=df["vindu"], y=df["sum_vedtak"], name="Hvor mange dager har det gått fra vi mottok en søknad til vi fattet et vedtak"),
+    secondary_y=False,
+)
+
+fig.update_layout(
+    title_text="Hvor mange dager har det gått fra vi mottok en søknad til vi fattet et vedtak",
+    xaxis_title="",
+    yaxis_title="Antall vedtak",
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)',
+)
+
+fig.show()
+
+```
+
+
+
 #
 
 ```{python}
