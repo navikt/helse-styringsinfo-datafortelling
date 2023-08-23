@@ -106,12 +106,12 @@ pre {
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
-
-    max-width: 800px;
 }
 
 .nokkeltallboks-innhold pre > code {
     display: flex;
+    flex: 1;
+
     padding: 40px;
     background: rgba(213, 225, 221, 0.3);
 
@@ -121,20 +121,15 @@ pre {
 }
 
 
+/*-- Intro --*/
 
-.tables pre > code {
-    margin-top: 50px;
-}
-
-.no-rows tr th:first-child,
-.no-rows tr td:first-child {
-    display: none;
+.intro {
+    display: flex;
+    justify-content: center;
 }
 
 
-#mottatte-søknader h3 {
-    margin-top: 50px;
-}
+/*-- Sections --*/
 
 #section1 {
     display: flex;
@@ -143,6 +138,9 @@ pre {
 }
 
 #section1-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     max-width: 800px;
     margin: 0 1em;
 }
@@ -155,26 +153,14 @@ pre {
 }
 
 #section2-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     max-width: 800px;
     margin: 0 1em;
 }
 
+
 div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link, div.sidebar-item-container .sidebar-link > code {
     color: #262626;
-}
-
-@media (min-width: 992px) {
-
-    .sidebar-navigation .sidebar-item {
-        font-size: unset;
-    }
-
-    .sidebar-link {
-        padding-left: 0.5rem;
-        border-left: 4px solid transparent;
-    }
-
-    .sidebar-item-container .active {
-        border-left: 4px solid #0056b4;
-    }
 }

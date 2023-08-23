@@ -1,5 +1,5 @@
 ---
-title: "Søknad om sykepenger i ny sykepengeløsning"
+title: "Styringsdata: produktområde helse"
 date-modified: last-modified
 format:
     html:
@@ -9,6 +9,8 @@ format:
             - custom.scss
 
 ---
+
+
 
 ```{python}
 import pandas as pd
@@ -42,9 +44,14 @@ norsk_dag = {
 }
 ```
 
+
 :::: {#section1}
 
 ::: {#section1-content}
+
+Denne datafortellingen har som hensikt å formidle data som kan gi grunnlag for bedre og mer presise prioriteringer knyttet til behov. Behovene vi ønsker å bistå med er i hovedsak rettet mot saksbehandling (i ny sykepengeløsning) og for overordnede strategiske valg.  
+
+#
 
 ### Mottatte søknader
 
@@ -180,7 +187,6 @@ fig.update_layout(
 fig.show()
 
 ```
-
 
 ```{python}
 # | class: no-rows
@@ -571,12 +577,12 @@ fig.show()
 
 #
 
+:::
+
+::::
+
 ```{python}
 import datetime as dt
 
 print(f"Sist oppdatert: {dt.datetime.now()}")
 ```
-
-:::
-
-::::
