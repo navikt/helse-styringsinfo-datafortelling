@@ -161,6 +161,21 @@ pre {
 }
 
 
+#section3 {
+    display: flex;
+    justify-content: center;
+    background: #eae8e8;
+}
+
+#section3-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 1em;
+}
+
+
 div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link, div.sidebar-item-container .sidebar-link > code {
     color: #262626;
 }
