@@ -13,3 +13,5 @@ make render        # Kun testet på MacOS
 ```
 
 Opprett/endre [.env](.env)-filen (se [env.example](env.example)) med annen prosjekt-id hvis du trenger å teste mot annet miljø enn dev.
+
+For å trigge en kjøring av naisjoben kan man kjøre noe slikt: `k create job --from=cronjobs/styringsinfo-datafortelling styringsinfo-datafortelling-adhoc-NN` hvor NN er et tall.
