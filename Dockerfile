@@ -21,6 +21,7 @@ RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/rel
 COPY index.qmd .
 COPY publish.sh .
 COPY requirements.txt .
+COPY custom.scss .
 
 RUN python -m pip install --upgrade pip wheel
 RUN python -m pip install -r requirements.txt
