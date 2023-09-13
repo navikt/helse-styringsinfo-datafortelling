@@ -79,17 +79,15 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 
 
 :::: {#section1}
+
 ::: {#section1-content}
 
 #
 
-### Mottatte søknader
+### 1# Mottatte søknader
 
-Søknadene som vises gjelder de som mottas i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstaker-søknader, med unntak av kode 6 (ikke frilansere/næringsdrivende). Søknader som er korrigert på tidligere søknader telles, både korrigert og korrigerende.
+Omfatter per i dag kun arbeidstakere (med unntak av kode 6) og søknader sendt til nytt saksbehandlingssystem.
 
-Datoen som refereres til er datoen for når søknaden ble sendt første gang (så dersom en søknad oppdateres så er datoen fortsatt den originale innsendingsdatoen).
-
-#
 
 ::: {.nokkeltall}
 
@@ -292,7 +290,7 @@ fig.show()
 
 ::: {#section2-content}
 
-### Fattede vedtak
+### 2# Fattede vedtak
 
 Et fattet vedtak betyr at saksbehandlingssystemet har vurdert en (eller fler) søknad om sykepenger med tilhørende dokumentasjon og avgjort om denne personen har krav, eller ikke krav på sykepenger. Når vedtaket er fattet får sykmeldt bruker resultatet skriftlig. Når et godkjent vedtak fattes, går det videre til utbetaling til sykmeldt bruker, eller refunderes til arbeidsgiver.
 
@@ -557,7 +555,7 @@ fig.show()
 
 ::: {#section3-content}
 
-### Forkastede vedtaksperioder
+### 3# Forkastede vedtaksperioder
 
 En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at perioden det søkes for ikke kan behandles i speil. Det trenger ikke nødvendigvis medføre at det opprettes gosys-oppgaver for de tilhørende søknadene. Det opprettes ikke oppgaver for korte perioder som er innenfor arbeidsgiverperioden. 
 

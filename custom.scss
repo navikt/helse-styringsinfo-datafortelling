@@ -143,13 +143,14 @@ pre {
     justify-content: center;
     max-width: 800px;
     margin: 0 1em;
+    padding-bottom: 50px;
 }
 
 #section1 {
     display: flex;
     justify-content: center;
     background: #FFFFFF;
-    border-top: 1px solid black;
+    border-top: 1px solid #CBCFD5;
 }
 
 #section1-content {
@@ -158,6 +159,7 @@ pre {
     justify-content: center;
     max-width: 800px;
     margin: 0 1em;
+    padding-top: 50px;
 }
 
 #section2 {
