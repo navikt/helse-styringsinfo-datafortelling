@@ -1,5 +1,5 @@
 ---
-title: "Styringsdata: produktområde helse"
+title: "Styringsdata for søknad om sykepenger"
 date-modified: last-modified
 format:
     html:
@@ -43,12 +43,43 @@ norsk_dag = {
 }
 ```
 
+:::: {#section-intro}
+
+::: {#section-intro-content}
+
+### Om fortellingen
+
+Datafortellingen har som hensikt å gi grunnlag for bedre og mer presise prioriteringer knyttet til saksbehandling i nytt behandlingssystem for sykepenger. 
+
+I fortellingen presenteres dataen kronologisk gjennom saksbehandlingsforløpet, fra en søknad om sykepenger er sendt, til vedtaket er fattet eller forkastet og sendt- eller ikke sendt til utbetaling.
+
+::: {.callout-note collapse="true" appearance="minimal"}
+## Mer om dataen som presenteres
+
+Dataen som presenteres stammer kun fra nytt saksbehandlingssystem. Årsaken til dette er at vi har lite eller mangelfull data på saksbehandling av sykepenger i eldre behandlingssystemer. Samtidig har ikke PO Helse selv eierskap til dette, og derfor være sikre på at dataen stemmer.
+
+Siden dataen er ment for å gjøre prioriteringer og strategiske veivalg i forbindelse med saksbehandling er det avgjørende at det som presenteres stemmer overens med det som faktisk skjer.
+
+Foreløpig presenteres det i denne fortellingen data på innsendte søknader, fattede vedtak og forkastede vedtak. Det gjenstår fortsatt en del hendelsespunkter som omfatter for eksempel inntektsmeldinger, frister etc. Planen er å få dette på plass over tid.
+:::
+
+::: {.callout-note collapse="true" appearance="minimal"}
+## Mer om teamet
+
+Team Hvilepuls fra PO Helse har designet og drifter denne fortellingen. Teamet består av medlemmer forskjellige fagfelt, hentet fra ulike teams i produktområdet.
+
+Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten forsøker vi å sikre at dataen som formidles, stemmer overens med det som faktisk skjer.
+
+[Les mer om teamet i Teamkatalogen.](https://teamkatalog.nav.no/team/ea2ba8f9-b956-4d78-857e-93e547449fc5){.external target="_blank"}
+:::
+
+:::
+
+::::
+
 
 :::: {#section1}
-
 ::: {#section1-content}
-
-Denne datafortellingen har som hensikt å formidle data som kan gi grunnlag for bedre og mer presise prioriteringer knyttet til behov. Behovene vi ønsker å bistå med er i hovedsak rettet mot saksbehandling (i ny sykepengeløsning) og for overordnede strategiske valg.  
 
 #
 

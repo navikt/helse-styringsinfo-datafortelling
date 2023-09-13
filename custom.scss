@@ -131,10 +131,25 @@ pre {
 
 /*-- Sections --*/
 
+#section-intro {
+    display: flex;
+    justify-content: center;
+    background: #FFFFFF;
+}
+
+#section-intro-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 1em;
+}
+
 #section1 {
     display: flex;
     justify-content: center;
     background: #FFFFFF;
+    border-top: 1px solid black;
 }
 
 #section1-content {
