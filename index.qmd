@@ -322,7 +322,7 @@ print(f"Nøkkeltall per {formatted_date}")
 ::: {.nokkeltallboks-layout}
 
 ```{python}
-# | class: nokkeltallboks-innhold
+# | class: nokkeltallboks-innhold-hvit
 
 QUERY = """--sql
     SELECT
@@ -342,7 +342,7 @@ for key, value in stats.items():
 
 
 ```{python}
-# | class: nokkeltallboks-innhold
+# | class: nokkeltallboks-innhold-hvit
 
 QUERY = """--sql
     SELECT
@@ -362,7 +362,7 @@ for key, value in stats.items():
 
 
 ```{python}
-# | class: nokkeltallboks-innhold
+# | class: nokkeltallboks-innhold-hvit
 
 QUERY = """--sql
     SELECT
@@ -681,12 +681,14 @@ fig.show()
 
 ```
 
-:::
-
-::::
 
 ```{python}
 import datetime as dt
 
 print(f"Sist oppdatert: {dt.datetime.now()}")
 ```
+
+
+:::
+
+::::
