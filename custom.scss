@@ -158,6 +158,7 @@ pre {
     justify-content: center;
     background: #FFFFFF;
     border-top: 1px solid #CBCFD5;
+    padding: 3rem 0;
 }
 
 #section1-content {
@@ -166,14 +167,13 @@ pre {
     flex-direction: column;
     max-width: 800px;
     margin: 0 1em;
-    padding-top: 50px;
 }
 
 #section2 {
     display: flex;
     justify-content: center;
     background: #F8F8F8;
-    padding-top: 3rem;
+    padding: 3rem 0;
 }
 
 #section2-content {
@@ -188,7 +188,8 @@ pre {
 #section3 {
     display: flex;
     justify-content: center;
-    background: #eae8e8;
+    background: #FFFFFF;
+    padding: 3rem 0;
 }
 
 #section3-content {

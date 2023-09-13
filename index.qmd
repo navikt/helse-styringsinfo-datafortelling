@@ -83,7 +83,7 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 ::: {#section1-content}
 
 
-### 1# Mottatte søknader
+### 1# Innsendte søknader om sykepenger
 
 #
 
@@ -115,7 +115,7 @@ print(f"Nøkkeltall per {formatted_date}")
 
 QUERY = """--sql
     SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `mottatt i dag`
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `innsendt i dag`
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """ 
 
@@ -134,7 +134,7 @@ for key, value in stats.items():
 
 QUERY = """--sql
     SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `mottatt i går`
+        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `innsendt i går`
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
 """ 
 
@@ -295,6 +295,8 @@ fig.show()
 ::: {#section2-content}
 
 ### 2# Fattede vedtak
+
+#
 
 Et fattet vedtak betyr at saksbehandlingssystemet har vurdert en (eller fler) søknad om sykepenger med tilhørende dokumentasjon og avgjort om denne personen har krav, eller ikke krav på sykepenger. Når vedtaket er fattet får sykmeldt bruker resultatet skriftlig. Når et godkjent vedtak fattes, går det videre til utbetaling til sykmeldt bruker, eller refunderes til arbeidsgiver.
 
@@ -562,6 +564,70 @@ fig.show()
 ### 3# Forkastede vedtaksperioder
 
 En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at perioden det søkes for ikke kan behandles i speil. Det trenger ikke nødvendigvis medføre at det opprettes gosys-oppgaver for de tilhørende søknadene. Det opprettes ikke oppgaver for korte perioder som er innenfor arbeidsgiverperioden. 
+
+#
+
+:::: {.nokkeltallboks-layout}
+
+```{python}
+# | class: nokkeltallboks-innhold
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `forkastet i dag`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+```{python}
+# | class: nokkeltallboks-innhold
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `forkastet i går`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+
+QUERY = """--sql
+    SELECT
+        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `forkastet denne måneden`
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
+""" 
+
+query_job = client.query(QUERY)
+rows = query_job.result()
+
+stats = [dict(row) for row in rows][0]
+
+for key, value in stats.items():
+    print(f"{value}\n{key}")
+
+```
+
+::::
 
 #
 
