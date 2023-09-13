@@ -82,12 +82,16 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 
 ::: {#section1-content}
 
-#
 
 ### 1# Mottatte søknader
 
-Omfatter per i dag kun arbeidstakere (med unntak av kode 6) og søknader sendt til nytt saksbehandlingssystem.
+#
 
+::: {.callout-note appearance="simple"}
+
+### Omfatter per i dag kun arbeidstakere (med unntak av sykmeldte med strengt fortrolig adresse) og søknader sendt til nytt saksbehandlingssystem (Speil).
+
+:::
 
 ::: {.nokkeltall}
 

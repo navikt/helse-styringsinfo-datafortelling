@@ -90,13 +90,14 @@ div, p {
 
 pre {
     display: flex;
+    flex: 1;
 }
 
 
 /*-- Nøkkeltall styling --*/
 
 .nokkeltall pre > code {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     margin-top: 25px;
     padding: 0;
@@ -104,6 +105,7 @@ pre {
 
 .nokkeltallboks-layout {
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
     gap: 1em;
 }
@@ -111,6 +113,7 @@ pre {
 .nokkeltallboks-innhold pre > code {
     display: flex;
     flex: 1;
+    justify-content: center;
 
     padding: 40px;
     background: rgba(213, 225, 221, 0.3);
@@ -120,6 +123,10 @@ pre {
     text-align: center;
 }
 
+.cell.nokkeltallboks-innhold, .cell-output.cell-output-stdout {
+    display: flex;
+    flex: 1;
+}
 
 /*-- Intro --*/
 
@@ -155,8 +162,8 @@ pre {
 
 #section1-content {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
     max-width: 800px;
     margin: 0 1em;
     padding-top: 50px;
