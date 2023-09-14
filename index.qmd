@@ -110,9 +110,11 @@ print(f"Nøkkeltall per {formatted_date}")
 # | class: nokkeltallboks-innhold
 
 QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `innsendt i dag`
-    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+SELECT
+    COUNT(*) as `innsendt to uker siden`
+FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+WHERE DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY), INTERVAL 14 DAY)
+AND DATE(soknad_mottatt, 'Europe/Oslo') <= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 8 DAY), INTERVAL 14 DAY)
 """ 
 
 query_job = client.query(QUERY)
