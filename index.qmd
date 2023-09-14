@@ -514,19 +514,19 @@ WITH agg as (
     ORDER BY dager_brukt desc
 ),
     agg_buckets AS (
-    SELECT SUM(antall_vedtak) AS sum_vedtak, '1 - alle' AS vindu from agg
+    SELECT SUM(antall_vedtak) AS sum_vedtak, 'alle' AS vindu, 1 AS rekkefolge from agg
     UNION ALL
-    select SUM(antall_vedtak), '2 - under én dag' from agg WHERE dager_brukt = 0
+    select SUM(antall_vedtak), 'under én dag', 2 from agg WHERE dager_brukt = 0
     UNION ALL
-    select SUM(antall_vedtak), '3 - én dag til én uke' from agg WHERE dager_brukt > 0 AND dager_brukt <7
+    select SUM(antall_vedtak), 'én dag til én uke', 3 from agg WHERE dager_brukt > 0 AND dager_brukt <7
     UNION ALL
-    select SUM(antall_vedtak), '4 - én til fire uker' from agg WHERE dager_brukt >= 7 AND dager_brukt < 28
+    select SUM(antall_vedtak), 'én til fire uker', 4 from agg WHERE dager_brukt >= 7 AND dager_brukt < 28
     UNION ALL
-    select SUM(antall_vedtak), '5 - fire til åtte uker' from agg WHERE dager_brukt >= 28 AND dager_brukt < 56
+    select SUM(antall_vedtak), 'fire til åtte uker', 5 from agg WHERE dager_brukt >= 28 AND dager_brukt < 56
     UNION ALL
-    SELECT SUM(antall_vedtak), '6 - åtte uker eller mer' FROM agg WHERE dager_brukt >= 56
+    SELECT SUM(antall_vedtak), 'åtte uker eller mer', 6 FROM agg WHERE dager_brukt >= 56
 )
-SELECT sum_vedtak, vindu FROM agg_buckets ORDER BY vindu;
+SELECT sum_vedtak, vindu FROM agg_buckets ORDER BY rekkefolge;
 """
 
 df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
