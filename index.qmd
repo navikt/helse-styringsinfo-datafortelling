@@ -41,6 +41,22 @@ norsk_dag = {
     "Saturday": "Lørdag",
     "Sunday": "Søndag",
 }
+
+månednavn = {
+    1: "Januar",
+    2: "Februar",
+    3: "Mars",
+    4: "April",
+    5: "Mai",
+    6: "Juni",
+    7: "Juli",
+    8: "August",
+    9: "September",
+    10: "Oktober",
+    11: "November",
+    12: "Desember",
+}
+
 ```
 
 :::: {#section-intro}
@@ -161,43 +177,52 @@ current_year = datetime.datetime.now().year
 
 QUERY = f"""
     SELECT
+        
         EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS year,
         EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS month,
+        korrigerende,
         COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
     WHERE EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = {current_year}
         AND EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') <= {current_month}
-    GROUP BY year, month
-    ORDER BY year DESC, month DESC
+    GROUP BY year, month, korrigerende
+    ORDER BY year ASC, month ASC, korrigerende ASC
 """
 
 query_job = client.query(QUERY)
 
 df_months = query_job.to_dataframe()
 
-# Create a new plotly figure
-fig = go.Figure()
+df_months = df_months.assign(
+    måned=lambda df: df.month.map(månednavn) + " " + df.year.astype(str),
+    korrigerende=lambda df: df.korrigerende.map({True: "Korrigerende", False: ""}),
+)
 
-fig.add_trace(go.Bar(
-    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
-    y=df_months['Totalt'],
-    text=df_months['Totalt'],
-    textposition='auto',
-))
+import plotly.express as px
 
-fig.update_traces(marker_color = 'rgba(176, 193, 200, 1)',
-                  marker_line_width = 1, opacity = 1)
+fig = px.bar(
+    df_months,
+    x="måned",
+    y="Totalt",
+    color="korrigerende",
+    barmode="stack",
+    custom_data=["korrigerende"],
+)
 
 fig.update_layout(
     title="Mottatte søknader per måned",
     xaxis_title="Måned",
     yaxis_title="Antall",
     xaxis_tickangle=-45,
-    paper_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor="rgba(0,0,0,0)",
+    showlegend=False,
+)
+
+fig.update_traces(
+    hovertemplate="<br>".join(["%{x}", "Antall: %{y}", "%{customdata[0]}"])
 )
 
 fig.show()
-
 ```
 
 ```{python}
