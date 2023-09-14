@@ -130,8 +130,10 @@ for key, value in stats.items():
 
 QUERY = """--sql
     SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `innsendt i går`
-    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+    COUNT(*) as `innsendt forrige uke`
+FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+WHERE DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY), INTERVAL 7 DAY)
+AND DATE(soknad_mottatt, 'Europe/Oslo') <= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 8 DAY), INTERVAL 7 DAY)
 """ 
 
 query_job = client.query(QUERY)
