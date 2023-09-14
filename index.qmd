@@ -26,7 +26,7 @@ warnings.filterwarnings(
     "ignore", "A progress bar was requested, but there was an error loading the tqdm library."
 )
 
-load_dotenv()
+load_dotenv(override=True)
 LOCATION = "europe-north1"
 PROJECT = os.environ["GCP_TEAM_PROJECT_ID"]
 
