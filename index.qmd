@@ -83,15 +83,11 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 ::: {#section1-content}
 
 
-### 1# Innsendte søknader om sykepenger
+### 1# Søknader
 
 #
 
-::: {.callout-note appearance="simple"}
-
-### Omfatter per i dag kun arbeidstakere (med unntak av sykmeldte med strengt fortrolig adresse) og søknader sendt til nytt saksbehandlingssystem (Speil).
-
-:::
+Gjelder arbeidstakersøknader med unntak av kode 6 som er innsendt digitalt. Papirsykmeldinger som er registrert digitalt tas også med. 
 
 ::: {.nokkeltall}
 
