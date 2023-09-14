@@ -1,5 +1,5 @@
 ---
-title: "Styringsdata for søknad om sykepenger"
+title: "Styringsinformasjon for ny sykepengeløsning"
 date-modified: last-modified
 format:
     html:
