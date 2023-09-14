@@ -153,9 +153,10 @@ for key, value in stats.items():
 # | class: nokkeltallboks-innhold
 
 QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `totalt denne måneden`
-    FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+SELECT
+    COUNT(*) as `innsendt denne uken`
+FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
+WHERE DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY)
 """ 
 
 query_job = client.query(QUERY)
