@@ -635,6 +635,8 @@ fig.show()
 
 ### 3# Forkastede vedtaksperioder
 
+#
+
 En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at perioden det søkes for ikke kan behandles i speil. Det trenger ikke nødvendigvis medføre at det opprettes gosys-oppgaver for de tilhørende søknadene. Det opprettes ikke oppgaver for korte perioder som er innenfor arbeidsgiverperioden. 
 
 #
@@ -753,7 +755,7 @@ fig.show()
 
 ```
 
-
+#
 ```{python}
 import datetime as dt
 
