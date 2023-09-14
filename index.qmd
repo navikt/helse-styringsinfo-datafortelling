@@ -103,7 +103,10 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 
 #
 
-Gjelder arbeidstakersøknader med unntak av kode 6 som er innsendt digitalt. Papirsykmeldinger som er registrert digitalt tas også med. 
+Gjelder søknader (med unntak av kode 6) som er innsendt digitalt og søknader for digitaliserte papirsykmeldinger. 
+
+Nøkkeltallene viser totaloversikten over innsendte og korrigerte søknader samlet. Under viser grafen (innsendt per måned) hvor stor andel som er korrigert.
+
 
 ::: {.nokkeltall}
 
