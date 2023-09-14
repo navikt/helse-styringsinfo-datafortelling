@@ -517,39 +517,8 @@ En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at peri
 
 ```{python}
 # | class: nokkeltallboks-innhold
-
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `forkastet i dag`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
-```
-
-```{python}
-# | class: nokkeltallboks-innhold
-
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `forkastet i går`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
+value = antall_for_n_uker_siden(2, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+print(str(value) + "\nto uker siden")
 
 ```
 
@@ -557,21 +526,18 @@ for key, value in stats.items():
 ```{python}
 # | class: nokkeltallboks-innhold
 
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_forkastet, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `forkastet denne måneden`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_forkastet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
+value = antall_for_n_uker_siden(1, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+print(str(value) + "\nforrige uke")
 ```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+
+value = antall_for_n_uker_siden(0, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+print(str(value) + "\ndenne uken")
+```
+
 
 ::::
 
