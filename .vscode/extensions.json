@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "quarto.quarto",
+    "ms-toolsai.jupyter",
+    "ms-python.black-formatter",
+    "ms-python.vscode-pylance",
+    "ms-python.python"
+  ]
+}
