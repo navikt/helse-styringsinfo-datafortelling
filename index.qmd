@@ -303,20 +303,8 @@ print(f"Nøkkeltall per {formatted_date}")
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
-
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') = DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo')) as `fattet i dag`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
+value = antall_for_n_uker_siden(2, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+print(str(value) + "\navklart to uker siden")
 
 ```
 
@@ -324,112 +312,16 @@ for key, value in stats.items():
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
 
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') = DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL 1 DAY)) as `fattet i går`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
+value = antall_for_n_uker_siden(1, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+print(str(value) + "\navklart forrige uke")
 ```
 
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
 
-QUERY = """--sql
-    SELECT
-        COUNTIF(DATE(vedtak_fattet, 'Europe/Oslo') >= DATE_TRUNC(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), MONTH)) as `fattet denne måneden`
-    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-""" 
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
-```
-
-```{python}
-
-# | class: nokkeltallboks-innhold-hvit
-
-QUERY = """--sql
-    select
-     countif(
-        extract(
-            week from DATE(vedtak_fattet, 'Europe/Oslo')
-        ) = extract(WEEK from current_date())
-     ) as `fattet hittil denne uken`
-    from `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-"""
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
-```
-
-```{python}
-
-# | class: nokkeltallboks-innhold-hvit
-
-QUERY = """--sql
-    select
-     countif(
-        extract(
-            week from DATE(vedtak_fattet, 'Europe/Oslo')
-        ) = extract(WEEK from current_date()) - 1
-     ) as `fattet forrige uke`
-    from `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-"""
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
-```
-
-```{python}
-
-# | class: nokkeltallboks-innhold-hvit
-
-QUERY = """--sql
-    select
-     countif(
-        extract(
-            week from DATE(vedtak_fattet, 'Europe/Oslo')
-        ) = extract(WEEK from current_date()) - 2
-     ) as `fattet for to uker siden`
-    from `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-"""
-
-query_job = client.query(QUERY)
-rows = query_job.result()
-
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
-
+value = antall_for_n_uker_siden(0, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+print(str(value) + "\navklart denne uken")
 ```
 
 :::
