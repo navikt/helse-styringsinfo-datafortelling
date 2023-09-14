@@ -104,26 +104,36 @@ print(f"Nøkkeltall per {formatted_date}")
 
 :::
 
+```{python}
+
+def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
+    QUERY = f"""--sql
+    SELECT
+        COUNT(*)
+    FROM `{tabell}`
+    WHERE DATE({timestamp_felt}, 'Europe/Oslo') >= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY), INTERVAL 7 * {str(antall_uker_siden)} DAY)
+    AND DATE({feltimestamp_felt}, 'Europe/Oslo') <= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 8 DAY), INTERVAL 7 * {str(antall_uker_siden)} DAY)
+    """
+
+    query_job = client.query(QUERY)
+    rows = query_job.result()
+
+    stats = [dict(row) for row in rows][0]
+
+    return next(iter(stats.values()))
+```
+
 :::: {.nokkeltallboks-layout}
 
 ```{python}
 # | class: nokkeltallboks-innhold
 
-QUERY = """--sql
-SELECT
-    COUNT(*) as `innsendt to uker siden`
-FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-WHERE DATE(soknad_mottatt, 'Europe/Oslo') >= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY), INTERVAL 14 DAY)
-AND DATE(soknad_mottatt, 'Europe/Oslo') <= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 8 DAY), INTERVAL 14 DAY)
-""" 
+value = antall_for_n_uker_siden(2, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
+print(str(value) + "\ninnsendt to uker siden")
+```
 
-query_job = client.query(QUERY)
-rows = query_job.result()
 
-stats = [dict(row) for row in rows][0]
-
-for key, value in stats.items():
-    print(f"{value}\n{key}")
+```{python}
 
 ```
 
