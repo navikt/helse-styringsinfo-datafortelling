@@ -134,9 +134,8 @@ def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
     query_job = client.query(QUERY)
     rows = query_job.result()
 
-    stats = [dict(row) for row in rows][0]
-
-    return next(iter(stats.values()))
+    # get first value in first row of RowIterator
+    return [row[0] for row in rows][0]
 ```
 
 :::: {.nokkeltallboks-layout}
