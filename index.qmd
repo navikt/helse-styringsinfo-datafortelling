@@ -225,66 +225,83 @@ fig.show()
 ```
 
 ```{python}
-from plotly.subplots import make_subplots
-import pandas_gbq
+def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell):
+    from plotly.subplots import make_subplots
+    import pandas_gbq
 
-# SQL query to count number of rows per day and calculate 7 day moving average
-QUERY = """
-SELECT 
-  date, 
-  count,
-  AVG(count) OVER (
-    ORDER BY date
-    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-  ) AS moving_avg
-FROM (
-    SELECT date_range.date AS date, IFNULL(original_table.count, 0) AS count
-        FROM (
-            SELECT *
-            FROM UNNEST(GENERATE_DATE_ARRAY('2023-03-01', CURRENT_DATE())) AS date
-        ) AS date_range
-    LEFT JOIN (
-    SELECT
-        DATE(soknad_mottatt) AS date,
-        COUNT(*) AS count
-      FROM
-        `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-      GROUP BY
-        DATE(soknad_mottatt)
-        ) AS original_table
-    ON date_range.date = original_table.date
-)
-WHERE date > '2023-03-01'
-ORDER BY 
-  date
-"""
+    # SQL query to count number of rows per day and calculate moving averages
+    QUERY = f"""
+    SELECT 
+    date, 
+    count,
+    AVG(count) OVER (
+        ORDER BY date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS moving_7_day_avg,
+    AVG(count) OVER (
+        ORDER BY date
+        ROWS BETWEEN 27 PRECEDING AND CURRENT ROW
+    ) AS moving_28_day_avg
+    FROM (
+        SELECT date_range.date AS date, IFNULL(original_table.count, 0) AS count
+            FROM (
+                SELECT *
+                FROM UNNEST(GENERATE_DATE_ARRAY('2023-03-01', CURRENT_DATE())) AS date
+            ) AS date_range
+        LEFT JOIN (
+        SELECT
+            DATE({timestamp_felt}) AS date,
+            COUNT(*) AS count
+        FROM
+            `{tabell}`
+        GROUP BY
+            DATE({timestamp_felt})
+            ) AS original_table
+        ON date_range.date = original_table.date
+    )
+    WHERE date > '2023-03-01'
+    ORDER BY 
+    date
+    """
 
-# Execute the query and load the data into a pandas DataFrame
-df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
+    # Execute the query and load the data into a pandas DataFrame
+    df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
 
-# Create subplots, which will have a bar chart and a line chart
-fig = make_subplots(specs=[[{"secondary_y": True}]])
+    # Create subplots, which will have a bar chart and a line chart
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-# Add bar chart for daily counts
-fig.add_trace(
-    go.Bar(x=df["date"], y=df["count"], name="Antall per dag"),
-    secondary_y=False,
-)
+    # Add bar chart for daily counts
+    fig.add_trace(
+        go.Bar(x=df["date"], y=df["count"], name="Antall per dag"),
+        secondary_y=False,
+    )
 
-# Add line chart for 7 day moving average TODO: Den tar bare hensyn til dager med data!
-fig.add_trace(
-    go.Scatter(x=df["date"], y=df["moving_avg"], name="Snitt over 7 dager"),
-    secondary_y=False,
-)
+    # Add lines for moving averages
+    fig.add_trace(
+        go.Scatter(x=df["date"], y=df["moving_7_day_avg"], name="Snitt over 7 dager"),
+        secondary_y=False,
+    )
+    fig.add_trace(
+        go.Scatter(x=df["date"], y=df["moving_28_day_avg"], name="Snitt over 28 dager"),
+        secondary_y=False,
+    )
 
-# Set x and y axis labels
-fig.update_layout(
-    title_text="Antall mottatt per dag og 7-dagers glidende gjennomsnitt",
-    xaxis_title="Dato",
-    yaxis_title="Antall per dag",
-    yaxis2_title="7-dagers glidende gjennomsnitt",
-)
+    # Set x and y axis labels
+    fig.update_layout(
+        title_text=tittel,
+        xaxis_title="Dato",
+        yaxis_title="Antall per dag",
+    )
 
+    return fig
+```
+
+```{python}
+fig = fig_antall_med_glidende_gjennomsnitt(
+    "Antall mottatte søknader per dag og 7- og 28-dagers glidende gjennomsnitt",
+    "soknad_mottatt",
+    "styringsinfo_dataset.styringsinfo_sendt_soknad_view",
+    )
 # Show the figure
 fig.show()
 ```
@@ -404,64 +421,13 @@ fig.show()
 ```
 
 ```{python}
-from plotly.subplots import make_subplots
-import pandas_gbq
+fig = fig_antall_med_glidende_gjennomsnitt(
+    "Antall vedtak fattet per dag og 7- og 28-dagers glidende gjennomsnitt",
+    "vedtak_fattet",
+    "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
+    )
 
-# SQL query to count number of rows per day and calculate 7 day moving average
-QUERY = """
-SELECT
-  date,
-  count,
-  AVG(count) OVER (
-    ORDER BY date
-    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-  ) AS moving_avg
-FROM (
-    SELECT date_range.date AS date, IFNULL(original_table.count, 0) AS count
-        FROM (
-            SELECT *
-            FROM UNNEST(GENERATE_DATE_ARRAY('2023-03-01', CURRENT_DATE())) AS date
-        ) AS date_range
-    LEFT JOIN (
-    SELECT
-        DATE(vedtak_fattet) AS date,
-        COUNT(*) AS count
-      FROM
-        `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-      GROUP BY
-        DATE(vedtak_fattet)
-        ) AS original_table
-    ON date_range.date = original_table.date
-)
-WHERE date > '2023-03-01'
-ORDER BY
-  date
-"""
-
-# Execute the query and load the data into a pandas DataFrame
-df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
-
-# Create subplots, which will have a bar chart and a line chart
-fig = make_subplots(specs=[[{"secondary_y": True}]])
-
-# Add bar chart for daily counts
-fig.add_trace(
-    go.Bar(x=df["date"], y=df["count"], name="Antall per dag"),
-    secondary_y=False,
-)
-
-# Add line chart for 7 day moving average TODO: Den tar bare hensyn til dager med data!
-fig.add_trace(
-    go.Scatter(x=df["date"], y=df["moving_avg"], name="Snitt over 7 dager"),
-    secondary_y=False,
-)
-
-# Set x and y axis labels
 fig.update_layout(
-    title_text="Antall vedtak fattet per dag og 7-dagers glidende gjennomsnitt",
-    xaxis_title="Dato",
-    yaxis_title="Antall per dag",
-    yaxis2_title="7-dagers glidende gjennomsnitt",
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
 )
@@ -472,6 +438,8 @@ fig.show()
 
 ```{python}
 import pandas_gbq
+from plotly.subplots import make_subplots
+
 
 QUERY = f"""
 WITH agg as (
