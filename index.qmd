@@ -145,7 +145,7 @@ def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(2, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(str(value) + "\ninnsendt to uker siden")
+print(f"{value}\ninnsendt to uker siden")
 ```
 
 
@@ -153,7 +153,7 @@ print(str(value) + "\ninnsendt to uker siden")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(1, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(str(value) + "\ninnsendt forrige uke")
+print(f"{value}\ninnsendt forrige uke")
 ```
 
 
@@ -161,7 +161,7 @@ print(str(value) + "\ninnsendt forrige uke")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(0, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(str(value) + "\ninnsendt denne uken")
+print(f"{value}\ninnsendt denne uken")
 ```
 
 ::::
@@ -329,7 +329,7 @@ print(f"Nøkkeltall per {formatted_date}")
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
 value = antall_for_n_uker_siden(2, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
-print(str(value) + "\navklart to uker siden")
+print(f"{value}\navklart to uker siden")
 
 ```
 
@@ -338,7 +338,7 @@ print(str(value) + "\navklart to uker siden")
 # | class: nokkeltallboks-innhold-hvit
 
 value = antall_for_n_uker_siden(1, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
-print(str(value) + "\navklart forrige uke")
+print(f"{value}\navklart forrige uke")
 ```
 
 
@@ -346,7 +346,7 @@ print(str(value) + "\navklart forrige uke")
 # | class: nokkeltallboks-innhold-hvit
 
 value = antall_for_n_uker_siden(0, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
-print(str(value) + "\navklart denne uken")
+print(f"{value}\navklart denne uken")
 ```
 
 :::
@@ -543,7 +543,7 @@ En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at peri
 ```{python}
 # | class: nokkeltallboks-innhold
 value = antall_for_n_uker_siden(2, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
-print(str(value) + "\nto uker siden")
+print(f"{value}\nto uker siden")
 
 ```
 
@@ -552,7 +552,7 @@ print(str(value) + "\nto uker siden")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(1, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
-print(str(value) + "\nforrige uke")
+print(f"{value}\nforrige uke")
 ```
 
 
@@ -560,7 +560,7 @@ print(str(value) + "\nforrige uke")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(0, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
-print(str(value) + "\ndenne uken")
+print(f"{value}\ndenne uken")
 ```
 
 
