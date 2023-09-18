@@ -324,7 +324,7 @@ fig.show()
 
 Et fattet vedtak betyr at saksbehandlingssystemet har vurdert en (eller fler) søknad om sykepenger med tilhørende dokumentasjon og avgjort om denne personen har krav, eller ikke krav på sykepenger. Når vedtaket er fattet får sykmeldt bruker resultatet skriftlig. Når et godkjent vedtak fattes, går det videre til utbetaling til sykmeldt bruker, eller refunderes til arbeidsgiver.
 
-Fattede vedtak som vises gjelder bare de som fattes i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstakere, med unntak av kode 6 (ikke frilansere, næringsdrivende etc.). 
+Fattede vedtak som vises, gjelder bare de som fattes i ny sykepengeløsning. Per juli 2023 omfatter dette arbeidstakere, med unntak av kode 6 (ikke frilansere, næringsdrivende etc.). 
 
 #
 
