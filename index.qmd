@@ -130,8 +130,8 @@ def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
     SELECT
         COUNT(*)
     FROM `{tabell}`
-    WHERE DATE({timestamp_felt}, 'Europe/Oslo') >= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 2 DAY), INTERVAL 7 * {str(antall_uker_siden)} DAY)
-    AND DATE({timestamp_felt}, 'Europe/Oslo') <= DATE_SUB(DATE_ADD(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL -EXTRACT(DAYOFWEEK FROM CURRENT_TIMESTAMP()) + 8 DAY), INTERVAL 7 * {str(antall_uker_siden)} DAY)
+    WHERE DATE_TRUNC(DATE({timestamp_felt}, 'Europe/Oslo'), WEEK(MONDAY)) >= DATE_TRUNC(DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL {str(antall_uker_siden)} WEEK), WEEK(MONDAY))
+    AND DATE_TRUNC(DATE({timestamp_felt}, 'Europe/Oslo'), WEEK(MONDAY)) < DATE_TRUNC(DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL {str(antall_uker_siden)} - 1 WEEK), WEEK(MONDAY))
     """
 
     query_job = client.query(QUERY)
