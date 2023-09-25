@@ -12,6 +12,7 @@ format:
 
 
 ```{python}
+import datetime
 import pandas as pd
 import warnings
 import os
@@ -171,58 +172,113 @@ print(f"{value}\ninnsendt denne uken")
 ```{python}
 
 # | class: no-rows
-import datetime
-import plotly.graph_objects as go
 
 current_month = datetime.datetime.now().month
 current_year = datetime.datetime.now().year
 
 QUERY = f"""
     SELECT
-        
-        EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS year,
-        EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS month,
+        EXTRACT(DATE FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') AS date,
+        DATE_TRUNC(EXTRACT(DATE FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo'), WEEK(MONDAY)) as week,
+        DATE_TRUNC(EXTRACT(DATE FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo'), MONTH) as month,
         korrigerende,
         COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
     WHERE EXTRACT(YEAR FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') = {current_year}
         AND EXTRACT(MONTH FROM soknad_mottatt AT TIME ZONE 'Europe/Oslo') <= {current_month}
-    GROUP BY year, month, korrigerende
-    ORDER BY year ASC, month ASC, korrigerende ASC
+    GROUP BY date, week, month, korrigerende
+    ORDER BY date ASC, korrigerende ASC
 """
 
 query_job = client.query(QUERY)
 
-df_months = query_job.to_dataframe()
+df_days: pd.DataFrame = query_job.to_dataframe()
+df_days_førstegangs = df_days[df_days.korrigerende == False]
+df_days_korrigerende = df_days[df_days.korrigerende == True]
 
-df_months = df_months.assign(
-    måned=lambda df: df.month.map(månednavn) + " " + df.year.astype(str),
-    korrigerende=lambda df: df.korrigerende.map({True: "Korrigerende", False: ""}),
-)
+df_weeks = df_days.groupby(["week", "korrigerende"], as_index=False)["Totalt"].sum()
+df_weeks_førstegang = df_weeks[df_weeks.korrigerende == False]
+df_weeks_korrigerende = df_weeks[df_weeks.korrigerende == True]
 
-import plotly.express as px
+df_months = df_days.groupby(["month", "korrigerende"], as_index=False)["Totalt"].sum()
+df_months_førstegang = df_months[df_months.korrigerende == False]
+df_months_korrigerende = df_months[df_months.korrigerende == True]
 
-fig = px.bar(
-    df_months,
-    x="måned",
-    y="Totalt",
-    color="korrigerende",
-    barmode="stack",
-    custom_data=["korrigerende"],
-)
+fig = go.Figure()
+fig.add_traces(data = [
+    go.Bar(
+        x=df_months_førstegang.month,
+        y=df_months_førstegang.Totalt,
+        name="Førstegangs",
+        visible=True
+    ),
+    go.Bar(
+        x=df_months_korrigerende.month,
+        y=df_months_korrigerende.Totalt,
+        name="Korrigerende",
+        visible=True
+    ),    
+    go.Bar(
+        x=df_weeks_førstegang.week,
+        y=df_weeks_førstegang.Totalt,
+        name="Førstegangs",
+        visible=False
+    ),
+    go.Bar(
+        x=df_weeks_korrigerende.week,
+        y=df_weeks_korrigerende.Totalt,
+        name="Korrigerende",
+        visible=False
+    ),
+    go.Bar(
+        x=df_days_førstegangs.date,
+        y=df_days_førstegangs.Totalt,
+        name="Førstegangs",
+        visible=False
+    ),
+    go.Bar(
+        x=df_days_korrigerende.date,
+        y=df_days_korrigerende.Totalt,
+        name="Korrigerende",
+        visible=False
+    ),
 
-fig.update_layout(
-    title="Mottatte søknader per måned",
-    xaxis_title="Måned",
-    yaxis_title="Antall",
-    xaxis_tickangle=-45,
-    paper_bgcolor="rgba(0,0,0,0)",
-    showlegend=False,
-)
+])
 
-fig.update_traces(
-    hovertemplate="<br>".join(["%{x}", "Antall: %{y}", "%{customdata[0]}"])
-)
+BUTTON_CONFIG = {
+    "active": 0,
+    "type": "buttons",
+    "direction": "right",
+    "showactive": True,
+    "x": 0,
+    "xanchor": "left",
+    "y": 1,
+    "yanchor": "bottom",
+    "font": {"size": 18},
+}
+
+fig.update_layout(barmode='stack', updatemenus=[
+    dict(
+        buttons=list([
+            dict(
+                args= [{"visible": [True, True, False, False, False, False]}],
+                label="Måneder",
+                method="restyle"
+            ),
+            dict(
+                args= [{"visible": [False, False, True, True, False, False]}],
+                label="Uker",
+                method="restyle"
+            ),
+            dict(
+                args= [{"visible": [False, False, False, False, True, True]}],
+                label="Dager",
+                method="restyle"
+            )
+        ]),
+        ** BUTTON_CONFIG
+    )
+])
 
 fig.show()
 ```
