@@ -519,6 +519,24 @@ fig.update_layout(
 fig.show()
 ```
 
+#
+
+:::
+
+::::
+
+:::: {#section3}
+
+::: {#section3-content}
+
+### 3# Behandlingstid av søknader
+
+#
+
+Vi ser nå på alle vedtaksperioder som ble avklart i går: Grafen viser hvor mange dager det har det gått fra vi mottok søknaden til vedtaksperioden ble avklart
+
+#
+
 ```{python}
 import pandas_gbq
 from plotly.subplots import make_subplots
@@ -558,7 +576,6 @@ fig.add_trace(
 )
 
 fig.update_layout(
-    title_text="Hvor mange dager har det gått fra vi mottok en søknad til vi avklarte vedtaksperioder i går",
     xaxis_title="",
     yaxis_title="Antall vedtak",
     xaxis_tickangle=-45,
@@ -576,11 +593,11 @@ fig.show()
 
 ::::
 
-:::: {#section3}
+:::: {#section4}
 
-::: {#section3-content}
+::: {#section4-content}
 
-### 3# Forkastede vedtaksperioder
+### 4# Forkastede vedtaksperioder
 
 #
 

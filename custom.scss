@@ -203,7 +203,6 @@ pre {
     margin: 0 1em;
 }
 
-
 #section3 {
     display: flex;
     justify-content: center;
@@ -219,6 +218,20 @@ pre {
     margin: 0 1em;
 }
 
+#section4 {
+    display: flex;
+    justify-content: center;
+    background: #ECEEF0;
+    padding: 3rem 0;
+}
+
+#section4-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 1em;
+}
 
 div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link, div.sidebar-item-container .sidebar-link > code {
     color: #262626;
