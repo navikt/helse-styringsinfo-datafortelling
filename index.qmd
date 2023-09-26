@@ -441,33 +441,49 @@ QUERY = f"""
     SELECT
         EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
         EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
+        IF(utbetaling_id IS NOT NULL, true, false) AS har_utbetalingslenke,
         COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
     WHERE EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
         AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
-    GROUP BY year, month
+    GROUP BY year, month, har_utbetalingslenke
     ORDER BY year DESC, month DESC
 """
 
 query_job = client.query(QUERY)
 
-df_months = query_job.to_dataframe()
+df_months : pd.DataFrame = query_job.to_dataframe()
+df_months_med_utbetaling = df_months[df_months.har_utbetalingslenke == True]
+df_months_uten_utbetaling = df_months[df_months.har_utbetalingslenke == False]
 
 # Create a new plotly figure
 fig = go.Figure()
 
 fig.add_trace(go.Bar(
-    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
-    y=df_months['Totalt'],
-    text=df_months['Totalt'],
+    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months_med_utbetaling.iterrows()],
+    y=df_months_med_utbetaling['Totalt'],
+    text=df_months_med_utbetaling['Totalt'],
     textposition='auto',
+    name = "Med utbetaling",
+    marker_color = 'rgba(0, 64, 0, 1)',
+    marker_line_width = 1, 
+    opacity = 1
+))
+fig.add_trace(go.Bar(
+    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months_uten_utbetaling.iterrows()],
+    y=df_months_uten_utbetaling['Totalt'],
+    text=df_months_uten_utbetaling['Totalt'],
+    textposition='auto',
+    name = "Uten utbetaling",
+    marker_color = 'rgba(176, 193, 200, 1)',
+    marker_line_width = 1, 
+    opacity = 1
 ))
 
-fig.update_traces(marker_color = 'rgba(176, 193, 200, 1)',
-                  marker_line_width = 1, opacity = 1)
 
 fig.update_layout(
-    title="Fattede vedtak per måned",
+    barmode="stack",
+    title="Fattede vedtak per måned med og uten utbetaling",
     xaxis_title="Måned",
     yaxis_title="Antall fattede vedtak",
     xaxis_tickangle=-45,
