@@ -118,7 +118,7 @@ import datetime as dt
 current_date = dt.datetime.now().date()
 formatted_date = current_date.strftime("%d. %B %Y").replace(current_date.strftime("%B"), current_date.strftime("%B").lower())
 
-print(f"Nøkkeltall per {formatted_date}")
+print(f"Innsendte søknader per {formatted_date}")
 
 ```
 
@@ -148,7 +148,7 @@ def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(2, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(f"{value}\ninnsendt to uker siden")
+print(f"{value}\nto uker siden")
 ```
 
 
@@ -156,7 +156,7 @@ print(f"{value}\ninnsendt to uker siden")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(1, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(f"{value}\ninnsendt forrige uke")
+print(f"{value}\nforrige uke")
 ```
 
 
@@ -164,7 +164,7 @@ print(f"{value}\ninnsendt forrige uke")
 # | class: nokkeltallboks-innhold
 
 value = antall_for_n_uker_siden(0, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
-print(f"{value}\ninnsendt denne uken")
+print(f"{value}\ndenne uken")
 ```
 
 ::::
@@ -210,37 +210,43 @@ fig.add_traces(data = [
         x=df_months_førstegang.month,
         y=df_months_førstegang.Totalt,
         name="Førstegangs",
-        visible=True
+        visible=True,
+        marker_color = 'rgba(176, 193, 200, 1)',
     ),
     go.Bar(
         x=df_months_korrigerende.month,
         y=df_months_korrigerende.Totalt,
         name="Korrigerende",
-        visible=True
+        visible=True,
+        marker_color = 'rgba(240, 202, 43, 1)',
     ),    
     go.Bar(
         x=df_weeks_førstegang.week,
         y=df_weeks_førstegang.Totalt,
         name="Førstegangs",
-        visible=False
+        visible=False,
+        marker_color = 'rgba(176, 193, 200, 1)',
     ),
     go.Bar(
         x=df_weeks_korrigerende.week,
         y=df_weeks_korrigerende.Totalt,
         name="Korrigerende",
-        visible=False
+        visible=False,
+        marker_color = 'rgba(240, 202, 43, 1)',
     ),
     go.Bar(
         x=df_days_førstegangs.date,
         y=df_days_førstegangs.Totalt,
         name="Førstegangs",
-        visible=False
+        visible=False,
+        marker_color = 'rgba(176, 193, 200, 1)',
     ),
     go.Bar(
         x=df_days_korrigerende.date,
         y=df_days_korrigerende.Totalt,
         name="Korrigerende",
-        visible=False
+        visible=False,
+        marker_color = 'rgba(240, 202, 43, 1)',
     ),
 
 ])
@@ -254,7 +260,7 @@ BUTTON_CONFIG = {
     "xanchor": "left",
     "y": 1,
     "yanchor": "bottom",
-    "font": {"size": 18},
+    "font": {"size": 14},
 }
 
 fig.update_layout(barmode='stack', updatemenus=[
