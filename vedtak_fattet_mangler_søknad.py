@@ -16,9 +16,9 @@
 
 # %%
 import os
-
+from google.cloud import bigquery
+import pandas as pd
 # %%
-import pandas_gbq
 import plotly.express as px
 from dotenv import load_dotenv
 
@@ -55,5 +55,11 @@ order by vedtak_fattet_dato
 """
 
 # %%
-df = pandas_gbq.read_gbq(QUERY, PROJECT, progress_bar_type="None")
+
+client = bigquery.Client(location=LOCATION, project=PROJECT)
+
+query_job = client.query(QUERY)
+
+df: pd.DataFrame = query_job.to_dataframe()
+
 px.scatter(df, x="vedtak_fattet_dato", y="f0_").show()
