@@ -19,6 +19,7 @@ import os
 import plotly.graph_objects as go
 from dotenv import load_dotenv
 from google.cloud import bigquery
+import plotly.express as px
 
 warnings.filterwarnings(
     "ignore", "Your application has authenticated using end user credentials"
@@ -529,48 +530,64 @@ fig.show()
 
 #
 
-Vi ser nå på alle vedtaksperioder som ble avklart i går: Grafen viser hvor mange dager det har det gått fra vi mottok søknaden til vedtaksperioden ble avklart
+Vi ser nå på alle vedtak som ble fattet i går, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
+
+- Nøkkeltallene viser antall vedtak som ble fattet totalt, hvor mange av dem som ble behandlet på under et døgn, samt vedtak det har tatt mer enn 90 dager å behandle
+
+- For behandlingstid mellom 1 og 90 dager viser grafen fordelingen
 
 #
 
 ```{python}
 
 QUERY = f"""
-WITH agg as (
-    SELECT COUNT(*) AS antall_vedtak, dager_brukt
+SELECT COUNT(*) AS antall_vedtak, dager_brukt
     FROM `styringsinfo_dataset.styringsinfo_vedtak_tidsbruk`
     WHERE vedtak_fattet_dato = CURRENT_DATE() -1
+    AND har_utbetaling = true
     GROUP BY dager_brukt
     ORDER BY dager_brukt desc
-),
-    agg_buckets AS (
-    SELECT SUM(antall_vedtak) AS sum_vedtak, 'alle' AS vindu, 1 AS rekkefolge from agg
-    UNION ALL
-    select SUM(antall_vedtak), 'under én dag', 2 from agg WHERE dager_brukt = 0
-    UNION ALL
-    select SUM(antall_vedtak), 'én dag til én uke', 3 from agg WHERE dager_brukt > 0 AND dager_brukt <7
-    UNION ALL
-    select SUM(antall_vedtak), 'én til fire uker', 4 from agg WHERE dager_brukt >= 7 AND dager_brukt < 28
-    UNION ALL
-    select SUM(antall_vedtak), 'fire til åtte uker', 5 from agg WHERE dager_brukt >= 28 AND dager_brukt < 56
-    UNION ALL
-    SELECT SUM(antall_vedtak), 'åtte uker eller mer', 6 FROM agg WHERE dager_brukt >= 56
-)
-SELECT sum_vedtak, vindu FROM agg_buckets ORDER BY rekkefolge;
 """
 
 query_job = client.query(QUERY)
 
 df: pd.DataFrame = query_job.to_dataframe()
 
-fig = go.Figure()
+```
 
-fig.add_trace(
-    go.Bar(x=df["vindu"], y=df["sum_vedtak"], name="Hvor mange dager har det gått fra vi mottok en søknad til vi fattet et vedtak")
-)
+:::: {.nokkeltallboks-layout}
+
+```{python}
+# | class: nokkeltallboks-innhold
+value = df["antall_vedtak"].values.sum()
+print(f"{value}\nTotalt")
+
+```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+value = df.query("dager_brukt == 0")["antall_vedtak"].values.sum()
+print(f"{value}\nUnder en dag")
+
+```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+value = df.query("dager_brukt > 90")["antall_vedtak"].values.sum()
+print(f"{value}\nMer enn 90 dager")
+
+```
+
+::::
+
+```{python}
+
+fig = px.bar(df.query("dager_brukt > 0 & dager_brukt <=90"), x="dager_brukt", y ="antall_vedtak")
 
 fig.update_layout(
-    xaxis_title="",
+    xaxis_title="Dager brukt",
     yaxis_title="Antall vedtak",
     xaxis_tickangle=-45,
     paper_bgcolor='rgba(0,0,0,0)',
