@@ -534,8 +534,8 @@ fig.show()
 Vi ser nå på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
 
 - Nøkkeltallene viser antall søknader som det ble fattet vedtak på totalt, hvor mange av dem som ble behandlet på under et døgn, samt søknader det har tatt mer enn 90 dager å behandle
-
-- For behandlingstid mellom 1 og 90 dager viser grafen fordelingen
+- For behandlingstid mellom 1 og 90 dager viser grafen under fordelingen
+- For vedtak med flere søknader bruker vi behandlingstiden på den søknaden som ble sendt inn sist
 
 #
 
