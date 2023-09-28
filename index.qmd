@@ -13,6 +13,7 @@ format:
 
 ```{python}
 import datetime
+from datetime import date
 import pandas as pd
 import warnings
 import os
@@ -530,9 +531,9 @@ fig.show()
 
 #
 
-Vi ser nå på alle vedtak som ble fattet i går, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
+Vi ser nå på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
 
-- Nøkkeltallene viser antall vedtak som ble fattet totalt, hvor mange av dem som ble behandlet på under et døgn, samt vedtak det har tatt mer enn 90 dager å behandle
+- Nøkkeltallene viser antall søknader som det ble fattet vedtak på totalt, hvor mange av dem som ble behandlet på under et døgn, samt søknader det har tatt mer enn 90 dager å behandle
 
 - For behandlingstid mellom 1 og 90 dager viser grafen fordelingen
 
@@ -541,17 +542,24 @@ Vi ser nå på alle vedtak som ble fattet i går, og betrakter hvor mange dager 
 ```{python}
 
 QUERY = f"""
-SELECT COUNT(*) AS antall_vedtak, dager_brukt
+SELECT COUNT(*) AS antall_vedtak, dager_brukt, DATE_TRUNC(vedtak_fattet_dato, WEEK(MONDAY)) as week
     FROM `styringsinfo_dataset.styringsinfo_vedtak_tidsbruk`
-    WHERE vedtak_fattet_dato = CURRENT_DATE() -1
+    WHERE vedtak_fattet_dato >= CURRENT_DATE() - 21
     AND har_utbetaling = true
-    GROUP BY dager_brukt
+    GROUP BY dager_brukt, week
     ORDER BY dager_brukt desc
 """
 
 query_job = client.query(QUERY)
 
 df: pd.DataFrame = query_job.to_dataframe()
+uker = sorted(df["week"].unique(), reverse=True)
+i_dag=date.today()
+inneværende_uke = uker[0] if len(uker) > 0 else i_dag
+forrige_uke = uker[1] if len(uker) > 1 else inneværende_uke
+to_uker_siden = uker[2] if len(uker) > 2 else forrige_uke
+
+df_inneværende_uke = df[df.week == inneværende_uke]
 
 ```
 
@@ -559,7 +567,7 @@ df: pd.DataFrame = query_job.to_dataframe()
 
 ```{python}
 # | class: nokkeltallboks-innhold
-value = df["antall_vedtak"].values.sum()
+value = df_inneværende_uke["antall_vedtak"].values.sum()
 print(f"{value}\nTotalt")
 
 ```
@@ -567,7 +575,7 @@ print(f"{value}\nTotalt")
 
 ```{python}
 # | class: nokkeltallboks-innhold
-value = df.query("dager_brukt == 0")["antall_vedtak"].values.sum()
+value = df_inneværende_uke.query("dager_brukt == 0")["antall_vedtak"].values.sum()
 print(f"{value}\nUnder en dag")
 
 ```
@@ -575,7 +583,7 @@ print(f"{value}\nUnder en dag")
 
 ```{python}
 # | class: nokkeltallboks-innhold
-value = df.query("dager_brukt > 90")["antall_vedtak"].values.sum()
+value = df_inneværende_uke.query("dager_brukt > 90")["antall_vedtak"].values.sum()
 print(f"{value}\nMer enn 90 dager")
 
 ```
@@ -584,14 +592,15 @@ print(f"{value}\nMer enn 90 dager")
 
 ```{python}
 
-fig = px.bar(df.query("dager_brukt > 0 & dager_brukt <=90"), x="dager_brukt", y ="antall_vedtak")
+fig = px.bar(df_inneværende_uke.query("dager_brukt > 0 & dager_brukt <= 90"), x="dager_brukt", y ="antall_vedtak", labels={ "dager_brukt": "Dager brukt", "antall_vedtak": "Antall søknader" })
 
 fig.update_layout(
     xaxis_title="Dager brukt",
-    yaxis_title="Antall vedtak",
+    xaxis_tick0=1,
+    yaxis_title="Antall søknader",
     xaxis_tickangle=-45,
     paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='rgba(0,0,0,0)'
 )
 
 fig.show()
