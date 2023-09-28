@@ -537,7 +537,6 @@ Vi ser nå på alle søknader som det ble fattet vedtak på i løpet av en uke, 
 - For behandlingstid mellom 1 og 90 dager viser grafen under fordelingen
 - For vedtak med flere søknader bruker vi behandlingstiden på den søknaden som ble sendt inn sist
 
-#
 
 ```{python}
 
@@ -560,48 +559,101 @@ forrige_uke = uker[1] if len(uker) > 1 else inneværende_uke
 to_uker_siden = uker[2] if len(uker) > 2 else forrige_uke
 
 df_inneværende_uke = df[df.week == inneværende_uke]
-
-```
-
-:::: {.nokkeltallboks-layout}
-
-```{python}
-# | class: nokkeltallboks-innhold
-value = df_inneværende_uke["antall_vedtak"].values.sum()
-print(f"{value}\nTotalt")
-
+df_forrige_uke = df[df.week == forrige_uke]
+df_to_uker_siden = df[df.week == to_uker_siden]
+beholder = [df_inneværende_uke, df_forrige_uke, df_to_uker_siden]
 ```
 
 
 ```{python}
-# | class: nokkeltallboks-innhold
-value = df_inneværende_uke.query("dager_brukt == 0")["antall_vedtak"].values.sum()
-print(f"{value}\nUnder en dag")
+from plotly.subplots import make_subplots
 
-```
+fig = make_subplots(
+    rows=2, 
+    cols=3,
+    specs=[
+        [{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}],
+        [{"colspan": 3}, None, None]
+        ]
+    ) 
+
+for df, visible in zip(beholder, [True, False, False]):
+    totalt = df["antall_vedtak"].values.sum()
+    under_en_dag = df.query("dager_brukt == 0")["antall_vedtak"].values.sum()
+    mer_enn_90_dager = df.query("dager_brukt > 90")["antall_vedtak"].values.sum()
+
+    bar = go.Bar(
+        x=df.query("dager_brukt > 0 & dager_brukt <= 90")["dager_brukt"], 
+        y =df.query("dager_brukt > 0 & dager_brukt <= 90")["antall_vedtak"], 
+        visible = visible
+    )
+
+    fig.add_trace(bar, row = 2, col = 1)
+
+    fig.add_trace(go.Indicator(
+        title = "Totalt",
+        mode = "number",
+        value = totalt, 
+        number={"font":{"size":48}},
+        visible = visible
+    ), row = 1, col = 1)
+    fig.add_trace(go.Indicator(
+        title = "Under en dag",
+        mode = "number",
+        value = under_en_dag,
+        number={"font":{"size":48}},
+        visible = visible
+    ), row = 1, col = 2)
+    fig.add_trace(go.Indicator(
+        title = "Mer enn 90 dager",
+        mode = "number",
+        number={"font":{"size":48}},
+        value = mer_enn_90_dager,
+        visible = visible
+    ), row = 1, col = 3)
 
 
-```{python}
-# | class: nokkeltallboks-innhold
-value = df_inneværende_uke.query("dager_brukt > 90")["antall_vedtak"].values.sum()
-print(f"{value}\nMer enn 90 dager")
-
-```
-
-::::
-
-```{python}
-
-fig = px.bar(df_inneværende_uke.query("dager_brukt > 0 & dager_brukt <= 90"), x="dager_brukt", y ="antall_vedtak", labels={ "dager_brukt": "Dager brukt", "antall_vedtak": "Antall søknader" })
+BUTTON_CONFIG = {
+    "active": 0,
+    "type": "buttons",
+    "direction": "right",
+    "showactive": True,
+    "x": 0,
+    "xanchor": "left",
+    "y": 1,
+    "yanchor": "bottom",
+    "font": {"size": 14},
+}
 
 fig.update_layout(
-    xaxis_title="Dager brukt",
+    xaxis_title="Dager gått til vedtaket ble fattet",
     xaxis_tick0=1,
     yaxis_title="Antall søknader",
     xaxis_tickangle=-45,
     paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)'
-)
+    plot_bgcolor='rgba(0,0,0,0)',
+    updatemenus=[
+    dict(
+        buttons=list([
+            dict(
+                args= [{"visible": [True]* 4 + [False] * 8}],
+                label="Inneværende uke",
+                method="restyle"
+            ),
+            dict(
+                args= [{"visible": [False]* 4 + [True] * 4 + [False]*4}],
+                label="Forrige uke",
+                method="restyle"
+            ),
+            dict(
+                args= [{"visible": [False]* 8 + [True] * 4}],
+                label="To uker siden",
+                method="restyle"
+            )
+        ]),
+        ** BUTTON_CONFIG
+    )
+])
 
 fig.show()
 
