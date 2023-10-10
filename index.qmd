@@ -285,6 +285,7 @@ BUTTON_CONFIG = {
 
 fig.update_layout(
     width=800,
+    margin=dict(l=50),
     barmode="stack",
     updatemenus=[
         dict(
@@ -311,7 +312,16 @@ fig.update_layout(
         )
     ],
     
-    title="Antall innsendte førstegangs- og korrigerte søknader",
+    title=dict(
+        text="Antall innsendte førstegangs- og korrigerte søknader", 
+        x=0,
+        y=0.95,
+        font=dict(
+            family="Source Sans 3",
+            size=20,
+            color="#23262A"
+        ),
+    ),
     plot_bgcolor='#FFFFFF',
     yaxis=dict(
         gridcolor='#CCCCCC',
