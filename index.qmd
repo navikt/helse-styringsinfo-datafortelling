@@ -105,14 +105,11 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 ::: {#section1-content}
 
 
-### 1# Søknader
+### Søknader om sykepenger
 
-#
+Når den sykmeldte brukeren fyller ut og sender inn en søknad via. våre digitale tjenester mottar vi det som en førstegangssøknad i nytt saksbehandlingssystem. Da begynner saksbehandlingen fra vår side.
 
-Gjelder søknader (med unntak av kode 6) som er innsendt digitalt og søknader for digitaliserte papirsykmeldinger. 
-
-Nøkkeltallene viser totaloversikten over innsendte og korrigerte søknader samlet. Under viser grafen (innsendt per måned) hvor stor andel som er korrigert.
-
+Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en korrigert søknad.
 
 ::: {.nokkeltall}
 
@@ -120,6 +117,9 @@ Nøkkeltallene viser totaloversikten over innsendte og korrigerte søknader saml
 # | class: nokkeltall
 # | output: true
 import datetime as dt
+import locale
+
+locale.setlocale(locale.LC_TIME, 'no_NO')
 
 current_date = dt.datetime.now().date()
 formatted_date = current_date.strftime("%d. %B %Y").replace(
