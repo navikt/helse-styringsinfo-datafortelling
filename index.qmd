@@ -1,10 +1,11 @@
 ---
 title: "Styringsinformasjon for ny sykepengeløsning"
 date-modified: last-modified
+execute:
+    output: false
+    echo: false
 format:
     html:
-        echo: false
-        self-contained: true
         theme:
             - custom.scss
 ---
@@ -26,7 +27,8 @@ warnings.filterwarnings(
     "ignore", "Your application has authenticated using end user credentials"
 )
 warnings.filterwarnings(
-    "ignore", "A progress bar was requested, but there was an error loading the tqdm library."
+    "ignore",
+    "A progress bar was requested, but there was an error loading the tqdm library.",
 )
 
 load_dotenv(override=True)
@@ -59,7 +61,6 @@ månednavn = {
     11: "November",
     12: "Desember",
 }
-
 ```
 
 :::: {#section-intro}
@@ -115,10 +116,13 @@ Nøkkeltallene viser totaloversikten over innsendte og korrigerte søknader saml
 
 ```{python}
 # | class: nokkeltall
+# | output: true
 import datetime as dt
 
 current_date = dt.datetime.now().date()
-formatted_date = current_date.strftime("%d. %B %Y").replace(current_date.strftime("%B"), current_date.strftime("%B").lower())
+formatted_date = current_date.strftime("%d. %B %Y").replace(
+    current_date.strftime("%B"), current_date.strftime("%B").lower()
+)
 
 print(f"Innsendte søknader per {formatted_date}")
 
@@ -127,6 +131,7 @@ print(f"Innsendte søknader per {formatted_date}")
 :::
 
 ```{python}
+
 
 def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
     QUERY = f"""--sql
@@ -142,38 +147,46 @@ def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
 
     # get first value in first row of RowIterator
     return [row[0] for row in rows][0]
+
+
 ```
 
 :::: {.nokkeltallboks-layout}
 
 ```{python}
 # | class: nokkeltallboks-innhold
-
-value = antall_for_n_uker_siden(2, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
+# | output: true
+value = antall_for_n_uker_siden(
+    2, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view"
+)
 print(f"{value}\nto uker siden")
 ```
 
 
 ```{python}
 # | class: nokkeltallboks-innhold
-
-value = antall_for_n_uker_siden(1, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
+# | output: true
+value = antall_for_n_uker_siden(
+    1, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view"
+)
 print(f"{value}\nforrige uke")
 ```
 
 
 ```{python}
 # | class: nokkeltallboks-innhold
-
-value = antall_for_n_uker_siden(0, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view")
+# | output: true
+value = antall_for_n_uker_siden(
+    0, "soknad_mottatt", "styringsinfo_dataset.styringsinfo_sendt_soknad_view"
+)
 print(f"{value}\ndenne uken")
 ```
 
 ::::
 
 ```{python}
-
 # | class: no-rows
+# | output: true
 
 current_month = datetime.datetime.now().month
 current_year = datetime.datetime.now().year
@@ -207,51 +220,52 @@ df_months_førstegang = df_months[df_months.korrigerende == False]
 df_months_korrigerende = df_months[df_months.korrigerende == True]
 
 fig = go.Figure()
-fig.add_traces(data = [
-    go.Bar(
-        x=df_months_førstegang.month,
-        y=df_months_førstegang.Totalt,
-        name="Førstegangs",
-        visible=True,
-        marker_color = 'rgba(176, 193, 200, 1)',
-    ),
-    go.Bar(
-        x=df_months_korrigerende.month,
-        y=df_months_korrigerende.Totalt,
-        name="Korrigerende",
-        visible=True,
-        marker_color = 'rgba(240, 202, 43, 1)',
-    ),    
-    go.Bar(
-        x=df_weeks_førstegang.week,
-        y=df_weeks_førstegang.Totalt,
-        name="Førstegangs",
-        visible=False,
-        marker_color = 'rgba(176, 193, 200, 1)',
-    ),
-    go.Bar(
-        x=df_weeks_korrigerende.week,
-        y=df_weeks_korrigerende.Totalt,
-        name="Korrigerende",
-        visible=False,
-        marker_color = 'rgba(240, 202, 43, 1)',
-    ),
-    go.Bar(
-        x=df_days_førstegangs.date,
-        y=df_days_førstegangs.Totalt,
-        name="Førstegangs",
-        visible=False,
-        marker_color = 'rgba(176, 193, 200, 1)',
-    ),
-    go.Bar(
-        x=df_days_korrigerende.date,
-        y=df_days_korrigerende.Totalt,
-        name="Korrigerende",
-        visible=False,
-        marker_color = 'rgba(240, 202, 43, 1)',
-    ),
-
-])
+fig.add_traces(
+    data=[
+        go.Bar(
+            x=df_months_førstegang.month,
+            y=df_months_førstegang.Totalt,
+            name="Førstegangs",
+            visible=True,
+            marker_color="rgba(176, 193, 200, 1)",
+        ),
+        go.Bar(
+            x=df_months_korrigerende.month,
+            y=df_months_korrigerende.Totalt,
+            name="Korrigerende",
+            visible=True,
+            marker_color="rgba(240, 202, 43, 1)",
+        ),
+        go.Bar(
+            x=df_weeks_førstegang.week,
+            y=df_weeks_førstegang.Totalt,
+            name="Førstegangs",
+            visible=False,
+            marker_color="rgba(176, 193, 200, 1)",
+        ),
+        go.Bar(
+            x=df_weeks_korrigerende.week,
+            y=df_weeks_korrigerende.Totalt,
+            name="Korrigerende",
+            visible=False,
+            marker_color="rgba(240, 202, 43, 1)",
+        ),
+        go.Bar(
+            x=df_days_førstegangs.date,
+            y=df_days_førstegangs.Totalt,
+            name="Førstegangs",
+            visible=False,
+            marker_color="rgba(176, 193, 200, 1)",
+        ),
+        go.Bar(
+            x=df_days_korrigerende.date,
+            y=df_days_korrigerende.Totalt,
+            name="Korrigerende",
+            visible=False,
+            marker_color="rgba(240, 202, 43, 1)",
+        ),
+    ]
+)
 
 BUTTON_CONFIG = {
     "active": 0,
@@ -265,30 +279,37 @@ BUTTON_CONFIG = {
     "font": {"size": 14},
 }
 
-fig.update_layout(barmode='stack', updatemenus=[
-    dict(
-        buttons=list([
-            dict(
-                args= [{"visible": [True, True, False, False, False, False]}],
-                label="Måneder",
-                method="restyle"
+fig.update_layout(
+    barmode="stack",
+    updatemenus=[
+        dict(
+            buttons=list(
+                [
+                    dict(
+                        args=[{"visible": [True, True, False, False, False, False]}],
+                        label="Måneder",
+                        method="restyle",
+                    ),
+                    dict(
+                        args=[{"visible": [False, False, True, True, False, False]}],
+                        label="Uker",
+                        method="restyle",
+                    ),
+                    dict(
+                        args=[{"visible": [False, False, False, False, True, True]}],
+                        label="Dager",
+                        method="restyle",
+                    ),
+                ]
             ),
-            dict(
-                args= [{"visible": [False, False, True, True, False, False]}],
-                label="Uker",
-                method="restyle"
-            ),
-            dict(
-                args= [{"visible": [False, False, False, False, True, True]}],
-                label="Dager",
-                method="restyle"
-            )
-        ]),
-        ** BUTTON_CONFIG
-    )
-])
+            **BUTTON_CONFIG,
+        )
+    ],
+)
 
 fig.show()
+
+
 ```
 
 ```{python}
@@ -337,9 +358,7 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell):
     fig = go.Figure()
 
     # Add bar chart for daily counts
-    fig.add_trace(
-        go.Bar(x=df["date"], y=df["count"], name="Antall per dag")
-    )
+    fig.add_trace(go.Bar(x=df["date"], y=df["count"], name="Antall per dag"))
 
     # Add lines for moving averages
     fig.add_trace(
@@ -357,14 +376,18 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell):
     )
 
     return fig
+
+
 ```
 
 ```{python}
+# | output: true
+
 fig = fig_antall_med_glidende_gjennomsnitt(
     "Antall mottatte søknader per dag og 7- og 28-dagers glidende gjennomsnitt",
     "soknad_mottatt",
     "styringsinfo_dataset.styringsinfo_sendt_soknad_view",
-    )
+)
 # Show the figure
 fig.show()
 ```
@@ -394,10 +417,14 @@ Avklarte vedtaksperioder som vises, gjelder bare for de søknadene som håndtere
 
 ```{python}
 # | class: nokkeltall
+# | output: true
+
 import datetime as dt
 
 current_date = dt.datetime.now().date()
-formatted_date = current_date.strftime("%d. %B %Y").replace(current_date.strftime("%B"), current_date.strftime("%B").lower())
+formatted_date = current_date.strftime("%d. %B %Y").replace(
+    current_date.strftime("%B"), current_date.strftime("%B").lower()
+)
 
 print(f"Nøkkeltall per {formatted_date}")
 
@@ -409,7 +436,11 @@ print(f"Nøkkeltall per {formatted_date}")
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
-value = antall_for_n_uker_siden(2, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+# | output: true
+
+value = antall_for_n_uker_siden(
+    2, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
+)
 print(f"{value}\navklart to uker siden")
 
 ```
@@ -417,16 +448,22 @@ print(f"{value}\navklart to uker siden")
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
+# | output: true
 
-value = antall_for_n_uker_siden(1, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+value = antall_for_n_uker_siden(
+    1, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
+)
 print(f"{value}\navklart forrige uke")
 ```
 
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
+# | output: true
 
-value = antall_for_n_uker_siden(0, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view")
+value = antall_for_n_uker_siden(
+    0, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
+)
 print(f"{value}\navklart denne uken")
 ```
 
@@ -435,8 +472,9 @@ print(f"{value}\navklart denne uken")
 #
 
 ```{python}
-
 # | class: no-rows
+# | output: true
+
 import datetime
 import plotly.graph_objects as go
 
@@ -458,33 +496,43 @@ QUERY = f"""
 
 query_job = client.query(QUERY)
 
-df_months : pd.DataFrame = query_job.to_dataframe()
+df_months: pd.DataFrame = query_job.to_dataframe()
 df_months_med_utbetaling = df_months[df_months.har_utbetalingslenke == True]
 df_months_uten_utbetaling = df_months[df_months.har_utbetalingslenke == False]
 
 # Create a new plotly figure
 fig = go.Figure()
 
-fig.add_trace(go.Bar(
-    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months_med_utbetaling.iterrows()],
-    y=df_months_med_utbetaling['Totalt'],
-    text=df_months_med_utbetaling['Totalt'],
-    textposition='auto',
-    name = "Med utbetaling",
-    marker_color = 'rgba(0, 64, 0, 1)',
-    marker_line_width = 1, 
-    opacity = 1
-))
-fig.add_trace(go.Bar(
-    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months_uten_utbetaling.iterrows()],
-    y=df_months_uten_utbetaling['Totalt'],
-    text=df_months_uten_utbetaling['Totalt'],
-    textposition='auto',
-    name = "Uten utbetaling",
-    marker_color = 'rgba(176, 193, 200, 1)',
-    marker_line_width = 1, 
-    opacity = 1
-))
+fig.add_trace(
+    go.Bar(
+        x=[
+            f"{row['year']}-{row['month']:02}"
+            for _, row in df_months_med_utbetaling.iterrows()
+        ],
+        y=df_months_med_utbetaling["Totalt"],
+        text=df_months_med_utbetaling["Totalt"],
+        textposition="auto",
+        name="Med utbetaling",
+        marker_color="rgba(0, 64, 0, 1)",
+        marker_line_width=1,
+        opacity=1,
+    )
+)
+fig.add_trace(
+    go.Bar(
+        x=[
+            f"{row['year']}-{row['month']:02}"
+            for _, row in df_months_uten_utbetaling.iterrows()
+        ],
+        y=df_months_uten_utbetaling["Totalt"],
+        text=df_months_uten_utbetaling["Totalt"],
+        textposition="auto",
+        name="Uten utbetaling",
+        marker_color="rgba(176, 193, 200, 1)",
+        marker_line_width=1,
+        opacity=1,
+    )
+)
 
 
 fig.update_layout(
@@ -493,8 +541,8 @@ fig.update_layout(
     xaxis_title="Måned",
     yaxis_title="Antall avklarte vedtaksperioder",
     xaxis_tickangle=-45,
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
 )
 
 fig.show()
@@ -502,15 +550,17 @@ fig.show()
 ```
 
 ```{python}
+# | output: true
+
 fig = fig_antall_med_glidende_gjennomsnitt(
     "Antall avklarte vedtaksperioder per dag og 7- og 28-dagers glidende gjennomsnitt",
     "vedtak_fattet",
     "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
-    )
+)
 
 fig.update_layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
 )
 
 # Show the figure
@@ -553,7 +603,7 @@ query_job = client.query(QUERY)
 
 df: pd.DataFrame = query_job.to_dataframe()
 uker = sorted(df["week"].unique(), reverse=True)
-i_dag=date.today()
+i_dag = date.today()
 inneværende_uke = uker[0] if len(uker) > 0 else i_dag
 forrige_uke = uker[1] if len(uker) > 1 else inneværende_uke
 to_uker_siden = uker[2] if len(uker) > 2 else forrige_uke
@@ -566,16 +616,17 @@ beholder = [df_inneværende_uke, df_forrige_uke, df_to_uker_siden]
 
 
 ```{python}
+# | output: true
 from plotly.subplots import make_subplots
 
 fig = make_subplots(
-    rows=2, 
+    rows=2,
     cols=3,
     specs=[
         [{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}],
-        [{"colspan": 3}, None, None]
-        ]
-    ) 
+        [{"colspan": 3}, None, None],
+    ],
+)
 
 for df, visible in zip(beholder, [True, False, False]):
     totalt = df["antall_vedtak"].values.sum()
@@ -583,34 +634,46 @@ for df, visible in zip(beholder, [True, False, False]):
     mer_enn_90_dager = df.query("dager_brukt > 90")["antall_vedtak"].values.sum()
 
     bar = go.Bar(
-        x=df.query("dager_brukt > 0 & dager_brukt <= 90")["dager_brukt"], 
-        y =df.query("dager_brukt > 0 & dager_brukt <= 90")["antall_vedtak"], 
-        visible = visible
+        x=df.query("dager_brukt > 0 & dager_brukt <= 90")["dager_brukt"],
+        y=df.query("dager_brukt > 0 & dager_brukt <= 90")["antall_vedtak"],
+        visible=visible,
     )
 
-    fig.add_trace(bar, row = 2, col = 1)
+    fig.add_trace(bar, row=2, col=1)
 
-    fig.add_trace(go.Indicator(
-        title = "Totalt",
-        mode = "number",
-        value = totalt, 
-        number={"font":{"size":48}},
-        visible = visible
-    ), row = 1, col = 1)
-    fig.add_trace(go.Indicator(
-        title = "Under en dag",
-        mode = "number",
-        value = under_en_dag,
-        number={"font":{"size":48}},
-        visible = visible
-    ), row = 1, col = 2)
-    fig.add_trace(go.Indicator(
-        title = "Mer enn 90 dager",
-        mode = "number",
-        number={"font":{"size":48}},
-        value = mer_enn_90_dager,
-        visible = visible
-    ), row = 1, col = 3)
+    fig.add_trace(
+        go.Indicator(
+            title="Totalt",
+            mode="number",
+            value=totalt,
+            number={"font": {"size": 48}},
+            visible=visible,
+        ),
+        row=1,
+        col=1,
+    )
+    fig.add_trace(
+        go.Indicator(
+            title="Under en dag",
+            mode="number",
+            value=under_en_dag,
+            number={"font": {"size": 48}},
+            visible=visible,
+        ),
+        row=1,
+        col=2,
+    )
+    fig.add_trace(
+        go.Indicator(
+            title="Mer enn 90 dager",
+            mode="number",
+            number={"font": {"size": 48}},
+            value=mer_enn_90_dager,
+            visible=visible,
+        ),
+        row=1,
+        col=3,
+    )
 
 
 BUTTON_CONFIG = {
@@ -630,30 +693,33 @@ fig.update_layout(
     xaxis_tick0=1,
     yaxis_title="Antall søknader",
     xaxis_tickangle=-45,
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
     updatemenus=[
-    dict(
-        buttons=list([
-            dict(
-                args= [{"visible": [True]* 4 + [False] * 8}],
-                label="Inneværende uke",
-                method="restyle"
+        dict(
+            buttons=list(
+                [
+                    dict(
+                        args=[{"visible": [True] * 4 + [False] * 8}],
+                        label="Inneværende uke",
+                        method="restyle",
+                    ),
+                    dict(
+                        args=[{"visible": [False] * 4 + [True] * 4 + [False] * 4}],
+                        label="Forrige uke",
+                        method="restyle",
+                    ),
+                    dict(
+                        args=[{"visible": [False] * 8 + [True] * 4}],
+                        label="To uker siden",
+                        method="restyle",
+                    ),
+                ]
             ),
-            dict(
-                args= [{"visible": [False]* 4 + [True] * 4 + [False]*4}],
-                label="Forrige uke",
-                method="restyle"
-            ),
-            dict(
-                args= [{"visible": [False]* 8 + [True] * 4}],
-                label="To uker siden",
-                method="restyle"
-            )
-        ]),
-        ** BUTTON_CONFIG
-    )
-])
+            **BUTTON_CONFIG,
+        )
+    ],
+)
 
 fig.show()
 
@@ -681,7 +747,11 @@ En forkastet vedtaksperiode betyr at saksbehandlingssystemet har vurdert at peri
 
 ```{python}
 # | class: nokkeltallboks-innhold
-value = antall_for_n_uker_siden(2, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+# | output: true
+
+value = antall_for_n_uker_siden(
+    2, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view"
+)
 print(f"{value}\nto uker siden")
 
 ```
@@ -689,16 +759,22 @@ print(f"{value}\nto uker siden")
 
 ```{python}
 # | class: nokkeltallboks-innhold
+# | output: true
 
-value = antall_for_n_uker_siden(1, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+value = antall_for_n_uker_siden(
+    1, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view"
+)
 print(f"{value}\nforrige uke")
 ```
 
 
 ```{python}
 # | class: nokkeltallboks-innhold
+# | output: true
 
-value = antall_for_n_uker_siden(0, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view")
+value = antall_for_n_uker_siden(
+    0, "vedtak_forkastet", "styringsinfo_dataset.styringsinfo_vedtak_forkastet_view"
+)
 print(f"{value}\ndenne uken")
 ```
 
@@ -708,8 +784,9 @@ print(f"{value}\ndenne uken")
 #
 
 ```{python}
-
 # | class: no-rows
+# | output: true
+
 import datetime
 import plotly.graph_objects as go
 
@@ -735,22 +812,23 @@ df_months = query_job.to_dataframe()
 # Create a new plotly figure
 fig = go.Figure()
 
-fig.add_trace(go.Bar(
-    x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
-    y=df_months['Totalt'],
-    text=df_months['Totalt'],
-    textposition='auto',
-))
+fig.add_trace(
+    go.Bar(
+        x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
+        y=df_months["Totalt"],
+        text=df_months["Totalt"],
+        textposition="auto",
+    )
+)
 
-fig.update_traces(marker_color = 'rgba(176, 193, 200, 1)',
-                  marker_line_width = 1, opacity = 1)
+fig.update_traces(marker_color="rgba(176, 193, 200, 1)", marker_line_width=1, opacity=1)
 
 fig.update_layout(
     title="Forkastede vedtaksperioder per måned",
     xaxis_title="Måned",
     yaxis_title="Antall",
     xaxis_tickangle=-45,
-    paper_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor="rgba(0,0,0,0)",
 )
 
 fig.show()
@@ -759,6 +837,7 @@ fig.show()
 
 #
 ```{python}
+# | output: true
 import datetime as dt
 
 print(f"Sist oppdatert: {dt.datetime.now()}")
