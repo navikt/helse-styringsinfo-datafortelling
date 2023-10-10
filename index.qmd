@@ -1,5 +1,5 @@
 ---
-title: "Styringsinformasjon for ny sykepengeløsning"
+title: "Styringsinformasjon fra ny sykepengeløsning"
 date-modified: last-modified
 execute:
     output: false
@@ -69,9 +69,11 @@ månednavn = {
 
 ### Om fortellingen
 
-Datafortellingen har som hensikt å gi grunnlag for bedre og mer presise prioriteringer knyttet til saksbehandling i nytt behandlingssystem for sykepenger. 
+Denne fortellingen har som hensikt å formidle styringsdata fra den nye sykepengeløsningen (Speil) i PO Helse.
 
-I fortellingen presenteres dataen kronologisk gjennom saksbehandlingsforløpet, fra en søknad om sykepenger er sendt, til vedtaket er fattet eller forkastet og sendt- eller ikke sendt til utbetaling.
+Per nå omfatter dataen kun arbeidstakere, med unntak av sykmeldte brukere med strengt fortrolig adresse (kode 6).
+
+#
 
 ::: {.callout-note collapse="true" appearance="minimal"}
 ## Mer om dataen som presenteres

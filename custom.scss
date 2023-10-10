@@ -33,6 +33,7 @@ div, p {
 #quarto-content {
     display: flex;
     flex-direction: column;
+    background-color: #E6F1F8;
 }
 
 #quarto-document-content {
@@ -160,13 +161,13 @@ pre {
 #section-intro {
     display: flex;
     justify-content: center;
-    background: #FFFFFF;
+    background-color: #E6F1F8;
 }
 
 #section-intro-content {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
     max-width: 800px;
     margin: 0 1em;
     padding-bottom: 50px;
@@ -176,7 +177,6 @@ pre {
     display: flex;
     justify-content: center;
     background: #FFFFFF;
-    border-top: 1px solid #CBCFD5;
     padding: 3rem 0;
 }
 
@@ -238,5 +238,7 @@ div.sidebar-item-container .active, div.sidebar-item-container .show > .nav-link
 }
 
 div.callout-note.callout {
-    border-left-color: #B0C1C8
+    border-left-color: #005B82;
+    background: #ffffff;
+    margin: 10px 0;
 }
