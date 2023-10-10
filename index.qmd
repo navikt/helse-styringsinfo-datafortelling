@@ -186,6 +186,8 @@ print(f"{value}\ndenne uken")
 
 ::::
 
+#
+
 ```{python}
 # | class: no-rows
 # | output: true
@@ -229,42 +231,42 @@ fig.add_traces(
             y=df_months_førstegang.Totalt,
             name="Førstegangs",
             visible=True,
-            marker_color="rgba(176, 193, 200, 1)",
+            marker_color="#3380A5",
         ),
         go.Bar(
             x=df_months_korrigerende.month,
             y=df_months_korrigerende.Totalt,
             name="Korrigerende",
             visible=True,
-            marker_color="rgba(240, 202, 43, 1)",
+            marker_color="#FF9100",
         ),
         go.Bar(
             x=df_weeks_førstegang.week,
             y=df_weeks_førstegang.Totalt,
             name="Førstegangs",
             visible=False,
-            marker_color="rgba(176, 193, 200, 1)",
+            marker_color="#3380A5",
         ),
         go.Bar(
             x=df_weeks_korrigerende.week,
             y=df_weeks_korrigerende.Totalt,
             name="Korrigerende",
             visible=False,
-            marker_color="rgba(240, 202, 43, 1)",
+            marker_color="#FF9100",
         ),
         go.Bar(
             x=df_days_førstegangs.date,
             y=df_days_førstegangs.Totalt,
             name="Førstegangs",
             visible=False,
-            marker_color="rgba(176, 193, 200, 1)",
+            marker_color="#3380A5",
         ),
         go.Bar(
             x=df_days_korrigerende.date,
             y=df_days_korrigerende.Totalt,
             name="Korrigerende",
             visible=False,
-            marker_color="rgba(240, 202, 43, 1)",
+            marker_color="#FF9100",
         ),
     ]
 )
@@ -282,6 +284,7 @@ BUTTON_CONFIG = {
 }
 
 fig.update_layout(
+    width=800,
     barmode="stack",
     updatemenus=[
         dict(
@@ -307,6 +310,12 @@ fig.update_layout(
             **BUTTON_CONFIG,
         )
     ],
+    
+    title="Antall innsendte førstegangs- og korrigerte søknader",
+    plot_bgcolor='#FFFFFF',
+    yaxis=dict(
+        gridcolor='#CCCCCC',
+    ),
 )
 
 fig.show()
