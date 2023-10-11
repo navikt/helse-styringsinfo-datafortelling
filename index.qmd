@@ -377,21 +377,44 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell, predika
     fig = go.Figure()
 
     # Add bar chart for daily counts
-    fig.add_trace(go.Bar(x=df["date"], y=df["count"], name="Antall per dag"))
+    fig.add_trace(go.Bar(
+                x=df["date"], 
+                y=df["count"], 
+                name="Antall per dag",
+                marker_color="#3380A5",
+                ))
 
     # Add lines for moving averages
     fig.add_trace(
-        go.Scatter(x=df["date"], y=df["moving_7_day_avg"], name="Snitt over 7 dager")
+        go.Scatter(
+            x=df["date"], 
+            y=df["moving_7_day_avg"], 
+            name="Snitt over 7 dager",
+            line=dict(color='#FF9100'),
+            )
     )
     fig.add_trace(
-        go.Scatter(x=df["date"], y=df["moving_28_day_avg"], name="Snitt over 28 dager")
+        go.Scatter(
+            x=df["date"], 
+            y=df["moving_28_day_avg"], 
+            name="Snitt over 28 dager",
+            line=dict(color='#C30000')
+            )
     )
 
     # Set x and y axis labels
     fig.update_layout(
         title_text=tittel,
-        xaxis_title="Dato",
-        yaxis_title="Antall per dag",
+        title=dict(
+        text="Antall innsendte førstegangs- og korrigerte søknader",
+        x=0,
+        y=0.95,
+        font=dict(family="Source Sans 3", size=20, color="#23262A"),
+        ),
+        plot_bgcolor="#FFFFFF",
+        yaxis=dict(
+        gridcolor="#CCCCCC",
+        ),
     )
 
     return fig
