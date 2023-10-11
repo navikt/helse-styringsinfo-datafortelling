@@ -23,6 +23,7 @@ import plotly.graph_objects as go
 from dotenv import load_dotenv
 from google.cloud import bigquery
 import plotly.express as px
+from functools import partial
 
 warnings.filterwarnings(
     "ignore", "Your application has authenticated using end user credentials"
@@ -136,13 +137,14 @@ print(f"Innsendte søknader per {formatted_date}")
 ```{python}
 
 
-def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell):
+def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell, tilleggspredikat=""):
     QUERY = f"""--sql
     SELECT
         COUNT(*)
     FROM `{tabell}`
     WHERE DATE_TRUNC(DATE({timestamp_felt}, 'Europe/Oslo'), WEEK(MONDAY)) >= DATE_TRUNC(DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL {str(antall_uker_siden)} WEEK), WEEK(MONDAY))
     AND DATE_TRUNC(DATE({timestamp_felt}, 'Europe/Oslo'), WEEK(MONDAY)) < DATE_TRUNC(DATE_SUB(DATE(CURRENT_TIMESTAMP(), 'Europe/Oslo'), INTERVAL {str(antall_uker_siden)} - 1 WEEK), WEEK(MONDAY))
+    {tilleggspredikat}
     """
 
     query_job = client.query(QUERY)
@@ -329,7 +331,7 @@ fig.show()
 ```
 
 ```{python}
-def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell):
+def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell, predikat=""):
     from plotly.subplots import make_subplots
 
     # SQL query to count number of rows per day and calculate moving averages
@@ -357,6 +359,7 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell):
             COUNT(*) AS count
         FROM
             `{tabell}`
+        {predikat}
         GROUP BY
             DATE({timestamp_felt})
             ) AS original_table
@@ -417,17 +420,8 @@ fig.show()
 
 ::: {#section2-content}
 
-### 2# Avklarte vedtaksperioder
+### 2# Vedtak
 
-#
-
-En vedtaksperiode er i utgangspunktet en periode den sykmeldte har søkt om sykepenger for, men kan også påvirkes av tilleggsinformasjon fra arbeidsgiver og saksbehandler.
-
-NAV kan avklare at det skal utbetales sykepenger for perioden, men det kan også avklares til å medføre ingen utbetaling, eksempelvis om en periode ligger innenfor arbeidsgiverperioden.
-
-Avklarte vedtaksperioder som vises, gjelder bare for de søknadene som håndteres i ny sykepengeløsning. Per september 2023 omfatter dette arbeidstakere, med unntak av kode 6 (ikke frilansere, næringsdrivende etc.).
-
-#
 
 ::: {.nokkeltall}
 
@@ -449,15 +443,16 @@ print(f"Nøkkeltall per {formatted_date}")
 :::
 
 ::: {.nokkeltallboks-layout}
+```{python}
+vedtak_for_n_uker_siden = partial(antall_for_n_uker_siden, timestamp_felt="vedtak_fattet", tabell="styringsinfo_dataset.styringsinfo_vedtak_fattet_view", tilleggspredikat="AND har_utbetaling=true")
+```
 
 ```{python}
 # | class: nokkeltallboks-innhold-hvit
 # | output: true
 
-value = antall_for_n_uker_siden(
-    2, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
-)
-print(f"{value}\navklart to uker siden")
+value = vedtak_for_n_uker_siden(2)
+print(f"{value}\nto uker siden")
 
 ```
 
@@ -466,10 +461,8 @@ print(f"{value}\navklart to uker siden")
 # | class: nokkeltallboks-innhold-hvit
 # | output: true
 
-value = antall_for_n_uker_siden(
-    1, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
-)
-print(f"{value}\navklart forrige uke")
+value = vedtak_for_n_uker_siden(1)
+print(f"{value}\nforrige uke")
 ```
 
 
@@ -477,10 +470,8 @@ print(f"{value}\navklart forrige uke")
 # | class: nokkeltallboks-innhold-hvit
 # | output: true
 
-value = antall_for_n_uker_siden(
-    0, "vedtak_fattet", "styringsinfo_dataset.styringsinfo_vedtak_fattet_view"
-)
-print(f"{value}\navklart denne uken")
+value = vedtak_for_n_uker_siden(0)
+print(f"{value}\ndenne uken")
 ```
 
 :::
@@ -501,20 +492,18 @@ QUERY = f"""
     SELECT
         EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
         EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
-        har_utbetaling,
         COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
-    WHERE EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
-        AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
-    GROUP BY year, month, har_utbetaling
+    WHERE har_utbetaling=true
+    AND EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
+    AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
+    GROUP BY year, month
     ORDER BY year DESC, month DESC
 """
 
 query_job = client.query(QUERY)
 
 df_months: pd.DataFrame = query_job.to_dataframe()
-df_months_med_utbetaling = df_months[df_months.har_utbetaling == True]
-df_months_uten_utbetaling = df_months[df_months.har_utbetaling == False]
 
 # Create a new plotly figure
 fig = go.Figure()
@@ -523,39 +512,21 @@ fig.add_trace(
     go.Bar(
         x=[
             f"{row['year']}-{row['month']:02}"
-            for _, row in df_months_med_utbetaling.iterrows()
+            for _, row in df_months.iterrows()
         ],
-        y=df_months_med_utbetaling["Totalt"],
-        text=df_months_med_utbetaling["Totalt"],
+        y=df_months["Totalt"],
+        text=df_months["Totalt"],
         textposition="auto",
-        name="Med utbetaling",
         marker_color="rgba(0, 64, 0, 1)",
         marker_line_width=1,
         opacity=1,
     )
 )
-fig.add_trace(
-    go.Bar(
-        x=[
-            f"{row['year']}-{row['month']:02}"
-            for _, row in df_months_uten_utbetaling.iterrows()
-        ],
-        y=df_months_uten_utbetaling["Totalt"],
-        text=df_months_uten_utbetaling["Totalt"],
-        textposition="auto",
-        name="Uten utbetaling",
-        marker_color="rgba(176, 193, 200, 1)",
-        marker_line_width=1,
-        opacity=1,
-    )
-)
-
 
 fig.update_layout(
-    barmode="stack",
-    title="Avklarte vedtaksperioder per måned med og uten utbetaling",
+    title="Vedtak per måned",
     xaxis_title="Måned",
-    yaxis_title="Antall avklarte vedtaksperioder",
+    yaxis_title="Antall per måned",
     xaxis_tickangle=-45,
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
@@ -569,9 +540,10 @@ fig.show()
 # | output: true
 
 fig = fig_antall_med_glidende_gjennomsnitt(
-    "Antall avklarte vedtaksperioder per dag og 7- og 28-dagers glidende gjennomsnitt",
+    "Vedtak per dag og 7- og 28-dagers glidende gjennomsnitt",
     "vedtak_fattet",
     "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
+    predikat="WHERE har_utbetaling=true"
 )
 
 fig.update_layout(
