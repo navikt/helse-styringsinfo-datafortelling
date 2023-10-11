@@ -502,20 +502,20 @@ QUERY = f"""
     SELECT
         EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
         EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
-        IF(utbetaling_id IS NOT NULL, true, false) AS har_utbetalingslenke,
+        har_utbetaling,
         COUNT(*) as Totalt
     FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
     WHERE EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
         AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
-    GROUP BY year, month, har_utbetalingslenke
+    GROUP BY year, month, har_utbetaling
     ORDER BY year DESC, month DESC
 """
 
 query_job = client.query(QUERY)
 
 df_months: pd.DataFrame = query_job.to_dataframe()
-df_months_med_utbetaling = df_months[df_months.har_utbetalingslenke == True]
-df_months_uten_utbetaling = df_months[df_months.har_utbetalingslenke == False]
+df_months_med_utbetaling = df_months[df_months.har_utbetaling == True]
+df_months_uten_utbetaling = df_months[df_months.har_utbetaling == False]
 
 # Create a new plotly figure
 fig = go.Figure()
