@@ -137,7 +137,9 @@ print(f"Innsendte søknader per {formatted_date}")
 ```{python}
 
 
-def antall_for_n_uker_siden(antall_uker_siden, timestamp_felt, tabell, tilleggspredikat=""):
+def antall_for_n_uker_siden(
+    antall_uker_siden, timestamp_felt, tabell, tilleggspredikat=""
+):
     QUERY = f"""--sql
     SELECT
         COUNT(*)
@@ -377,42 +379,44 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell, predika
     fig = go.Figure()
 
     # Add bar chart for daily counts
-    fig.add_trace(go.Bar(
-                x=df["date"], 
-                y=df["count"], 
-                name="Antall per dag",
-                marker_color="#3380A5",
-                ))
+    fig.add_trace(
+        go.Bar(
+            x=df["date"],
+            y=df["count"],
+            name="Antall per dag",
+            marker_color="#3380A5",
+        )
+    )
 
     # Add lines for moving averages
     fig.add_trace(
         go.Scatter(
-            x=df["date"], 
-            y=df["moving_7_day_avg"], 
+            x=df["date"],
+            y=df["moving_7_day_avg"],
             name="Snitt over 7 dager",
-            line=dict(color='#FF9100'),
-            )
+            line=dict(color="#FF9100"),
+        )
     )
     fig.add_trace(
         go.Scatter(
-            x=df["date"], 
-            y=df["moving_28_day_avg"], 
+            x=df["date"],
+            y=df["moving_28_day_avg"],
             name="Snitt over 28 dager",
-            line=dict(color='#C30000')
-            )
+            line=dict(color="#C30000"),
+        )
     )
 
     # Set x and y axis labels
     fig.update_layout(
         title=dict(
-        text="7- og 28 dagers glidende gjennomsnitt",
-        x=0,
-        y=0.95,
-        font=dict(family="Source Sans 3", size=20, color="#23262A"),
+            text="7- og 28 dagers glidende gjennomsnitt",
+            x=0,
+            y=0.95,
+            font=dict(family="Source Sans 3", size=20, color="#23262A"),
         ),
         plot_bgcolor="#FFFFFF",
         yaxis=dict(
-        gridcolor="#CCCCCC",
+            gridcolor="#CCCCCC",
         ),
     )
 
@@ -466,7 +470,12 @@ print(f"Antall vedtak per {formatted_date}")
 
 ::: {.nokkeltallboks-layout}
 ```{python}
-vedtak_for_n_uker_siden = partial(antall_for_n_uker_siden, timestamp_felt="vedtak_fattet", tabell="styringsinfo_dataset.styringsinfo_vedtak_fattet_view", tilleggspredikat="AND har_utbetaling=true")
+vedtak_for_n_uker_siden = partial(
+    antall_for_n_uker_siden,
+    timestamp_felt="vedtak_fattet",
+    tabell="styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
+    tilleggspredikat="AND har_utbetaling=true",
+)
 ```
 
 ```{python}
@@ -532,10 +541,7 @@ fig = go.Figure()
 
 fig.add_trace(
     go.Bar(
-        x=[
-            f"{row['year']}-{row['month']:02}"
-            for _, row in df_months.iterrows()
-        ],
+        x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
         y=df_months["Totalt"],
         text=df_months["Totalt"],
         textposition="auto",
@@ -551,13 +557,13 @@ fig.update_layout(
         x=0,
         y=0.95,
         font=dict(family="Source Sans 3", size=20, color="#23262A"),
-        ),
+    ),
     xaxis_tickangle=-45,
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     yaxis=dict(
         gridcolor="#CCCCCC",
-        ),
+    ),
 )
 
 fig.show()
@@ -571,7 +577,7 @@ fig = fig_antall_med_glidende_gjennomsnitt(
     "Vedtak per dag og 7- og 28-dagers glidende gjennomsnitt",
     "vedtak_fattet",
     "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
-    predikat="WHERE har_utbetaling=true"
+    predikat="WHERE har_utbetaling=true",
 )
 
 fig.update_layout(
