@@ -6,6 +6,7 @@ execute:
     echo: false
 format:
     html:
+        self-contained: true
         theme:
             - custom.scss
 ---
@@ -119,7 +120,7 @@ Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en k
 import datetime as dt
 import locale
 
-locale.setlocale(locale.LC_TIME, 'no_NO')
+locale.setlocale(locale.LC_TIME, "no_NO")
 
 current_date = dt.datetime.now().date()
 formatted_date = current_date.strftime("%d. %B %Y").replace(
@@ -311,20 +312,15 @@ fig.update_layout(
             **BUTTON_CONFIG,
         )
     ],
-    
     title=dict(
-        text="Antall innsendte førstegangs- og korrigerte søknader", 
+        text="Antall innsendte førstegangs- og korrigerte søknader",
         x=0,
         y=0.95,
-        font=dict(
-            family="Source Sans 3",
-            size=20,
-            color="#23262A"
-        ),
+        font=dict(family="Source Sans 3", size=20, color="#23262A"),
     ),
-    plot_bgcolor='#FFFFFF',
+    plot_bgcolor="#FFFFFF",
     yaxis=dict(
-        gridcolor='#CCCCCC',
+        gridcolor="#CCCCCC",
     ),
 )
 
