@@ -1,6 +1,7 @@
 .python-version
 .env
 index.ipynb
+index_files/
 
 # Bruker requirements.txt som master
 poetry.lock
