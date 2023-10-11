@@ -17,10 +17,10 @@ poetry-update:
 
 render: bootstrap poetry-update ## Rendrer quarto datafortelling til index.html
 	stat .env || cp env.example .env # Slipper feilmelding fordi .env-fil mangler.
-	[ ! -z $(GOOGLE_APPLICATION_CREDENTIALS) ] || gcloud auth application-default login # Reduserer antall ganger man har glemt å logge på
+	stat ~/.config/gcloud/application_default_credentials.json || gcloud auth application-default login # Reduserer antall ganger man har glemt å logge på
 	poetry run quarto render index.qmd && open index.html
 
 preview: bootstrap poetry-update ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
 	stat .env || cp env.example .env # Slipper feilmelding fordi .env-fil mangler.
-	[ ! -z $(GOOGLE_APPLICATION_CREDENTIALS) ] || gcloud auth application-default login # Reduserer antall ganger man har glemt å logge på
+	stat ~/.config/gcloud/application_default_credentials.json || gcloud auth application-default login # Reduserer antall ganger man har glemt å logge på
 	poetry run quarto preview index.qmd
