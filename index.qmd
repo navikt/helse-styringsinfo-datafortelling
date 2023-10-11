@@ -405,7 +405,7 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell, predika
     # Set x and y axis labels
     fig.update_layout(
         title=dict(
-        text="Antall innsendte førstegangs- og korrigerte søknader",
+        text="7- og 28 dagers glidende gjennomsnitt",
         x=0,
         y=0.95,
         font=dict(family="Source Sans 3", size=20, color="#23262A"),
@@ -442,7 +442,7 @@ fig.show()
 
 ::: {#section2-content}
 
-### Vedtak
+### Fattede vedtak(?)
 
 
 ::: {.nokkeltall}
@@ -458,7 +458,7 @@ formatted_date = current_date.strftime("%d. %B %Y").replace(
     current_date.strftime("%B"), current_date.strftime("%B").lower()
 )
 
-print(f"Nøkkeltall per {formatted_date}")
+print(f"Antall vedtak per {formatted_date}")
 
 ```
 
@@ -593,7 +593,7 @@ fig.show()
 
 ::: {#section3-content}
 
-### 3# Tid fra søknad til vedtak
+### Tid fra søknad til vedtak fattet
 
 #
 
