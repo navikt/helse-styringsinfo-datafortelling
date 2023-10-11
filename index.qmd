@@ -404,7 +404,6 @@ def fig_antall_med_glidende_gjennomsnitt(tittel, timestamp_felt, tabell, predika
 
     # Set x and y axis labels
     fig.update_layout(
-        title_text=tittel,
         title=dict(
         text="Antall innsendte førstegangs- og korrigerte søknader",
         x=0,
@@ -443,7 +442,7 @@ fig.show()
 
 ::: {#section2-content}
 
-### 2# Vedtak
+### Vedtak
 
 
 ::: {.nokkeltall}
@@ -540,19 +539,25 @@ fig.add_trace(
         y=df_months["Totalt"],
         text=df_months["Totalt"],
         textposition="auto",
-        marker_color="rgba(0, 64, 0, 1)",
+        marker_color="#3380A5",
         marker_line_width=1,
         opacity=1,
     )
 )
 
 fig.update_layout(
-    title="Vedtak per måned",
-    xaxis_title="Måned",
-    yaxis_title="Antall per måned",
+    title=dict(
+        text="Antall vedtak per måned",
+        x=0,
+        y=0.95,
+        font=dict(family="Source Sans 3", size=20, color="#23262A"),
+        ),
     xaxis_tickangle=-45,
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
+    yaxis=dict(
+        gridcolor="#CCCCCC",
+        ),
 )
 
 fig.show()
