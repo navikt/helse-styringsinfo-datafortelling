@@ -599,6 +599,164 @@ fig.show()
 
 ::: {#section3-content}
 
+### Innenfor arbeidsgiverperioden
+
+#
+
+Ferdigstilte søknader innenfor arbeidsgiverperioden
+
+#
+
+::: {.nokkeltall}
+
+```{python}
+# | class: nokkeltall
+# | output: true
+
+import datetime as dt
+
+current_date = dt.datetime.now().date()
+formatted_date = current_date.strftime("%d. %B %Y").replace(
+    current_date.strftime("%B"), current_date.strftime("%B").lower()
+)
+
+print(f"Antall per {formatted_date}")
+
+```
+
+:::
+
+::: {.nokkeltallboks-layout}
+```{python}
+auu_for_n_uker_siden = partial(
+    antall_for_n_uker_siden,
+    timestamp_felt="vedtak_fattet",
+    tabell="styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
+    tilleggspredikat="AND har_utbetaling=false",
+)
+```
+
+```{python}
+# | class: nokkeltallboks-innhold
+# | output: true
+
+value = auu_for_n_uker_siden(2)
+print(f"{value}\nto uker siden")
+
+```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+# | output: true
+
+value = auu_for_n_uker_siden(1)
+print(f"{value}\nforrige uke")
+```
+
+
+```{python}
+# | class: nokkeltallboks-innhold
+# | output: true
+
+value = auu_for_n_uker_siden(0)
+print(f"{value}\ndenne uken")
+```
+
+:::
+
+#
+
+```{python}
+# | class: no-rows
+# | output: true
+
+import datetime
+import plotly.graph_objects as go
+
+current_month = datetime.datetime.now().month
+current_year = datetime.datetime.now().year
+
+QUERY = f"""
+    SELECT
+        EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
+        EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
+        COUNT(*) as Totalt
+    FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
+    WHERE har_utbetaling=false
+    AND EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
+    AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
+    GROUP BY year, month
+    ORDER BY year DESC, month DESC
+"""
+
+query_job = client.query(QUERY)
+
+df_months: pd.DataFrame = query_job.to_dataframe()
+
+# Create a new plotly figure
+fig = go.Figure()
+
+fig.add_trace(
+    go.Bar(
+        x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
+        y=df_months["Totalt"],
+        text=df_months["Totalt"],
+        textposition="auto",
+        marker_color="#3380A5",
+        marker_line_width=1,
+        opacity=1,
+    )
+)
+
+fig.update_layout(
+    title=dict(
+        text="Antall per måned",
+        x=0,
+        y=0.95,
+        font=dict(family="Source Sans 3", size=20, color="#23262A"),
+    ),
+    xaxis_tickangle=-45,
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    yaxis=dict(
+        gridcolor="#CCCCCC",
+    ),
+)
+
+fig.show()
+
+```
+
+```{python}
+# | output: true
+
+fig = fig_antall_med_glidende_gjennomsnitt(
+    "Vedtak per dag og 7- og 28-dagers glidende gjennomsnitt",
+    "vedtak_fattet",
+    "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
+    predikat="WHERE har_utbetaling=false",
+)
+
+fig.update_layout(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+)
+
+# Show the figure
+fig.show()
+```
+
+#
+
+:::
+
+::::
+
+:::: {#section4}
+
+::: {#section4-content}
+
 ### Tid fra søknad til vedtak fattet
 
 #

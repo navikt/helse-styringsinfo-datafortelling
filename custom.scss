@@ -218,6 +218,7 @@ pre {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 800px;
     max-width: 800px;
     margin: 0 1em;
 }
@@ -225,7 +226,7 @@ pre {
 #section4 {
     display: flex;
     justify-content: center;
-    background: #ECEEF0;
+    background: #E6F1F8;
     padding: 3rem 0;
 }
 
