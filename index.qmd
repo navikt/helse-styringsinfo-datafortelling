@@ -65,9 +65,9 @@ månednavn = {
 }
 ```
 
-:::: {#section-intro}
+:::: {.section-odd #om-fortellingen}
 
-::: {#section-intro-content}
+::: {.section-content}
 
 ### Om fortellingen
 
@@ -103,9 +103,10 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 ::::
 
 
-:::: {#section1}
+:::: {.section-even}
 
-::: {#section1-content}
+::: {.section-content}
+
 
 
 ### Søknader om sykepenger
@@ -441,9 +442,9 @@ fig.show()
 ::::
 
 
-:::: {#section2}
+:::: {.section-odd}
 
-::: {#section2-content}
+::: {.section-content}
 
 ### Fattede vedtak
 
@@ -590,9 +591,9 @@ fig.show()
 
 ::::
 
-:::: {#section3}
+:::: {.section-even}
 
-::: {#section3-content}
+::: {.section-content}
 
 ### Innenfor arbeidsgiverperioden
 
@@ -740,9 +741,9 @@ fig.show()
 
 ::::
 
-:::: {#section4}
+:::: {.section-odd}
 
-::: {#section4-content}
+::: {.section-content}
 
 ### Tid fra søknad til vedtak fattet
 
