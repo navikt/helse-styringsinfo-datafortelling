@@ -75,8 +75,7 @@ Denne fortellingen har som hensikt å formidle styringsdata fra den nye sykepeng
 
 Per nå omfatter dataen kun arbeidstakere, med unntak av sykmeldte brukere med strengt fortrolig adresse (kode 6).
 
-#
-
+:::: {#callout-box}
 ::: {.callout-note collapse="true" appearance="minimal"}
 ## Mer om dataen som presenteres
 
@@ -96,6 +95,8 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 
 [Les mer om teamet i Teamkatalogen.](https://teamkatalog.nav.no/team/ea2ba8f9-b956-4d78-857e-93e547449fc5){.external target="_blank"}
 :::
+
+::::
 
 :::
 
@@ -190,8 +191,6 @@ print(f"{value}\ndenne uken")
 ```
 
 ::::
-
-#
 
 ```{python}
 # | class: no-rows
@@ -446,7 +445,7 @@ fig.show()
 
 ::: {#section2-content}
 
-### Fattede vedtak(?)
+### Fattede vedtak
 
 
 ::: {.nokkeltall}
@@ -506,8 +505,6 @@ print(f"{value}\ndenne uken")
 ```
 
 :::
-
-#
 
 ```{python}
 # | class: no-rows
@@ -589,8 +586,6 @@ fig.update_layout(
 fig.show()
 ```
 
-#
-
 :::
 
 ::::
@@ -601,11 +596,7 @@ fig.show()
 
 ### Innenfor arbeidsgiverperioden
 
-#
-
 Ferdigstilte søknader innenfor arbeidsgiverperioden
-
-#
 
 ::: {.nokkeltall}
 
@@ -664,8 +655,6 @@ print(f"{value}\ndenne uken")
 ```
 
 :::
-
-#
 
 ```{python}
 # | class: no-rows
@@ -747,8 +736,6 @@ fig.update_layout(
 fig.show()
 ```
 
-#
-
 :::
 
 ::::
@@ -758,8 +745,6 @@ fig.show()
 ::: {#section4-content}
 
 ### Tid fra søknad til vedtak fattet
-
-#
 
 Vi ser nå på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
 
@@ -905,7 +890,6 @@ fig.show()
 
 ```
 
-#
 
 ```{python}
 # | output: true
@@ -913,7 +897,6 @@ import datetime as dt
 
 print(f"Sist oppdatert: {dt.datetime.now()}")
 ```
-
 
 :::
 

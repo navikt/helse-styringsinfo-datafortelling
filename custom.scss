@@ -109,6 +109,7 @@ pre {
     flex: 1;
     flex-wrap: wrap;
     gap: 1em;
+    margin-bottom: 1em;
 }
 
 .nokkeltallboks-innhold pre > code {
@@ -246,4 +247,8 @@ div.callout-note.callout {
     border-left-color: #005B82;
     background: #ffffff;
     margin: 10px 0;
+}
+
+#callout-box {
+    margin-top: 1em;
 }
