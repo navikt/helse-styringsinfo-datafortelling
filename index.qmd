@@ -40,7 +40,7 @@ client = bigquery.Client(location=LOCATION, project=PROJECT)
 ### Om fortellingen
 
 
-Denne fortellingen har som hensikt å formidle styringsdata fra den nye sykepengeløsningen (Speil) i PO Helse.
+Denne fortellingen har som hensikt å formidle styringsdata fra Speil (den nye sykepengeløsningen).
 
 Per nå omfatter dataen kun arbeidstakere, med unntak av sykmeldte brukere med strengt fortrolig adresse (kode 6).
 
@@ -48,7 +48,7 @@ Per nå omfatter dataen kun arbeidstakere, med unntak av sykmeldte brukere med s
 ::: {.callout-note collapse="true" appearance="minimal"}
 ## Mer om dataen som presenteres
 
-Dataen som presenteres stammer kun fra nytt saksbehandlingssystem. Årsaken til dette er at vi har lite eller mangelfull data på saksbehandling av sykepenger i eldre behandlingssystemer. Samtidig har ikke PO Helse selv eierskap til dette, og derfor være sikre på at dataen stemmer.
+Dataen som presenteres stammer kun fra Speil. Årsaken til dette er at vi har lite eller mangelfull data på saksbehandling av sykepenger i Infotrygd.
 
 Siden dataen er ment for å gjøre prioriteringer og strategiske veivalg i forbindelse med saksbehandling er det avgjørende at det som presenteres stemmer overens med det som faktisk skjer.
 
@@ -74,9 +74,9 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 :::: {.section-even}
 ::: {.section-content}
 
-### Søknader om sykepenger
+### Søknad
 
-Når den sykmeldte brukeren fyller ut og sender inn en søknad via. våre digitale tjenester mottar vi det som en førstegangssøknad i nytt saksbehandlingssystem. Da begynner saksbehandlingen fra vår side.
+Når den sykmeldte brukeren fyller ut og sender inn en søknad via våre digitale tjenester mottar vi det som en førstegangssøknad i Speil. Da begynner saksbehandlingen fra vår side.
 
 Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en korrigert søknad.
 
@@ -258,7 +258,7 @@ fig.show()
 
 ### Ferdigstilt innenfor arbeidsgiverperioden
 
-Søknader innenfor arbeidsgiverperioden der NAV ikke utfører saksbehandling fordi det er innenfor perioden arbeidsgiver skal dekke.
+Her ser vi antall søknader der NAV ikke utfører saksbehandling fordi det er innenfor perioden arbeidsgiver skal dekke.
 
 
 ::: {.nokkeltall}
