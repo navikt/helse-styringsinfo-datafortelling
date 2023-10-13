@@ -3,9 +3,6 @@
 index.ipynb
 index_files/
 
-# Bruker requirements.txt som master
-poetry.lock
-pyproject.toml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

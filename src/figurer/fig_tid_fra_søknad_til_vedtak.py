@@ -47,6 +47,7 @@ def tid_fra_søknad_til_vedtak(client):
             x=df.query("dager_brukt > 0 & dager_brukt <= 90")["dager_brukt"],
             y=df.query("dager_brukt > 0 & dager_brukt <= 90")["antall_vedtak"],
             visible=visible,
+            marker_color="#3380A5",
         )
 
         fig.add_trace(bar, row=2, col=1)
