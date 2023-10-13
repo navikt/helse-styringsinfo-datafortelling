@@ -1,0 +1,4 @@
+project:
+  title: "Styringsinfo"
+  render:
+    - index.qmd
