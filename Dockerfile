@@ -15,17 +15,17 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
 ENV LANG="en_US.utf8" \
     LANGUAGE="en_US:en"
 
-RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \
-    wget --quiet https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz && \
-    tar -xzf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz && \
-    ln -s /app/quarto-${QUARTO_VERSION}/bin/quarto /usr/local/bin/quarto && \
-    rm -rf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz
-
 RUN python -m pip install --upgrade pip wheel
 
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 RUN ipython kernel install --name "python3"
+
+RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \
+    wget --quiet https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz && \
+    tar -xzf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz && \
+    ln -s /app/quarto-${QUARTO_VERSION}/bin/quarto /usr/local/bin/quarto && \
+    rm -rf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz
 
 COPY publish.sh .
 COPY custom.scss .
