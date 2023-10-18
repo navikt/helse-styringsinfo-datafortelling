@@ -6,10 +6,14 @@ USER root
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq \
-    wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    wget \
+    locales \
+    locales-all \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+ENV LANG="en_US.utf8" \
+    LANGUAGE="en_US:en"
 
 RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | jq '.tag_name' | sed -e 's/[\"v]//g') && \
     wget https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz && \
