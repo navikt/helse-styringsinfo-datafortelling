@@ -85,7 +85,7 @@ Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en k
 ```{python}
 # | class: nokkeltall
 # | output: true
-locale.setlocale(locale.LC_TIME, "no_NO")
+locale.setlocale(locale.LC_TIME, "no_NO.UTF-8")
 current_date = dt.datetime.now().date()
 formatted_date = current_date.strftime("%d. %B %Y").replace(
     current_date.strftime("%B"), current_date.strftime("%B").lower()
