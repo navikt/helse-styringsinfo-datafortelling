@@ -85,10 +85,7 @@ Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en k
 ```{python}
 # | class: nokkeltall
 # | output: true
-for k, v in sorted(locale.locale_alias.items()):
-    if k.startswith('no_') or v.startswith('no_'):
-        print('{:20}{}'.format(k, v))
-locale.setlocale(locale.LC_TIME, "no_NO.UTF-8")
+locale.setlocale(locale.LC_TIME, "no_no")
 current_date = dt.datetime.now().date()
 formatted_date = current_date.strftime("%d. %B %Y").replace(
     current_date.strftime("%B"), current_date.strftime("%B").lower()
