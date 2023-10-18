@@ -17,14 +17,14 @@ RUN QUARTO_VERSION=$(curl https://api.github.com/repos/quarto-dev/quarto-cli/rel
     ln -s /app/quarto-${QUARTO_VERSION}/bin/quarto /usr/local/bin/quarto && \
     rm -rf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz
 
-
-COPY index.qmd .
-COPY publish.sh .
-COPY requirements.txt .
-COPY custom.scss .
-
 RUN python -m pip install --upgrade pip wheel
+
+COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 RUN ipython kernel install --name "python3"
+
+COPY publish.sh .
+COPY custom.scss .
+COPY index.qmd .
 
 CMD ["./publish.sh"]
