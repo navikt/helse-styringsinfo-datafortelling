@@ -25,6 +25,7 @@ RUN ipython kernel install --name "python3"
 
 COPY publish.sh .
 COPY custom.scss .
+COPY figurer/ figurer/
 COPY index.qmd .
 
 CMD ["./publish.sh"]
