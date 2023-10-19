@@ -23,6 +23,7 @@ spec:
     - secret: nada-token
 
   backoffLimit: 0
+  concurrencyPolicy: Replace
   secureLogs:
     enabled: true
   gcp:
