@@ -14,7 +14,7 @@ format:
 
 ```{python}
 import datetime as dt
-import locale
+impo rt locale
 import os
 from functools import partial
 from dotenv import load_dotenv
