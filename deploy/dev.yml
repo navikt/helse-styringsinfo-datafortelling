@@ -3,13 +3,15 @@ kind: Naisjob
 metadata:
   labels:
     team: tbd
-  name: {{name}}
+  name: styringsinfo-datafortelling{{#if schedule}}{{else}}-run-on-deploy{{/if}}
   namespace: tbd
   annotations:
     nais.io/read-only-file-system: "false"
 spec:
   image: {{image}}
+  {{#if schedule}}
   schedule: {{schedule}}
+  {{/if}}
   env:
     - name: NADA_URL
       value: nada.intern.dev.nav.no
