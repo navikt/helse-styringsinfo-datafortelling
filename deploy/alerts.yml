@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: styringsinfo-datafortelling-alerts
+  namespace: tbd
+  labels:
+    team: tbd
+spec:
+  groups:
+    - name: styringsinfo-datafortelling-alerts
+      rules:
+        - alert: NaisjobFailed
+          expr: kube_job_failed{job_name=~"^styringsinfo-datafortelling.*", namespace="tbd"} > 0
+          for: 2m
+          annotations:
+            consequence: "Datafortelling https://data.intern.dev.nav.no/quarto/f9a63635-60dc-4fb0-87aa-104f18e0e3e2/ blir ikke oppdatert"
+            action: "@sp-styringsinfo-bros - Sjekk https://logs.adeo.no/app/r/s/mYSrG (dette er dev)"
+            summary: |-
+              NaisJob styringsinfo-datafortelling feiler i dev-gcp:tbd så datafortellingen oppdateres ikke. 
+              Repo: https://github.com/navikt/styringsinfo-datafortelling
+              Alert: https://github.com/navikt/styringsinfo-datafortelling/blob/main/deploy/alerts.yml
+          labels:
+            namespace: tbd
+            severity: warning
