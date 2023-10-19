@@ -4,8 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'deploy/alerts.yaml'
-      - '.github/workflows/alerts.yaml'
+      - 'deploy/alerts.yml'
+      - '.github/workflows/alerts.yml'
 
 jobs:
   apply-alerts:
