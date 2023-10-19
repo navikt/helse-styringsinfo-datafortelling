@@ -27,7 +27,7 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  deployRunOnce:
+  deployDevRunOnce:
     name: deploy to dev to run once
     needs: [build]
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image }}
           VAR:
 
-  deployDev:
+  deployDevRunOnSchedule:
     name: deploy to dev run on schedule
     needs: [build]
     runs-on: ubuntu-latest
