@@ -3,14 +3,13 @@ kind: Naisjob
 metadata:
   labels:
     team: tbd
-  name: styringsinfo-datafortelling
+  name: {{name}}
   namespace: tbd
-  metadata:
   annotations:
     nais.io/read-only-file-system: "false"
 spec:
   image: {{image}}
-  schedule: "0 */1 * * *"
+  schedule: {{schedule}}
   env:
     - name: NADA_URL
       value: nada.intern.dev.nav.no

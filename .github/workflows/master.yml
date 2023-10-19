@@ -27,14 +27,31 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  deployDev:
-    name: deploy to dev
+  deployRunOnce:
+    name: deploy to dev to run once
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: nais/deploy/actions/deploy@v1
         env:
+          NAME: styringsinfo-datafortelling-run-once
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: deploy/dev.yml
+          IMAGE: ${{ needs.build.outputs.image }}
+          SCHEDULE:
+
+  deployDev:
+    name: deploy to dev run on schedule
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          NAME: styringsinfo-datafortelling
+          SCHEDULE: "0 */1 * * *"
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/dev.yml
