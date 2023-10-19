@@ -35,12 +35,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: nais/deploy/actions/deploy@v1
         env:
-          NAME: styringsinfo-datafortelling-run-once
+          VAR: name=styringsinfo-datafortelling-run-on-deploy,schedule=
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/dev.yml
           IMAGE: ${{ needs.build.outputs.image }}
-          SCHEDULE:
 
   deployDev:
     name: deploy to dev run on schedule
@@ -50,8 +49,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: nais/deploy/actions/deploy@v1
         env:
-          NAME: styringsinfo-datafortelling
-          SCHEDULE: "0 */1 * * *"
+          VAR: name=styringsinfo-datafortelling,schedule="0 */1 * * *"
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/dev.yml
