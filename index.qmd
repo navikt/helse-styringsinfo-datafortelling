@@ -28,7 +28,10 @@ from figurer import (
     tid_fra_søknad_til_vedtak,
 )
 
-locale.setlocale(locale.LC_TIME, "nb_NO")
+try: 
+    locale.setlocale(locale.LC_TIME, "nb_NO") # linux
+except:
+    locale.setlocale(locale.LC_TIME, "no_NO") # mac
 
 load_dotenv(override=True)
 LOCATION = "europe-north1"
