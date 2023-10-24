@@ -10,8 +10,6 @@ on:
       - 'env.example'
       - '.github/workflows/alerts.yml'
       - 'deploy/alerts.yml'
-      - '.github/workflows/alert-config.yml'
-      - 'deploy/alert-config-dev.yml'
 
 jobs:
   build:

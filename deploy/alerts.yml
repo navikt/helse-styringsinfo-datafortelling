@@ -22,5 +22,50 @@ spec:
           labels:
             namespace: tbd
             severity: warning
-            sykepenger_styringsinfo_type: dev-alert
+            sykepenger_styringsinfo_type_datafortelling: dev-alert
             alert_type: custom
+
+---
+
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: sykepenger-styringsinfo-dev-slack-datafortelling
+  namespace: tbd
+  labels:
+    team: tbd
+    alertmanagerConfig: sykepenger-styringsinfo-dev-slack-datafortelling
+spec:
+  receivers:
+    - name: sykepenger-styringsinfo-dev-receiver-datafortelling
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: '#sykepenger-styringsinfo-dev'
+          iconEmoji: ':alert:'
+          username: 'Alert dev-gcp'
+          sendResolved: true
+          title: |-
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+          text: >-
+            {{ range .Alerts }}
+            {{ if or .Annotations.summary .Annotations.message }}
+            {{ or .Annotations.summary .Annotations.message }}
+            {{ println " " }}
+            {{- end }}
+            {{- if .Annotations.action }}
+            • *action*: {{ .Annotations.action }} {{ println " " }}
+            {{- end }}
+            {{ end }}
+  route:
+    groupBy:
+      - alertname
+    matchers:
+      - name: "sykepenger_styringsinfo_type_datafortelling"
+        matchType: "="
+        value: "dev-alert"
+    groupInterval: 10s
+    groupWait: 5s
+    receiver: sykepenger-styringsinfo-dev-receiver-datafortelling
+    repeatInterval: 2h
