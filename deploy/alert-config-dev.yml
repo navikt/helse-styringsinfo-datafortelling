@@ -4,6 +4,7 @@ metadata:
   name: sykepenger-styringsinfo-dev-slack
   namespace: tbd
   labels:
+    team: tbd
     alertmanagerConfig: sykepenger-styringsinfo-dev-slack
 spec:
   receivers:
