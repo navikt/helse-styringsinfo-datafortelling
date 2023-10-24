@@ -23,3 +23,4 @@ spec:
             namespace: tbd
             severity: warning
             sykepenger_styringsinfo_type: dev-alert
+            alert_type: custom
