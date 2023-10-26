@@ -177,7 +177,7 @@ fig.show()
 :::
 ::::
 
-:::: {.section-odd}
+:::: {.section-odd #vedtak}
 ::: {.section-content}
 
 ### Vedtak

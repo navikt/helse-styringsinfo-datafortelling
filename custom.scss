@@ -92,6 +92,7 @@ div, p {
 pre {
     display: flex;
     flex: 1;
+    margin: 0;
 }
 
 
@@ -110,6 +111,10 @@ pre {
     flex-wrap: wrap;
     gap: 1em;
     margin-bottom: 1em;
+}
+
+.nokkeltallboks-layout > pre {
+    margin: 0;
 }
 
 .nokkeltallboks-innhold pre > code {
@@ -173,6 +178,10 @@ pre {
 
 #om-fortellingen {
     padding-top: 0;
+    width: 100%;
+}
+
+#vedtak {
     width: 100%;
 }
 
