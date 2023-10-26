@@ -166,13 +166,14 @@ pre {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 800px;
+    min-width: 350px;
     max-width: 800px;
     margin: 0 1em;
 }
 
 #om-fortellingen {
     padding-top: 0;
+    width: 100%;
 }
 
 /*-- Callout --*/
