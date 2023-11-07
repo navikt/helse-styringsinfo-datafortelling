@@ -15,12 +15,14 @@ poetry-update:
 	awk '/^packages/{print "packages = []"; next} 1' pyproject.toml > tmpfile && mv tmpfile pyproject.toml # 'poetry install' feiler hvis det ligger noe i packages.
 	poetry install
 
-render: bootstrap poetry-update ## Rendrer quarto datafortelling til index.html
-	stat .env || cp env.example .env # Slipper feilmelding fordi .env-fil mangler.
+login: # Sjekker om man er autentisert mot gcloud og logger inn hvis ikke
 	gcloud auth print-identity-token >/dev/null 2>&1 || gcloud auth login --update-adc # Reduserer antall ganger man har glemt å logge på
+
+env: # Slipper feilmelding fordi .env-fil mangler
+	stat .env || cp env.example .env 
+
+render: bootstrap poetry-update env login ## Rendrer quarto datafortelling til index.html og åpner i nettleser
 	poetry run quarto render index.qmd && open index.html
 
-preview: bootstrap poetry-update ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
-	stat .env || cp env.example .env # Slipper feilmelding fordi .env-fil mangler.
-	gcloud auth print-identity-token >/dev/null 2>&1 || gcloud auth login --update-adc # Reduserer antall ganger man har glemt å logge på
+preview: bootstrap poetry-update env login  ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
 	poetry run quarto preview index.qmd
