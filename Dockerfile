@@ -45,13 +45,17 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-
-RUN ipython kernel install --name "python3"
-
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
+    locales \
+    locales-all \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+ENV LANG="en_US.utf8" \
+    LANGUAGE="en_US:en"
+
+RUN ipython kernel install --name "python3"
 
 COPY publish.sh .
 COPY custom.scss .
