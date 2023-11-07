@@ -26,3 +26,6 @@ render: bootstrap poetry-update env login ## Rendrer quarto datafortelling til i
 
 preview: bootstrap poetry-update env login  ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
 	poetry run quarto preview index.qmd
+
+preview_no_execute: bootstrap poetry-update env login  ## Samme som preview, men kjører ikke python-koden
+	poetry run quarto preview index.qmd --no-execute
