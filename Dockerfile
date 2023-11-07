@@ -34,7 +34,7 @@ FROM python:3.11-slim-bookworm
 WORKDIR /app
 
 RUN groupadd -g 1069 apprunner && \
-    useradd -r -u 1069 -g apprunner apprunner
+    useradd -r -m -u 1069 -g apprunner apprunner
 
 COPY --from=first /opt/venv /opt/venv
 COPY --from=first /quarto /opt/quarto
@@ -57,6 +57,10 @@ COPY publish.sh .
 COPY custom.scss .
 COPY figurer/ figurer/
 COPY index.qmd .
+
+ENV DENO_DIR=/home/apprunner/deno
+ENV XDG_CACHE_HOME=/home/apprunner/cache
+ENV XDG_DATA_HOME=/home/apprunner/share
 
 RUN chown -R apprunner:apprunner /app
 
