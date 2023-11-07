@@ -45,7 +45,7 @@ jobs:
 
   deployDevRunOnSchedule:
     name: deploy to dev run on schedule
-    needs: [build]
+    needs: [build, deployDevRunOnce]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
