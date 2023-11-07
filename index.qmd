@@ -372,11 +372,8 @@ tid_fra_søknad_til_vedtak(client).show()
 document.getElementById('myForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    var name = document.getElementById('name').value;
-    var email = document.getElementById('email').value;
-
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'https://example.com/api', true);
+    xhr.open("GET", 'https://www.punapi.rest/api/pun', true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function () {
@@ -388,8 +385,7 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
         }
     };
 
-    var data = JSON.stringify({name: name, email: email});
-    xhr.send(data);
+    xhr.send();
 });
 </script>
 ```
