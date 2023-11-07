@@ -196,13 +196,3 @@ div.callout-note.callout {
 #callout-box {
     margin-top: 1em;
 }
-
-
-#myForm {
-    position: fixed; /* Fix position on the screen */
-    bottom: 0; /* Position from the bottom */
-    right: 0; /* Position from the right */
-    width: 200px; /* Set to desired width */
-    height: 150px; /* Set to desired height */
-    z-index: 9999; /* Make sure it's on top */
-}
