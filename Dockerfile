@@ -5,15 +5,11 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     curl \
     jq \
     wget \
-    locales \
-    locales-all \
     python3-dev \
     build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-ENV LANG="en_US.utf8" \
-    LANGUAGE="en_US:en"
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
