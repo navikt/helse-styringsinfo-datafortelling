@@ -21,11 +21,13 @@ login: # Sjekker om man er autentisert mot gcloud og logger inn hvis ikke
 env: # Slipper feilmelding fordi .env-fil mangler
 	stat .env || cp env.example .env 
 
-render: bootstrap poetry-update env login ## Rendrer quarto datafortelling til index.html og åpner i nettleser
+setup: bootstrap poetry-update env ## Setter opp miljø for å rendre datafortellingen
+
+render: setup login ## Rendrer quarto datafortelling til index.html og åpner i nettleser
 	poetry run quarto render index.qmd && open index.html
 
-preview: bootstrap poetry-update env login  ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
+preview: setup login  ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
 	poetry run quarto preview index.qmd
 
-preview_no_execute: bootstrap poetry-update env login  ## Samme som preview, men kjører ikke python-koden
+preview_no_execute: setup login  ## Samme som preview, men kjører ikke python-koden
 	poetry run quarto preview index.qmd --no-execute
