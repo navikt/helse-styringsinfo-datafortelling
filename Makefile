@@ -11,7 +11,7 @@ bootstrap: # Setter opp miljø for quarto-rendring
 
 poetry-update:
 	stat pyproject.toml || poetry init --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
-	cat requirements.txt | xargs poetry add
+	cat requirements.txt | xargs poetry add --python=3.11
 	awk '/^packages/{print "packages = []"; next} 1' pyproject.toml > tmpfile && mv tmpfile pyproject.toml # 'poetry install' feiler hvis det ligger noe i packages.
 	poetry install
 
