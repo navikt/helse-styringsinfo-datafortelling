@@ -7,7 +7,7 @@ help:
 
 bootstrap: # Setter opp miljø for quarto-rendring
 	poetry --version || brew install poetry
-	quarto --version || brew install quarto
+	quarto --version || brew install quarto@1.3.450
 
 poetry-update:
 	stat pyproject.toml || poetry init --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
