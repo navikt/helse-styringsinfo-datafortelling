@@ -1,5 +1,5 @@
 ---
-title: "Styringsinformasjon fra ny sykepengeløsning"
+title: "Styringsinformasjon fra SPEIL"
 date-modified: last-modified
 execute:
     output: false
@@ -362,3 +362,44 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 
 :::
 ::::
+
+::: {.tilbakemeldinger}
+
+```{=html}
+
+<div class="flexjarcontainer">
+    <h3>Vi ønsker din tilbakemelding</h3>
+    <p style="font-size: 16px">Fant du det du lette etter?</p>
+    <div class="buttons">
+    <button id="yesButton">Ja</button>
+    <button id="noButton">Nei</button>
+    </div>
+    <div id="additionalContent"></div>
+</div>
+
+<script>
+document.getElementById('yesButton').addEventListener('click', showAdditionalContent);
+document.getElementById('noButton').addEventListener('click', showAdditionalContent);
+
+function showAdditionalContent() {
+    var additionalContent = document.getElementById('additionalContent');
+    var maxLength = 600;  // Maximum number of characters allowed
+    additionalContent.innerHTML = `
+        <p style="font-size: 16px; font-weight: 500">
+        Er det noe du vil trekke frem? (valgfritt)</p>
+        <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
+        <div id="counter">${maxLength} tegn igjen</div>
+    `;
+
+    var textarea = document.getElementById('additionalInput');
+    var counter = document.getElementById('counter');
+    textarea.addEventListener('input', function() {
+        var remaining = maxLength - textarea.value.length;
+        counter.textContent = remaining + ' tegn igjen';
+    });
+}
+</script>
+
+```
+
+:::
