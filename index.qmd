@@ -369,12 +369,20 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 
 <div class="flexjarcontainer">
     <h3>Vi ønsker din tilbakemelding</h3>
-    <p style="font-size: 16px">Fant du den informasjonen du trengte?</p>
-    <div class="buttons">
-    <button id="yesButton">Ja</button>
-    <button id="noButton">Nei</button>
-    </div>
-    <div id="additionalContent"></div>
+        <div id="sendForm">
+            <p style="font-size: 16px">
+                Fant du den informasjonen du trengte?
+            </p>
+        <div class="buttons">
+            <button id="yesButton">Ja</button>
+            <button id="noButton">Nei</button>
+        </div>
+            <div id="additionalContent"></div>
+        </div> 
+        <div id="thanksResponse">
+            <p style="font-weight: 500">Takk for tilbakemeldingen <p>
+            <img src="flexjar/src/icons/FaceSmile.svg"> 
+        </div> 
 </div>
 
 <script>
@@ -386,14 +394,15 @@ function showAdditionalContent() {
     var maxLength = 600;    
     additionalContent.innerHTML = `
         <div id="sendtextContainer">
-        <p style="font-size: 16px; font-weight: 500">
-        Er det noe du vil trekke frem? (valgfritt)</p>
-        <div id="textareaContainer">
-        <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
+         <p style="font-weight: 500">
+            Er det noe du vil trekke frem? (valgfritt)</p>
+                <div id="textareaContainer">
+         <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
         <div id="counter">${maxLength} tegn igjen</div>
         </div>
         <button id="sendButton">Send tilbakemelding</button>
-        <div id="errorMessage">Det har oppstått en feil</div>
+        <div id="errorMessage" style="color: red; font-weight: 500">
+            En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.
         </div>
     `;
 
@@ -416,23 +425,21 @@ function showAdditionalContent() {
 
     .then(response => {
         if (!response.ok) {
-            throw new Error('Meldingen ble ikke sendt på grunn av tilkoblingsfeil mot serveren. Prøv igjen nå eller senere.');
+            throw new Error('En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.');
         }
         return response.json();
     })
 
     .then(data => {
-        var flexjarcontainer = document.querySelector('.flexjarcontainer');
-        flexjarcontainer.style.display = 'none';
-        var thankYouMessage = document.createElement('p');
-        thankYouMessage.textContent = 'Takk for tilbakemeldingen din.';
-        additionalContent.appendChild(thankYouMessage);
+        var sendtextContainer = document.getElementById('sendForm');
+        sendtextContainer.style.display = 'none';
+        var thanksResponse = document.getElementById('thanksResponse');
+        thanksResponse.style.display = 'flex';
     })
 
     .catch(error => {
     console.error('Error:', error);
     var errorMessageDiv = document.getElementById('errorMessage');
-    errorMessageDiv.textContent = 'Det har oppstått en feil';
     errorMessageDiv.style.display = 'block';  
     });
 });
