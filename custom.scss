@@ -220,33 +220,78 @@ div.callout-note.callout {
     gap: 8px;
 }
 
-#yesButton, #noButton {
+button {
+    color: #005B82;
     min-height: 2rem;
     font-size: 1rem;
     background-color: transparent;
-    border-color:#4C545D;
+    border-color:#005B82;
     border-radius: 4px;
     font-weight: 600;
 }
 
+button:hover {
+    background-color: #CBCFD5;
+}
+
+button:focus {
+    background-color: #005B82;
+    color: #ffffff;
+}
+
+#sendtextContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
 #additionalContent {
-    margin-top: 20px;
+    position: relative;
+}
+
+#textareaContainer {
+    position: relative;
+    max-width: 550px;
+    width: 100%;
 }
 
 textarea {
     border: 1px solid #838C9A;
     border-radius: 4px;
     padding: 8px 8px 32px;
-    max-width: 550px;
     width: 100%;
     height: 150px;
     resize: none;
+    margin-bottom: 17px;
 }
 
 textarea:hover {
-        border-color: #0067C5;
+        border-color: #005B82;
 }
 
 textarea:focus {
-        border: 3px solid #00347D;
+        border: 3px solid #005B82;
+}
+
+#counter {
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    font-style: italic;
+    color: #525962;
+}
+
+#sendButton:focus {
+    outline: none;
+}
+
+#sendButton:active {
+    background-color: #005B82;
+    color: #ffffff;
+}
+
+#errorMessage {
+    display: none;
+    margin-top: 30px;
 }
