@@ -56,3 +56,31 @@ jobs:
           RESOURCE: deploy/dev.yml
           IMAGE: ${{ needs.build.outputs.image }}
           VAR: schedule=0 */1 * * *
+
+  deployProdRunOnce:
+    name: deploy to dev to run once
+    needs: [build, deployDevRunOnce]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: deploy/prod.yml
+          IMAGE: ${{ needs.build.outputs.image }}
+          VAR:
+
+  deployProdRunOnSchedule:
+    name: deploy to dev run on schedule
+    needs: [build, deployProdRunOnce]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: deploy/prod.yml
+          IMAGE: ${{ needs.build.outputs.image }}
+          VAR: schedule=0 */1 * * *
