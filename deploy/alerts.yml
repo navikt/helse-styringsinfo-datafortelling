@@ -17,8 +17,8 @@ spec:
             action: "@sp-styringsinfo-bros - Sjekk https://logs.adeo.no/app/r/s/lU1a0 (dette er dev)"
             summary: |-
               NaisJob styringsinfo-datafortelling feiler i dev-gcp:tbd - datafortellingen oppdateres ikke. 
-              Repo: https://github.com/navikt/styringsinfo-datafortelling
-              Alert: https://github.com/navikt/styringsinfo-datafortelling/blob/main/deploy/alerts.yml
+              Repo: https://github.com/navikt/helse-styringsinfo-datafortelling
+              Alert: https://github.com/navikt/helse-styringsinfo-datafortelling/blob/main/deploy/alerts.yml
           labels:
             namespace: tbd
             severity: warning
