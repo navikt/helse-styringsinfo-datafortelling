@@ -3,7 +3,7 @@ kind: Naisjob
 metadata:
   labels:
     team: tbd
-  name: styringsinfo-datafortelling{{#if schedule}}{{else}}-run-on-deploy{{/if}}
+  name: helse-styringsinfo-datafortelling{{#if schedule}}{{else}}-run-on-deploy{{/if}}
   namespace: tbd
   annotations:
     nais.io/read-only-file-system: "false"
