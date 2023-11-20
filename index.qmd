@@ -28,7 +28,7 @@ from figurer import (
     tid_fra_søknad_til_vedtak,
 )
 
-try: 
+try:
     locale.setlocale(locale.LC_TIME, "nb_NO") # linux
 except:
     locale.setlocale(locale.LC_TIME, "no_NO") # mac
@@ -378,11 +378,11 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
             <button id="noButton">Nei</button>
         </div>
             <div id="additionalContent"></div>
-        </div> 
+        </div>
         <div id="thanksResponse">
             <p style="font-weight: 500">Takk for tilbakemeldingen <p>
-            <img src="flexjar/src/icons/FaceSmile.svg"> 
-        </div> 
+            <img src="flexjar/src/icons/FaceSmile.svg">
+        </div>
 </div>
 
 <script>
@@ -391,7 +391,7 @@ document.getElementById('noButton').addEventListener('click', showAdditionalCont
 
 function showAdditionalContent() {
     var additionalContent = document.getElementById('additionalContent');
-    var maxLength = 600;    
+    var maxLength = 600;
     additionalContent.innerHTML = `
         <div id="sendtextContainer">
          <p style="font-weight: 500">
@@ -435,25 +435,19 @@ function showAdditionalContent() {
         },
         body: JSON.stringify({ message: message, button: buttonValue })
     })
-
     .then(response => {
         if (!response.ok) {
             throw new Error('En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.');
         }
-        return response.json();
-    })
-
-    .then(data => {
         var sendtextContainer = document.getElementById('sendForm');
         sendtextContainer.style.display = 'none';
         var thanksResponse = document.getElementById('thanksResponse');
         thanksResponse.style.display = 'flex';
     })
-
     .catch(error => {
-    console.error('Error:', error);
-    var errorMessageDiv = document.getElementById('errorMessage');
-    errorMessageDiv.style.display = 'block';  
+        console.error('Error:', error);
+        var errorMessageDiv = document.getElementById('errorMessage');
+        errorMessageDiv.style.display = 'block';
     });
 });
 }
