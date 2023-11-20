@@ -58,7 +58,7 @@ jobs:
           VAR: schedule=0 */1 * * *
 
   deployProdRunOnce:
-    name: deploy to dev to run once
+    name: deploy to prod to run once
     needs: [build, deployDevRunOnce]
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +72,7 @@ jobs:
           VAR:
 
   deployProdRunOnSchedule:
-    name: deploy to dev run on schedule
+    name: deploy to prod run on schedule
     needs: [build, deployProdRunOnce]
     runs-on: ubuntu-latest
     steps:
