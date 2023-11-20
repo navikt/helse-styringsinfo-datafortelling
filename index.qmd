@@ -406,6 +406,19 @@ function showAdditionalContent() {
         </div>
     `;
 
+    var buttonValue = null;
+
+    var yesButton = document.getElementById('yesButton');
+    var noButton = document.getElementById('noButton');
+
+    yesButton.addEventListener('click', function() {
+        buttonValue = 'Ja';
+    });
+
+    noButton.addEventListener('click', function() {
+        buttonValue = 'Nei';
+    });
+
     var textarea = document.getElementById('additionalInput');
     var counter = document.getElementById('counter');
     textarea.addEventListener('input', function() {
@@ -420,7 +433,7 @@ function showAdditionalContent() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message })
+        body: JSON.stringify({ message: message, button: buttonValue })
     })
 
     .then(response => {
