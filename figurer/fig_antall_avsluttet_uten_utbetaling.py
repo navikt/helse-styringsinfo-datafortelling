@@ -10,44 +10,114 @@ def antall_avsluttet_uten_utbetaling(client):
 
     QUERY = f"""
         SELECT
-            EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS year,
-            EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS month,
+            EXTRACT(DATE FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') AS date,
+            DATE_TRUNC(EXTRACT(DATE FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo'), WEEK(MONDAY)) as week,
+            DATE_TRUNC(EXTRACT(DATE FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo'), MONTH) AS month,
             COUNT(*) as Totalt
         FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
         WHERE har_utbetaling=false
         AND EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
         AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
-        GROUP BY year, month
-        ORDER BY year DESC, month DESC
+        GROUP BY date, week, month
+        ORDER BY date ASC
     """
 
     query_job = client.query(QUERY)
 
-    df_months: pd.DataFrame = query_job.to_dataframe()
+    df_days: pd.DataFrame = query_job.to_dataframe()
+    df_weeks = df_days.groupby(["week"], as_index=False)["Totalt"].sum()
+    df_months = df_days.groupby(["month"], as_index=False)["Totalt"].sum()
+
 
     # Create a new plotly figure
     fig = go.Figure()
 
-    fig.add_trace(
+    fig.add_traces(
+        data=[
+            go.Bar(
+                x=df_months.month,
+                y=df_months.Totalt,
+                name="Totalt",
+                visible=True,
+                marker_color="#3380A5",
+            ),
+            go.Bar(
+                x=df_weeks.week,
+                y=df_weeks.Totalt,
+                name="Totalt",
+                visible=False,
+                marker_color="#3380A5",
+            ),
         go.Bar(
-            x=[f"{row['year']}-{row['month']:02}" for _, row in df_months.iterrows()],
-            y=df_months["Totalt"],
-            text=df_months["Totalt"],
-            textposition="auto",
+                x=df_days.date,
+                y=df_days.Totalt,
+                name="Totalt",
+                visible=False,
             marker_color="#3380A5",
-            marker_line_width=1,
-            opacity=1,
+            ),
+        ]
+    )
+    BUTTON_CONFIG = {
+        "active": 0,
+        "type": "buttons",
+        "direction": "right",
+        "showactive": True,
+        "x": 0,
+        "xanchor": "left",
+        "y": 1,
+        "yanchor": "bottom",
+        "font": {"size": 14},
+    }
+
+    fig.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="left",
+            x=0,
         )
     )
 
     fig.update_layout(
+        margin=dict(l=50),
+        barmode="stack",
+        updatemenus=[
+            dict(
+                buttons=list(
+                    [
+                        dict(
+                            args=[
+                                {"visible": [True, False, False]}
+                            ],
+                            label="Måneder",
+                            method="restyle",
+                        ),
+                        dict(
+                            args=[
+                                {"visible": [False, True, False]}
+                            ],
+                            label="Uker",
+                            method="restyle",
+                        ),
+                        dict(
+                            args=[
+                                {"visible": [False, False, True]}
+                            ],
+                            label="Dager",
+                            method="restyle",
+                        ),
+                    ]
+                ),
+                **BUTTON_CONFIG,
+            )
+        ],
         title=dict(
-            text="Antall per måned",
+            text="Antall",
             x=0,
-            y=0.95,
+            y=0.97,
             font=dict(family="Source Sans 3", size=20, color="#23262A"),
         ),
-        xaxis_tickangle=-45,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=dict(
