@@ -415,7 +415,7 @@ function showAdditionalContent() {
 
     sendButton.addEventListener('click', function() {
     var message = textarea.value;
-    fetch('https://api-endepunkt', {
+    fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/azure', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
