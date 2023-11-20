@@ -1,24 +1,24 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: helse-styringsinfo-datafortelling-alerts
+  name: styringsinfo-datafortelling-alerts
   namespace: tbd
   labels:
     team: tbd
 spec:
   groups:
-    - name: helse-styringsinfo-datafortelling-alerts
+    - name: styringsinfo-datafortelling-alerts
       rules:
         - alert: NaisjobFailed
-          expr: kube_job_failed{job_name=~"^helse-styringsinfo-datafortelling.*", namespace="tbd"} > 0
+          expr: kube_job_failed{job_name=~"^styringsinfo-datafortelling.*", namespace="tbd"} > 0
           for: 2m
           annotations:
             consequence: "Datafortelling https://data.intern.dev.nav.no/quarto/f9a63635-60dc-4fb0-87aa-104f18e0e3e2/ blir ikke oppdatert"
             action: "@sp-styringsinfo-bros - Sjekk https://logs.adeo.no/app/r/s/lU1a0 (dette er dev)"
             summary: |-
-              NaisJob helse-styringsinfo-datafortelling feiler i dev-gcp:tbd - datafortellingen oppdateres ikke. 
-              Repo: https://github.com/navikt/helse-styringsinfo-datafortelling
-              Alert: https://github.com/navikt/helse-styringsinfo-datafortelling/blob/main/deploy/alerts.yml
+              NaisJob styringsinfo-datafortelling feiler i dev-gcp:tbd - datafortellingen oppdateres ikke. 
+              Repo: https://github.com/navikt/styringsinfo-datafortelling
+              Alert: https://github.com/navikt/styringsinfo-datafortelling/blob/main/deploy/alerts.yml
           labels:
             namespace: tbd
             severity: warning
@@ -30,14 +30,14 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
-  name: helse-styringsinfo-dev-slack-datafortelling
+  name: sykepenger-styringsinfo-dev-slack-datafortelling
   namespace: tbd
   labels:
     team: tbd
-    alertmanagerConfig: helse-styringsinfo-dev-slack-datafortelling
+    alertmanagerConfig: sykepenger-styringsinfo-dev-slack-datafortelling
 spec:
   receivers:
-    - name: helse-styringsinfo-dev-receiver-datafortelling
+    - name: sykepenger-styringsinfo-dev-receiver-datafortelling
       slackConfigs:
         - apiURL:
             key: apiUrl
@@ -62,10 +62,10 @@ spec:
     groupBy:
       - alertname
     matchers:
-      - name: "helse_styringsinfo_type_datafortelling"
+      - name: "sykepenger_styringsinfo_type_datafortelling"
         matchType: "="
         value: "dev-alert"
     groupInterval: 10s
     groupWait: 5s
-    receiver: helse-styringsinfo-dev-receiver-datafortelling
+    receiver: sykepenger-styringsinfo-dev-receiver-datafortelling
     repeatInterval: 2h

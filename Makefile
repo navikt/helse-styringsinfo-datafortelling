@@ -10,7 +10,7 @@ bootstrap: # Setter opp miljø for quarto-rendring
 	quarto --version || brew install quarto@1.3.450
 
 poetry-update:
-	stat pyproject.toml || poetry init --python=3.11.* --no-interaction --name helse-styringsinfo-datafortelling --description "" --author NAV -l MIT
+	stat pyproject.toml || poetry init --python=3.11.* --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
 	cat requirements.txt | xargs poetry add
 	poetry env use python3 # Bruker systemets python
 	awk '/^packages/{print "packages = []"; next} 1' pyproject.toml > tmpfile && mv tmpfile pyproject.toml # 'poetry install' feiler hvis det ligger noe i packages.
