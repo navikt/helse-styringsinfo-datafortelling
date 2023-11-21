@@ -25,26 +25,26 @@ def mottatte_søknader(client):
     query_job = client.query(QUERY)
 
     df_days: pd.DataFrame = query_job.to_dataframe()
-    df_days_førstegangs = df_days[df_days.korrigerende == False]
+    df_days_nye = df_days[df_days.korrigerende == False]
     df_days_korrigerende = df_days[df_days.korrigerende == True]
 
     df_weeks = df_days.groupby(["week", "korrigerende"], as_index=False)["Totalt"].sum()
-    df_weeks_førstegang = df_weeks[df_weeks.korrigerende == False]
+    df_weeks_nye = df_weeks[df_weeks.korrigerende == False]
     df_weeks_korrigerende = df_weeks[df_weeks.korrigerende == True]
 
     df_months = df_days.groupby(["month", "korrigerende"], as_index=False)[
         "Totalt"
     ].sum()
-    df_months_førstegang = df_months[df_months.korrigerende == False]
+    df_months_nye = df_months[df_months.korrigerende == False]
     df_months_korrigerende = df_months[df_months.korrigerende == True]
 
     fig = go.Figure()
     fig.add_traces(
         data=[
             go.Bar(
-                x=df_months_førstegang.month,
-                y=df_months_førstegang.Totalt,
-                name="Førstegangs",
+                x=df_months_nye.month,
+                y=df_months_nye.Totalt,
+                name="Nye",
                 visible=True,
                 marker_color="#3380A5",
             ),
@@ -56,9 +56,9 @@ def mottatte_søknader(client):
                 marker_color="#FF9100",
             ),
             go.Bar(
-                x=df_weeks_førstegang.week,
-                y=df_weeks_førstegang.Totalt,
-                name="Førstegangs",
+                x=df_weeks_nye.week,
+                y=df_weeks_nye.Totalt,
+                name="Nye",
                 visible=False,
                 marker_color="#3380A5",
             ),
@@ -70,9 +70,9 @@ def mottatte_søknader(client):
                 marker_color="#FF9100",
             ),
             go.Bar(
-                x=df_days_førstegangs.date,
-                y=df_days_førstegangs.Totalt,
-                name="Førstegangs",
+                x=df_days_nye.date,
+                y=df_days_nye.Totalt,
+                name="Nye",
                 visible=False,
                 marker_color="#3380A5",
             ),
@@ -142,7 +142,7 @@ def mottatte_søknader(client):
             )
         ],
         title=dict(
-            text="Antall innsendte førstegangs- og korrigerte søknader",
+            text="Antall innsendte nye og korrigerende søknader",
             x=0,
             y=0.97,
             font=dict(family="Source Sans 3", size=20, color="#23262A"),

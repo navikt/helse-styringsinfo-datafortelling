@@ -83,9 +83,9 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 
 ### Søknad
 
-Når den sykmeldte brukeren fyller ut og sender inn en søknad via våre digitale tjenester mottar vi det som en førstegangssøknad i Speil. Da begynner saksbehandlingen fra vår side.
+Når en sykmeldt sender inn en sykepengesøknad via nav.no havner søknaden i Speil. Dette omfatter også søknader som viser seg å være innenfor perioden arbeidsgiver skal dekke.
 
-Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en korrigert søknad.
+Om brukeren sender en oppdatert søknad, kaller vi det en korrigerende søknad.
 
 :::
 
