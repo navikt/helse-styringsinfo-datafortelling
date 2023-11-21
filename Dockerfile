@@ -56,6 +56,7 @@ RUN ipython kernel install --name "python3"
 COPY publish.sh .
 COPY custom.scss .
 COPY figurer/ figurer/
+COPY flexjar/ flexjar/
 COPY index.qmd .
 
 ENV DENO_DIR=/home/apprunner/deno
