@@ -10,7 +10,7 @@ metadata:
 spec:
   image: {{image}}
   {{#if schedule}}
-    schedule: {{schedule}}
+  schedule: {{schedule}}
   {{/if}}
   env:
     - name: NADA_URL
