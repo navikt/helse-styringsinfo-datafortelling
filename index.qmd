@@ -1,5 +1,5 @@
 ---
-title: "Styringsinformasjon fra SPEIL"
+title: "Styringsinformasjon fra Speil"
 date-modified: last-modified
 execute:
     output: false
@@ -45,29 +45,31 @@ client = bigquery.Client(location=LOCATION, project=PROJECT)
 ### Om fortellingen
 
 
-Denne fortellingen har som hensikt å formidle styringsdata fra Speil (den nye sykepengeløsningen).
+Denne fortellingen har som hensikt å formidle styringsinformasjon fra Speil (den nye sykepengeløsningen).
 
-Per nå omfatter dataen kun arbeidstakere, med unntak av sykmeldte brukere med strengt fortrolig adresse (kode 6).
+Datafortellingen er NAV Intern; dette er ikke offisiell statistikk og skal ikke deles utenfor NAV.
+Datafortellingen skal kun benyttes til styringsformål.
+
+Per nå behandles kun søknader fra arbeidstakere i Speil.
 
 :::: {#callout-box}
 ::: {.callout-note collapse="true" appearance="minimal"}
-## Mer om dataen som presenteres
+## Mer om dataene som presenteres
 
-Dataen som presenteres stammer kun fra Speil. Årsaken til dette er at vi har lite eller mangelfull data på saksbehandling av sykepenger i Infotrygd.
+Saksbehandling skjer foreløpig både i Speil og i Gosys/Infotrygd. Dataene som presenteres her stammer kun fra Speil. 
 
-Siden dataen er ment for å gjøre prioriteringer og strategiske veivalg i forbindelse med saksbehandling er det avgjørende at det som presenteres stemmer overens med det som faktisk skjer.
+Siden dataene er ment for å kunne gjøre prioriteringer og valg knyttet til saksbehandling er det avgjørende at det som presenteres stemmer overens med det som faktisk skjer.
 
-Foreløpig presenteres det i denne fortellingen data på innsendte søknader, fattede vedtak og forkastede vedtak. Det gjenstår fortsatt en del hendelsespunkter som omfatter for eksempel inntektsmeldinger, frister etc. Planen er å få dette på plass over tid.
+Foreløpig presenterer vi data om søknader og vedtak. Over tid er det tenkt at vi vil legge til data fra flere hendelser i saksbehandlingen.
+
 :::
 
 ::: {.callout-note collapse="true" appearance="minimal"}
 ## Mer om teamet
 
-Team Hvilepuls fra PO Helse har designet og drifter denne fortellingen. Teamet består av medlemmer forskjellige fagfelt, hentet fra ulike teams i produktområdet.
+Produktområde Helse har et team som jobber med denne fortellingen. Teamet består av medlemmer fra ulike team innen produktområdet.
 
-Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten forsøker vi å sikre at dataen som formidles, stemmer overens med det som faktisk skjer.
-
-[Les mer om teamet i Teamkatalogen.](https://teamkatalog.nav.no/team/ea2ba8f9-b956-4d78-857e-93e547449fc5){.external target="_blank"}
+Kontaktperson for teamet er Christina Grønhaug. 
 
 :::
 ::::
@@ -184,7 +186,12 @@ fig.show()
 :::: {.section-odd #vedtak}
 ::: {.section-content}
 
-### Vedtak
+### Vedtak i Speil
+
+Dette er vedtak som er fattet i Speil, manuelt eller automatisk. 
+
+Vedtak som fattes i Infotrygd er ikke med, selv om søknaden har vært innom Speil og er med i søknadstallene ovenfor.
+
 
 ::: {.nokkeltall}
 
@@ -266,7 +273,7 @@ fig.show()
 
 ### Ferdigstilt innenfor arbeidsgiverperioden
 
-Her ser vi antall søknader der NAV ikke utfører saksbehandling fordi det er innenfor perioden arbeidsgiver skal dekke.
+Her ser vi søknader der NAV ikke utfører saksbehandling fordi søknadsperioden er innenfor perioden arbeidsgiver skal dekke.
 
 
 ::: {.nokkeltall}
