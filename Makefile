@@ -28,6 +28,7 @@ render: setup login ## Rendrer quarto datafortelling til index.html og åpner i 
 	poetry run quarto render index.qmd && open index.html
 
 preview: setup login  ## Rendrer quarto datafortelling til lokal webserver ved å lytte på endringer i index.qmd 
+	rm -rf .quarto
 	poetry run quarto preview index.qmd
 
 preview_no_execute: setup login  ## Samme som preview, men kjører ikke python-koden
