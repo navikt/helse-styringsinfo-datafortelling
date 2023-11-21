@@ -390,68 +390,71 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 </div>
 
 <script>
-    document.getElementById('yesButton').addEventListener('click', function() {
-        showAdditionalContent('Ja');
+document.getElementById('yesButton').addEventListener('click', showAdditionalContent);
+document.getElementById('noButton').addEventListener('click', showAdditionalContent);
+
+function showAdditionalContent() {
+    var additionalContent = document.getElementById('additionalContent');
+    var maxLength = 600;
+    additionalContent.innerHTML = `
+        <div id="sendtextContainer">
+         <p style="font-weight: 500">
+            Er det noe du vil trekke frem? (valgfritt)</p>
+                <div id="textareaContainer">
+         <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
+        <div id="counter">${maxLength} tegn igjen</div>
+        </div>
+        <button id="sendButton">Send tilbakemelding</button>
+        <div id="errorMessage" style="color: red; font-weight: 500">
+            En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.
+        </div>
+    `;
+
+    var buttonValue = null;
+
+    var yesButton = document.getElementById('yesButton');
+    var noButton = document.getElementById('noButton');
+
+    yesButton.addEventListener('click', function() {
+        buttonValue = 'Ja';
     });
-    document.getElementById('noButton').addEventListener('click', function() {
-        showAdditionalContent('Nei');
+
+    noButton.addEventListener('click', function() {
+        buttonValue = 'Nei';
     });
 
-    function showAdditionalContent(buttonValue) {
-        var additionalContent = document.getElementById('additionalContent');
-        var maxLength = 600;
-        additionalContent.innerHTML = `
-            <div id="sendtextContainer">
-            <p style="font-weight: 500">
-                Er det noe du vil trekke frem? (valgfritt)</p>
-                    <div id="textareaContainer">
-            <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
-            <div id="counter">${maxLength} tegn igjen</div>
-            </div>
-            <button id="sendButton">Send tilbakemelding</button>
-            <div id="errorMessage" style="color: red; font-weight: 500">
-                En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.
-            </div>
-        `;
+    var textarea = document.getElementById('additionalInput');
+    var counter = document.getElementById('counter');
+    textarea.addEventListener('input', function() {
+        var remaining = maxLength - textarea.value.length;
+        counter.textContent = remaining + ' tegn igjen';
+    });
 
-        var textarea = document.getElementById('additionalInput');
-        var counter = document.getElementById('counter');
-        textarea.addEventListener('input', function() {
-            var remaining = maxLength - textarea.value.length;
-            counter.textContent = remaining + ' tegn igjen';
-        });
-
-        sendButton.addEventListener('click', function() {
-            var message = textarea.value;
-            fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/azure', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    { 
-                        feedback: message, 
-                        svar: buttonValue,
-                        app: "styringsinfo-datafortelling",
-                        feedbackId: "datafortelling-slutt"
-                    })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.');
-                }
-                var sendtextContainer = document.getElementById('sendForm');
-                sendtextContainer.style.display = 'none';
-                var thanksResponse = document.getElementById('thanksResponse');
-                thanksResponse.style.display = 'flex';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                var errorMessageDiv = document.getElementById('errorMessage');
-                errorMessageDiv.style.display = 'block';
-            });
-        });
-    }
+    sendButton.addEventListener('click', function() {
+    var message = textarea.value;
+    fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/azure', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message, button: buttonValue })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.');
+        }
+        var sendtextContainer = document.getElementById('sendForm');
+        sendtextContainer.style.display = 'none';
+        var thanksResponse = document.getElementById('thanksResponse');
+        thanksResponse.style.display = 'flex';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        var errorMessageDiv = document.getElementById('errorMessage');
+        errorMessageDiv.style.display = 'block';
+    });
+});
+}
 </script>
 
 ```
@@ -461,7 +464,7 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 
 ```{=html}
 
-<script type="text/javascript" src="https://cdn.amplitude.com/libs/amplitude-7.2.1-min.gz.js"></script>
+<script type="text/javascript" src="amplitude/amplitude-7.2.1-min.gz.js"></script>
     <script type="text/javascript">
 
         amplitude.getInstance().init('4000b8a4a426b0dbefbe011778062779', null, {
@@ -476,7 +479,5 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
         amplitude.getInstance().logEvent('besøk');
 
     </script>
-
-<sc
 
 ```
