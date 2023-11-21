@@ -7,7 +7,7 @@ on:
       - '.github/workflows/alerts.yml'
       - 'deploy/alerts.yml'
       - 'deploy/dev-run-once.yml'
-      - 'deploy/prod.yml'
+      - 'deploy/prod-run-once.yml'
 
 jobs:
   apply-alerts:
@@ -19,11 +19,11 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/alerts.yml
-          VARS: deploy/dev.yml
+          VARS: deploy/dev-run-once.yml
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: deploy/alerts.yml
-          VARS: deploy/prod.yml
+          VARS: deploy/prod-run-once.yml
 
