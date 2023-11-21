@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/alerts.yml'
       - 'deploy/alerts.yml'
-      - 'deploy/dev.yml'
+      - 'deploy/dev-run-once.yml'
       - 'deploy/prod.yml'
 
 jobs:

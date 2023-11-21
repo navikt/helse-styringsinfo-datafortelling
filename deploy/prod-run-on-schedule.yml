@@ -1,0 +1,8 @@
+schedule: '0 */1 * * *'
+nadaUrl: nada.intern.nav.no
+quartoId: 4e2185aa-2415-449a-8d4f-99af890272ca
+gcp.project_id: tbd-prod-eacd
+
+environment: prod
+dataplattformUrl: data.intern.nav.no
+alert.channel: '#sykepenger-styringsinfo'
