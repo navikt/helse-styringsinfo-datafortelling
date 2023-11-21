@@ -79,13 +79,15 @@ Vi ønsker å eie, drifte og formidle dataen vi selv genererer. På denne måten
 :::: {.section-even}
 ::: {.section-content}
 
+::: {.intro-text}
+
 ### Søknad
 
 Når den sykmeldte brukeren fyller ut og sender inn en søknad via våre digitale tjenester mottar vi det som en førstegangssøknad i Speil. Da begynner saksbehandlingen fra vår side.
 
 Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en korrigert søknad.
 
-#
+:::
 
 ::: {.nokkeltall}
 
@@ -458,3 +460,18 @@ function showAdditionalContent() {
 ```
 
 :::
+
+
+```{=html}
+
+<script type="text/javascript" src="https://cdn.amplitude.com/libs/amplitude-7.2.1-min.gz.js"></script>
+    <script type="text/javascript">
+
+        amplitude.getInstance().init('4000b8a4a426b0dbefbe011778062779');
+
+        amplitude.getInstance().logEvent('besøk');
+    </script>
+
+<sc
+
+```
