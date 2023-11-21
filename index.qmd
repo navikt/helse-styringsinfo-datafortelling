@@ -464,9 +464,17 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 <script type="text/javascript" src="https://cdn.amplitude.com/libs/amplitude-7.2.1-min.gz.js"></script>
     <script type="text/javascript">
 
-        amplitude.getInstance().init('4000b8a4a426b0dbefbe011778062779');
+        amplitude.getInstance().init('4000b8a4a426b0dbefbe011778062779', null, {
+        apiEndpoint: "amplitude.nav.no/collect",
+        serverZone: "EU",
+        saveEvents: false,
+        includeUtm: true,
+        batchEvents: false,
+        includeReferrer: true,
+        });
 
         amplitude.getInstance().logEvent('besøk');
+
     </script>
 
 <sc
