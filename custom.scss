@@ -197,6 +197,14 @@ div.callout-note.callout {
     margin-top: 1em;
 }
 
+.callout .callout-header[aria-expanded=false] .callout-toggle::before {
+    transform: none;
+}
+
+.callout .callout-header[aria-expanded=true] .callout-toggle::before {
+    transform: rotate(180deg);
+}
+
 /*-- Tilbakemeldinger --*/
 
 .tilbakemeldinger {

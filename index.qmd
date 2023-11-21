@@ -85,6 +85,8 @@ Når den sykmeldte brukeren fyller ut og sender inn en søknad via våre digital
 
 Om brukeren ønsker å endre søknaden og sende den på nytt, kaller vi det en korrigert søknad.
 
+#
+
 ::: {.nokkeltall}
 
 ```{python}
