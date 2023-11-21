@@ -42,7 +42,7 @@ spec:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: "{{alert_channel}}"
+          channel: "{{alertChannel}}"
           iconEmoji: ':alert:'
           username: 'Alert {{environment}}-gcp'
           sendResolved: true

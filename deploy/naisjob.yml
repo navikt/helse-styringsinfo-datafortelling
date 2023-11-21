@@ -16,9 +16,9 @@ spec:
     - name: NADA_URL
       value: {{nadaUrl}}
     - name: QUARTO_ID
-      value: {{quartoUrl}}
+      value: {{quartoId}}
     - name: GCP_TEAM_PROJECT_ID
-      value: {{gcp.project_id}}
+      value: {{projectId}}
   envFrom:
     - secret: nada-token
 
@@ -31,17 +31,17 @@ spec:
       - resource:
           apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
           kind: Project
-          name: {{gcp.project_id}}
+          name: {{projectId}}
         role: roles/bigquery.readSessionUser
       - resource:
           apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
           kind: Project
-          name: {{gcp.project_id}}
+          name: {{projectId}}
         role: roles/bigquery.dataViewer
       - resource:
           apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
           kind: Project
-          name: {{gcp.project_id}}
+          name: {{projectId}}
         role: roles/bigquery.jobUser
   accessPolicy:
     outbound:
