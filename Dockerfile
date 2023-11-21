@@ -68,3 +68,5 @@ RUN chown -R apprunner:apprunner /app
 USER apprunner
 
 CMD ["./publish.sh"]
+
+COPY amplitude/amplitude-7.2.1-min.gz.js .
