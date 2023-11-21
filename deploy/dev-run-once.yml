@@ -4,4 +4,4 @@ gcp.project_id: tbd-dev-7ff9
 
 environment: dev
 dataplattformUrl: data.intern.dev.nav.no
-alert.channel: '#sykepenger-styringsinfo-dev'
+alert_channel: "#sykepenger-styringsinfo-dev"

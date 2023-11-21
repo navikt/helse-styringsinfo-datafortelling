@@ -4,4 +4,4 @@ gcp.project_id: tbd-prod-eacd
 
 environment: prod
 dataplattformUrl: data.intern.nav.no
-alert.channel: '#sykepenger-styringsinfo'
+alert_channel: "#sykepenger-styringsinfo"
