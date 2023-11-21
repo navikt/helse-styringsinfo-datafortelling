@@ -55,7 +55,6 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
-          VAR: schedule=0 */1 * * *
           VARS: deploy/dev-run-on-schedule.yml
 
   deployProdRunOnce:
@@ -84,5 +83,4 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
-          VAR: schedule=0 */1 * * *
           VARS: deploy/prod-run-on-schedule.yml
