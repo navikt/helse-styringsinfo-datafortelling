@@ -1,0 +1,49 @@
+apiVersion: nais.io/v1
+kind: Naisjob
+metadata:
+  labels:
+    team: tbd
+  name: styringsinfo-datafortelling{{#if schedule}}{{else}}-run-on-deploy{{/if}}
+  namespace: tbd
+  annotations:
+    nais.io/read-only-file-system: "false"
+spec:
+  image: {{image}}
+  {{#if schedule}}
+    schedule: {{schedule}}
+  {{/if}}
+  env:
+    - name: NADA_URL
+      value: {{nadaUrl}}
+    - name: QUARTO_ID
+      value: {{quartoUrl}}
+    - name: GCP_TEAM_PROJECT_ID
+      value: {{gcp.project_id}}
+  envFrom:
+    - secret: nada-token
+
+  backoffLimit: 0
+  concurrencyPolicy: Replace
+  secureLogs:
+    enabled: true
+  gcp:
+    permissions:
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcp.project_id}}
+        role: roles/bigquery.readSessionUser
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcp.project_id}}
+        role: roles/bigquery.dataViewer
+      - resource:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          name: {{gcp.project_id}}
+        role: roles/bigquery.jobUser
+  accessPolicy:
+    outbound:
+      external:
+        - host: {{nadaUrl}}

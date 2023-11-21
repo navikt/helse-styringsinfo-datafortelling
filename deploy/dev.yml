@@ -1,49 +1,7 @@
-apiVersion: nais.io/v1
-kind: Naisjob
-metadata:
-  labels:
-    team: tbd
-  name: styringsinfo-datafortelling{{#if schedule}}{{else}}-run-on-deploy{{/if}}
-  namespace: tbd
-  annotations:
-    nais.io/read-only-file-system: "false"
-spec:
-  image: {{image}}
-  {{#if schedule}}
-  schedule: {{schedule}}
-  {{/if}}
-  env:
-    - name: NADA_URL
-      value: nada.intern.dev.nav.no
-    - name: QUARTO_ID
-      value: f9a63635-60dc-4fb0-87aa-104f18e0e3e2
-    - name: GCP_TEAM_PROJECT_ID
-      value: tbd-dev-7ff9
-  envFrom:
-    - secret: nada-token
+nadaUrl: nada.intern.dev.nav.no
+quartoId: f9a63635-60dc-4fb0-87aa-104f18e0e3e2
+gcp.project_id: tbd-dev-7ff9
 
-  backoffLimit: 0
-  concurrencyPolicy: Replace
-  secureLogs:
-    enabled: true
-  gcp:
-    permissions:
-      - resource:
-          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-          kind: Project
-          name: tbd-dev-7ff9
-        role: roles/bigquery.readSessionUser
-      - resource:
-          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-          kind: Project
-          name: tbd-dev-7ff9
-        role: roles/bigquery.dataViewer
-      - resource:
-          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-          kind: Project
-          name: tbd-dev-7ff9
-        role: roles/bigquery.jobUser
-  accessPolicy:
-    outbound:
-      external:
-      - host: nada.intern.dev.nav.no
+environment: dev
+dataplattformUrl: data.intern.dev.nav.no
+alert.channel: '#sykepenger-styringsinfo-dev'

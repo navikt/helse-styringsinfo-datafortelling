@@ -13,16 +13,16 @@ spec:
           expr: kube_job_failed{job_name=~"^styringsinfo-datafortelling.*", namespace="tbd"} > 0
           for: 2m
           annotations:
-            consequence: "Datafortelling https://data.intern.dev.nav.no/quarto/f9a63635-60dc-4fb0-87aa-104f18e0e3e2/ blir ikke oppdatert"
-            action: "@sp-styringsinfo-bros - Sjekk https://logs.adeo.no/app/r/s/lU1a0 (dette er dev)"
+            consequence: "Datafortelling https://{{dataplattformUrl}}/quarto/{{quartoId}}/ blir ikke oppdatert"
+            action: "@sp-styringsinfo-bros - Sjekk https://logs.adeo.no/app/r/s/lU1a0"
             summary: |-
-              NaisJob styringsinfo-datafortelling feiler i dev-gcp:tbd - datafortellingen oppdateres ikke. 
+              NaisJob styringsinfo-datafortelling feiler i {{environment}} - datafortellingen oppdateres ikke. 
               Repo: https://github.com/navikt/helse-styringsinfo-datafortelling
               Alert: https://github.com/navikt/helse-styringsinfo-datafortelling/blob/main/deploy/alerts.yml
           labels:
             namespace: tbd
             severity: warning
-            sykepenger_styringsinfo_type_datafortelling: dev-alert
+            sykepenger_styringsinfo_type_datafortelling: {{environment}}-alert
             alert_type: custom
 
 ---
@@ -30,21 +30,21 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
-  name: sykepenger-styringsinfo-dev-slack-datafortelling
+  name: sykepenger-styringsinfo-{{environment}}-slack-datafortelling
   namespace: tbd
   labels:
     team: tbd
-    alertmanagerConfig: sykepenger-styringsinfo-dev-slack-datafortelling
+    alertmanagerConfig: sykepenger-styringsinfo-{{environment}}-slack-datafortelling
 spec:
   receivers:
-    - name: sykepenger-styringsinfo-dev-receiver-datafortelling
+    - name: sykepenger-styringsinfo-{{environment}}-receiver-datafortelling
       slackConfigs:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: '#sykepenger-styringsinfo-dev'
+          channel: '{{alert.channel}}'
           iconEmoji: ':alert:'
-          username: 'Alert dev-gcp'
+          username: 'Alert {{environment}}-gcp'
           sendResolved: true
           title: |-
             [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
@@ -64,8 +64,8 @@ spec:
     matchers:
       - name: "sykepenger_styringsinfo_type_datafortelling"
         matchType: "="
-        value: "dev-alert"
+        value: "{{environment}}-alert"
     groupInterval: 10s
     groupWait: 5s
-    receiver: sykepenger-styringsinfo-dev-receiver-datafortelling
+    receiver: sykepenger-styringsinfo-{{environment}}-receiver-datafortelling
     repeatInterval: 2h

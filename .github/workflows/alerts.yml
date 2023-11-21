@@ -4,8 +4,10 @@ on:
     branches:
       - main
     paths:
-      - 'deploy/alerts.yml'
       - '.github/workflows/alerts.yml'
+      - 'deploy/alerts.yml'
+      - 'deploy/dev.yml'
+      - 'deploy/prod.yml'
 
 jobs:
   apply-alerts:
@@ -17,4 +19,11 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/alerts.yml
+          VARS: deploy/dev.yml
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: deploy/alerts.yml
+          VARS: deploy/prod.yml
 

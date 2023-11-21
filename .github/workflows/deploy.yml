@@ -39,9 +39,9 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: deploy/dev.yml
+          RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
-          VAR:
+          VARS: deploy/dev.yml
 
   deployDevRunOnSchedule:
     name: deploy to dev run on schedule
@@ -53,9 +53,10 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: deploy/dev.yml
+          RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
           VAR: schedule=0 */1 * * *
+          VARS: deploy/dev.yml
 
   deployProdRunOnce:
     name: deploy to prod to run once
@@ -67,9 +68,9 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: deploy/prod.yml
+          RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
-          VAR:
+          VARS: deploy/prod.yml
 
   deployProdRunOnSchedule:
     name: deploy to prod run on schedule
@@ -81,6 +82,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: deploy/prod.yml
+          RESOURCE: deploy/naisjob.yml
           IMAGE: ${{ needs.build.outputs.image }}
           VAR: schedule=0 */1 * * *
+          VARS: deploy/prod.yml
