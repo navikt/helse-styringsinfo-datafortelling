@@ -5,4 +5,4 @@ projectId: tbd-dev-7ff9
 
 environment: dev
 dataplattformUrl: data.intern.dev.nav.no
-alert_channel: "#sykepenger-styringsinfo-dev"
+alertChannel: "#sykepenger-styringsinfo-dev"
