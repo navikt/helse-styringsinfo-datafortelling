@@ -41,6 +41,7 @@ def tid_fra_søknad_til_vedtak(client):
     for df, visible in zip(beholder, [True, False, False]):
         totalt = df["antall_vedtak"].values.sum()
         under_en_dag = df.query("dager_brukt == 0")["antall_vedtak"].values.sum()
+        mellom_1_og_90_dager = df.query("dager_brukt >= 1 & dager_brukt <= 90")["antall_vedtak"].values.sum()
         mer_enn_90_dager = df.query("dager_brukt > 90")["antall_vedtak"].values.sum()
 
         bar = go.Bar(
@@ -53,9 +54,9 @@ def tid_fra_søknad_til_vedtak(client):
 
         fig.add_trace(
             go.Indicator(
-                title="Totalt",
+                title="Under en dag",
                 mode="number",
-                value=totalt,
+                value=under_en_dag,
                 number={"font": {"size": 48}},
                 visible=visible,
             ),
@@ -64,9 +65,9 @@ def tid_fra_søknad_til_vedtak(client):
         )
         fig.add_trace(
             go.Indicator(
-                title="Under en dag",
+                title="Mellom 1 og 90 dager",
                 mode="number",
-                value=under_en_dag,
+                value=mellom_1_og_90_dager,
                 number={"font": {"size": 48}},
                 visible=visible,
             ),
@@ -98,7 +99,7 @@ def tid_fra_søknad_til_vedtak(client):
     }
 
     fig.update_layout(
-        xaxis_title="Dager gått til vedtaket ble fattet",
+        xaxis_title="Alder på søknad på vedtakstidspunkt (mellom 1 og 90 dager)",
         xaxis_tick0=1,
         yaxis_title="Antall søknader",
         xaxis_tickangle=-45,

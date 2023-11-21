@@ -346,13 +346,17 @@ fig.show()
 :::: {.section-odd}
 ::: {.section-content}
 
-### Tid fra søknad til vedtak
+### Alder på søknad på vedtakstidspunkt
 
-Vi ser nå på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
+Her ser vi på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
 
-- Nøkkeltallene viser antall søknader som det ble fattet vedtak på totalt, hvor mange av dem som ble ferdigstilt på under et døgn, samt søknader det har tatt mer enn 90 dager å ferdigstille
-- For tidsbruk mellom 1 og 90 dager viser grafen under fordelingen
-- For vedtak med flere søknader bruker vi tidspunktet fra den søknaden som ble sendt inn sist
+Nøkkeltallene viser:    
+
+- antall vedtak der søknaden var under ett døgn gammel på vedtakstidspunket
+- antall vedtak der søknaden var mellom 1 og 90 dager gammel (se grafen under for fordeling)
+- antall vedtak der søknaden var mer enn 90 dager gammel
+
+For tidsbruk mellom 1 og 90 dager viser grafen fordelingen i alder på søknadene som fikk vedtak. For vedtak med flere søknader teller vi fra den siste søknaden som ble sendt inn.
 
 ```{python}
 # | output: true
