@@ -453,7 +453,7 @@ Send en tilbakemelding til oss på: christina.gronhaug@nav.no
 
         sendButton.addEventListener('click', function() {
             var message = textarea.value;
-            fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/azure', {
+            fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/feedback/azure', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
