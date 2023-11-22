@@ -81,7 +81,7 @@ Kontaktperson for teamet er Christina Grønhaug.
 :::: {.section-even}
 ::: {.section-content}
 
-::: {.intro-text}
+::: {style="margin-bottom: 25px"}
 
 ### Søknad
 
@@ -90,6 +90,8 @@ Når en sykmeldt sender inn en sykepengesøknad via nav.no havner søknaden i Sp
 Om brukeren sender en oppdatert søknad, kaller vi det en korrigerende søknad.
 
 :::
+
+::: {style="margin-bottom: 25px"}
 
 ::: {.nokkeltall}
 
@@ -161,6 +163,8 @@ print(f"{value}\ndenne uken")
 ```
 
 ::::
+
+:::
 
 ```{python}
 # | class: no-rows
@@ -378,6 +382,10 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 :::
 ::::
 
+
+
+<!-- // Settes på vent til flexjar er fikset //
+
 ::: {.tilbakemeldinger}
 
 ```{=html}
@@ -472,23 +480,6 @@ function showAdditionalContent() {
 
 :::
 
+-->
 
-```{=html}
 
-<script type="text/javascript" src="amplitude/amplitude-7.2.1-min.gz.js"></script>
-    <script type="text/javascript">
-
-        amplitude.getInstance().init('4000b8a4a426b0dbefbe011778062779', null, {
-        apiEndpoint: "amplitude.nav.no/collect",
-        serverZone: "EU",
-        saveEvents: false,
-        includeUtm: true,
-        batchEvents: false,
-        includeReferrer: true,
-        });
-
-        amplitude.getInstance().logEvent('besøk');
-
-    </script>
-
-```
