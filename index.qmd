@@ -1,6 +1,7 @@
 ---
 title: "Styringsinformasjon fra Speil"
 date-modified: last-modified
+modified-title: "Oppdatert"
 execute:
     output: false
     echo: false
