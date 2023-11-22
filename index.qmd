@@ -388,15 +388,6 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 :::
 ::::
 
-:::: {.section-even}
-::: {.section-content}
-
-### Vi ønsker din tilbakemelding
-Send en tilbakemelding til oss på: christina.gronhaug@nav.no
-
-:::
-::::
-
 ::: {.tilbakemeldinger}
 
 ```{=html}
@@ -485,3 +476,5 @@ Send en tilbakemelding til oss på: christina.gronhaug@nav.no
 </script>
 
 ```
+
+:::
