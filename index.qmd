@@ -388,7 +388,8 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 :::
 ::::
 
-::: {.tilbakemeldinger}
+:::: {.section-even}
+::: {.section-content}
 
 ```{=html}
 
@@ -477,4 +478,5 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 
 ```
 
+::::
 :::
