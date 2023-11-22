@@ -81,7 +81,7 @@ Kontaktperson for teamet er Christina Grønhaug.
 :::: {.section-even}
 ::: {.section-content}
 
-::: {style="margin-bottom: 25px"}
+::: {style="margin-bottom: 15px"}
 
 ### Søknad
 
@@ -166,13 +166,15 @@ print(f"{value}\ndenne uken")
 
 :::
 
+::: {style="margin-bottom: 50px"}
+
 ```{python}
 # | class: no-rows
 # | output: true
 mottatte_søknader(client).show()
 ```
 
-
+:::
 ```{python}
 # | output: true
 fig = antall_med_glidende_gjennomsnitt(
@@ -190,12 +192,15 @@ fig.show()
 :::: {.section-odd #vedtak}
 ::: {.section-content}
 
+::: {style="margin-bottom: 25px"}
+
 ### Vedtak i Speil
 
 Dette er vedtak som er fattet i Speil, manuelt eller automatisk. 
 
 Vedtak som fattes i Infotrygd er ikke med, selv om søknaden har vært innom Speil og er med i søknadstallene ovenfor.
 
+:::
 
 ::: {.nokkeltall}
 
@@ -382,7 +387,14 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 :::
 ::::
 
+:::: {.section-even}
+::: {.section-content}
 
+### Vi ønsker din tilbakemelding
+Send en tilbakemelding til oss på: christina.gronhaug@nav.no
+
+:::
+::::
 
 <!-- // Settes på vent til flexjar er fikset //
 
@@ -477,8 +489,6 @@ function showAdditionalContent() {
 </script>
 
 ```
-
-:::
 
 -->
 
