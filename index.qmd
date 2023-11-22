@@ -57,7 +57,7 @@ Per nå behandles kun søknader fra arbeidstakere i Speil.
 ::: {.callout-note collapse="true" appearance="minimal"}
 ## Mer om dataene som presenteres
 
-Saksbehandling skjer foreløpig både i Speil og i Gosys/Infotrygd. Dataene som presenteres her stammer kun fra Speil. 
+Saksbehandling skjer foreløpig både i Speil og i Gosys/Infotrygd. Dataene som presenteres her stammer kun fra Speil.
 
 Siden dataene er ment for å kunne gjøre prioriteringer og valg knyttet til saksbehandling er det avgjørende at det som presenteres stemmer overens med det som faktisk skjer.
 
@@ -70,7 +70,7 @@ Foreløpig presenterer vi data om søknader og vedtak. Over tid er det tenkt at 
 
 Produktområde Helse har et team som jobber med denne fortellingen. Teamet består av medlemmer fra ulike team innen produktområdet.
 
-Kontaktperson for teamet er Christina Grønhaug. 
+Kontaktperson for teamet er Christina Grønhaug.
 
 :::
 ::::
@@ -197,7 +197,7 @@ fig.show()
 
 ### Vedtak i Speil
 
-Dette er vedtak som er fattet i Speil, manuelt eller automatisk. 
+Dette er vedtak som er fattet i Speil, manuelt eller automatisk.
 
 Vedtak som fattes i Infotrygd er ikke med, selv om søknaden har vært innom Speil og er med i søknadstallene ovenfor.
 
@@ -367,7 +367,7 @@ fig.show()
 
 Her ser vi på alle søknader som det ble fattet vedtak på i løpet av en uke, og betrakter hvor mange dager det gikk fra vi mottok søknaden til vedtaket ble fattet.
 
-Nøkkeltallene viser:    
+Nøkkeltallene viser:
 
 - antall vedtak der søknaden var under ett døgn gammel på vedtakstidspunket
 - antall vedtak der søknaden var mellom 1 og 90 dager gammel (se grafen under for fordeling)
@@ -396,8 +396,6 @@ Send en tilbakemelding til oss på: christina.gronhaug@nav.no
 
 :::
 ::::
-
-<!-- // Settes på vent til flexjar er fikset //
 
 ::: {.tilbakemeldinger}
 
@@ -461,8 +459,8 @@ Send en tilbakemelding til oss på: christina.gronhaug@nav.no
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
-                    { 
-                        feedback: message, 
+                    {
+                        feedback: message,
                         svar: buttonValue,
                         app: "styringsinfo-datafortelling",
                         feedbackId: "datafortelling-slutt"
@@ -487,7 +485,3 @@ Send en tilbakemelding til oss på: christina.gronhaug@nav.no
 </script>
 
 ```
-
--->
-
-
