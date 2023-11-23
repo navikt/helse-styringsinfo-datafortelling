@@ -392,8 +392,14 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 ::: {.section-content}
 
 ```{=html}
+<div class="flexjarcontainer" id="eposttilbakemelding">
+    <h3>Vi ønsker din tilbakemelding</h3>
+    <p style="font-size: 16px">
+        Send en tilbakemelding til oss på: christina.gronhaug@nav.no
+    </p>
+</div>
 
-<div class="flexjarcontainer">
+<div class="flexjarcontainer" id="flexform">
     <h3>Vi ønsker din tilbakemelding</h3>
         <div id="sendForm">
             <p style="font-size: 16px">
@@ -412,6 +418,11 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 </div>
 
 <script>
+    if (location.hostname === 'data.intern.nav.no') {
+        document.getElementById("flexform").style.display = "none";
+    } else {
+        document.getElementById("eposttilbakemelding").style.display = "none";
+    }
     document.getElementById('yesButton').addEventListener('click', function() {
         showAdditionalContent('Ja');
     });
