@@ -459,9 +459,13 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
             counter.textContent = remaining + ' tegn igjen';
         });
 
+        var proxyUrl = (location.hostname === 'data.intern.nav.no')
+            ? "www.ekstern.nav.no"
+            : "www.ekstern.dev.nav.no"
+
         sendButton.addEventListener('click', function() {
             var message = textarea.value;
-            fetch('https://www.ekstern.dev.nav.no/syk/flexjar/api/v1/feedback/azure', {
+            fetch('https://' + proxyUrl + '/syk/flexjar/api/v1/feedback/azure', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
