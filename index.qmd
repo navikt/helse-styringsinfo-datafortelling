@@ -420,12 +420,10 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
 <script>
 
     const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
+        get: (searchParams, prop) => searchParams.get(prop),
     });
 
-    let debug = params.debug;
-
-    if (location.hostname === 'data.intern.nav.no' || debug === 'true') {
+    if (location.hostname === 'data.intern.nav.no' && params.debug === null) {
         document.getElementById("flexform").style.display = "none";
     } else {
         document.getElementById("eposttilbakemelding").style.display = "none";
