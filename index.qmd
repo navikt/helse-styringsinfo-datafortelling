@@ -460,7 +460,7 @@ print(f"Sist oppdatert: {dt.datetime.now()}")
         });
 
         var proxyUrl = (location.hostname === 'data.intern.nav.no')
-            ? "www.ekstern.nav.no"
+            ? "www.nav.no"
             : "www.ekstern.dev.nav.no"
 
         sendButton.addEventListener('click', function() {
