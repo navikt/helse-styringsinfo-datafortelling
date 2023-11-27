@@ -28,16 +28,22 @@
 </div>
 
 <script>
-
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
+    const isDebug = params.debug === 'true'
 
-    if (location.hostname === 'data.intern.nav.no' && params.debug === null) {
+    var isProd = location.hostname === 'data.intern.nav.no';
+    var proxyUrl = (isProd)
+            ? "www.nav.no"
+            : "www.ekstern.dev.nav.no"
+
+    if (isProd && !isDebug) {
         document.getElementById("flexform").style.display = "none";
     } else {
         document.getElementById("eposttilbakemelding").style.display = "none";
     }
+
     document.getElementById('yesButton').addEventListener('click', function() {
         showAdditionalContent('Ja');
     });
@@ -68,10 +74,6 @@
             var remaining = maxLength - textarea.value.length;
             counter.textContent = remaining + ' tegn igjen';
         });
-
-        var proxyUrl = (location.hostname === 'data.intern.nav.no')
-            ? "www.nav.no"
-            : "www.ekstern.dev.nav.no"
 
         sendButton.addEventListener('click', function() {
             var message = textarea.value;
