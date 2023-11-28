@@ -30,8 +30,7 @@
     </div>
     </div>
     <div id="thanksResponse">
-    <p style="font-weight: 500">Takk for tilbakemeldingen!</p>
-    <img src="flexjar/src/icons/FaceSmile.svg">
+        <p style="font-weight: 500">Takk for tilbakemeldingen!</p>
     </div>
 </div>
 
