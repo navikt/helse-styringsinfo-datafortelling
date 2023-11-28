@@ -86,6 +86,7 @@
         });
 
         sendButton.addEventListener("click", function () {
+          sendButton.disabled = true;
           var message = textarea.value;
           fetch("https://" + proxyUrl + "/syk/flexjar/api/v1/feedback/azure", {
             method: "POST",
@@ -100,6 +101,7 @@
             }),
           })
             .then((response) => {
+              sendButton.disabled = false;
               if (!response.ok) {
                 throw new Error(
                   "En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen."
