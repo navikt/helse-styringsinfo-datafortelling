@@ -2,111 +2,123 @@
 ::: {.section-content}
 
 ```{=html}
-<div class="flexjarcontainer" id="eposttilbakemelding">
-    <h3>Vi ønsker din tilbakemelding</h3>
-    <p style="font-size: 16px">
-        Send en tilbakemelding til oss på: christina.gronhaug@nav.no
-    </p>
-</div>
-
 <div class="flexjarcontainer" id="flexform">
     <h3>Vi ønsker din tilbakemelding</h3>
-        <div id="sendForm">
-            <p style="font-size: 16px">
-                Fant du den informasjonen du trengte?
-            </p>
-        <div class="buttons">
-            <button id="yesButton">Ja</button>
-            <button id="noButton">Nei</button>
+
+    <div id="sendForm">
+    <p style="font-size: 16px">
+        Gir informasjonen i denne datafortellingen deg noen verdi?
+    </p>
+    <div class="buttons">
+        <button id="yesButton">Ja</button>
+        <button id="noButton">Nei</button>
+    </div>
+
+    <div id="additionalContent"></div>
+    <div id="additionalContentTemplate" style="display: none">
+        <div id="sendtextContainer">
+        <p style="font-weight: 500"></p>
+        <div id="textareaContainer">
+            <textarea id="additionalInput"></textarea>
+            <div id="counter">600 tegn igjen</div>
         </div>
-            <div id="additionalContent"></div>
+        <button id="sendButton">Send tilbakemelding</button>
+        <div id="errorMessage" style="color: red; font-weight: 500">
+            En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.
         </div>
-        <div id="thanksResponse">
-            <p style="font-weight: 500">Takk for tilbakemeldingen <p>
-            <img src="flexjar/src/icons/FaceSmile.svg">
         </div>
+    </div>
+    </div>
+    <div id="thanksResponse">
+    <p style="font-weight: 500">Takk for tilbakemeldingen!</p>
+    <img src="flexjar/src/icons/FaceSmile.svg">
+    </div>
 </div>
 
-<script>
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-    });
-    const isDebug = params.debug === 'true'
+ <script>
+      var isProd = location.hostname === "data.intern.nav.no";
+      var proxyUrl = isProd ? "www.nav.no" : "www.ekstern.dev.nav.no";
 
-    var isProd = location.hostname === 'data.intern.nav.no';
-    var proxyUrl = (isProd)
-            ? "www.nav.no"
-            : "www.ekstern.dev.nav.no"
-
-    if (isProd && !isDebug) {
-        document.getElementById("flexform").style.display = "none";
-    } else {
-        document.getElementById("eposttilbakemelding").style.display = "none";
-    }
-
-    document.getElementById('yesButton').addEventListener('click', function() {
-        showAdditionalContent('Ja');
-    });
-    document.getElementById('noButton').addEventListener('click', function() {
-        showAdditionalContent('Nei');
-    });
-
-    function showAdditionalContent(buttonValue) {
-        var additionalContent = document.getElementById('additionalContent');
-        var maxLength = 600;
-        additionalContent.innerHTML = `
-            <div id="sendtextContainer">
-            <p style="font-weight: 500">
-                Er det noe du vil trekke frem? (valgfritt)</p>
-                    <div id="textareaContainer">
-            <textarea id="additionalInput" maxlength="${maxLength}"></textarea>
-            <div id="counter">${maxLength} tegn igjen</div>
-            </div>
-            <button id="sendButton">Send tilbakemelding</button>
-            <div id="errorMessage" style="color: red; font-weight: 500">
-                En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.
-            </div>
-        `;
-
-        var textarea = document.getElementById('additionalInput');
-        var counter = document.getElementById('counter');
-        textarea.addEventListener('input', function() {
-            var remaining = maxLength - textarea.value.length;
-            counter.textContent = remaining + ' tegn igjen';
+      document
+        .querySelector("#yesButton")
+        .addEventListener("click", function () {
+          highlightButton(this);
+          showAdditionalContent(
+            "Ja",
+            "Si gjerne noe om hva som gir deg verdi og hva du eventuelt savner."
+          );
+        });
+      document
+        .querySelector("#noButton")
+        .addEventListener("click", function () {
+          highlightButton(this);
+          showAdditionalContent(
+            "Nei",
+            "Si gjerne noe om hvorfor den ikke gir deg verdi og hva du eventuelt savner."
+          );
         });
 
-        sendButton.addEventListener('click', function() {
-            var message = textarea.value;
-            fetch('https://' + proxyUrl + '/syk/flexjar/api/v1/feedback/azure', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    {
-                        feedback: message,
-                        svar: buttonValue,
-                        app: "styringsinfo-datafortelling",
-                        feedbackId: "datafortelling-slutt"
-                    })
+      function highlightButton(button) {
+        document.querySelectorAll(".buttons button").forEach((btn) => {
+          btn.classList.remove("highlight");
+        });
+        button.classList.add("highlight");
+      }
+
+      function showAdditionalContent(buttonValue, displayText) {
+        var additionalContent = document.getElementById("additionalContent");
+        var template = document.getElementById("additionalContentTemplate");
+
+        additionalContent.innerHTML = "";
+
+        var clone = template.cloneNode(true);
+        clone.style.display = "block";
+        additionalContent.appendChild(clone);
+
+        var paragraph = additionalContent.querySelector("#sendtextContainer p");
+        paragraph.textContent = displayText;
+
+        var textarea = additionalContent.querySelector("#additionalInput");
+        var counter = additionalContent.querySelector("#counter");
+        var sendButton = additionalContent.querySelector("#sendButton");
+        textarea.addEventListener("input", function () {
+          var remaining = maxLength - textarea.value.length;
+          counter.textContent = remaining + " tegn igjen";
+        });
+
+        sendButton.addEventListener("click", function () {
+          var message = textarea.value;
+          fetch("https://" + proxyUrl + "/syk/flexjar/api/v1/feedback/azure", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              feedback: message,
+              svar: buttonValue,
+              app: "styringsinfo-datafortelling",
+              feedbackId: "datafortelling-slutt",
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(
+                  "En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen."
+                );
+              }
+              var sendtextContainer = document.getElementById("sendForm");
+              sendtextContainer.style.display = "none";
+              var thanksResponse = document.getElementById("thanksResponse");
+              thanksResponse.style.display = "flex";
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('En feil førte til at meldingen ikke ble sendt. Vennligst prøv igjen.');
-                }
-                var sendtextContainer = document.getElementById('sendForm');
-                sendtextContainer.style.display = 'none';
-                var thanksResponse = document.getElementById('thanksResponse');
-                thanksResponse.style.display = 'flex';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                var errorMessageDiv = document.getElementById('errorMessage');
-                errorMessageDiv.style.display = 'block';
+            .catch((error) => {
+              console.error("Error:", error);
+              var errorMessageDiv = document.getElementById("errorMessage");
+              errorMessageDiv.style.display = "block";
             });
         });
-    }
-</script>
+      }
+    </script>
 ```
 :::
 ::::

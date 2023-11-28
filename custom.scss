@@ -297,7 +297,7 @@ textarea:focus {
     outline: none;
 }
 
-#sendButton:active {
+#sendButton:active, button.highlight {
     background-color: #005B82;
     color: #ffffff;
 }

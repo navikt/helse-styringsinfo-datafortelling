@@ -58,6 +58,7 @@ jobs:
           VARS: deploy/dev-run-on-schedule.yml
 
   deployProdRunOnce:
+    if: false
     name: deploy to prod to run once
     needs: [build, deployDevRunOnce]
     runs-on: ubuntu-latest
@@ -72,6 +73,7 @@ jobs:
           VARS: deploy/prod-run-once.yml
 
   deployProdRunOnSchedule:
+    if: false
     name: deploy to prod run on schedule
     needs: [build, deployProdRunOnce]
     runs-on: ubuntu-latest
