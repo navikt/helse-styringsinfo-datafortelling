@@ -1,7 +1,5 @@
 ---
 title: "Styringsinformasjon fra Speil"
-date-modified: last-modified
-modified-title: "Oppdatert"
 execute:
     output: false
     echo: false
@@ -42,6 +40,13 @@ client = bigquery.Client(location=LOCATION, project=PROJECT)
 
 :::: {.section-odd #om-fortellingen}
 ::: {.section-content}
+
+```{python}
+# | output: true
+print(f'Sist oppdatert: {dt.datetime.now().strftime("%Y-%m-%d %H:%M")}')
+
+```
+
 
 ### Om fortellingen
 
@@ -378,11 +383,6 @@ For tidsbruk mellom 1 og 90 dager viser grafen fordelingen i alder på søknaden
 ```{python}
 # | output: true
 tid_fra_søknad_til_vedtak(client).show()
-```
-
-```{python}
-# | output: true
-print(f"Sist oppdatert: {dt.datetime.now()}")
 ```
 
 :::
