@@ -374,9 +374,9 @@ Her ser vi på alle søknader som det ble fattet vedtak på i løpet av en uke, 
 
 Nøkkeltallene viser:
 
-- antall vedtak der søknaden var under ett døgn gammel på vedtakstidspunket
-- antall vedtak der søknaden var mellom 1 og 90 dager gammel (se grafen under for fordeling)
-- antall vedtak der søknaden var mer enn 90 dager gammel
+- Antall vedtak der søknaden var under ett døgn gammel på vedtakstidspunket.
+- Antall vedtak der søknaden var mellom 1 og 90 dager gammel (se grafen under for fordeling).
+- Antall vedtak der søknaden var mer enn 90 dager gammel.
 
 For tidsbruk mellom 1 og 90 dager viser grafen fordelingen i alder på søknadene som fikk vedtak. For vedtak med flere søknader teller vi fra den siste søknaden som ble sendt inn.
 
