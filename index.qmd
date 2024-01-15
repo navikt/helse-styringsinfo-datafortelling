@@ -270,7 +270,7 @@ fig = antall_med_glidende_gjennomsnitt(
     "vedtak_fattet",
     "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
     client,
-    predikat="WHERE har_utbetaling=true",
+    predikat="AND har_utbetaling=true",
 )
 
 fig.update_layout(
@@ -353,7 +353,7 @@ fig = antall_med_glidende_gjennomsnitt(
     "vedtak_fattet",
     "styringsinfo_dataset.styringsinfo_vedtak_fattet_view",
     client,
-    predikat="WHERE har_utbetaling=false",
+    predikat="AND har_utbetaling=false",
 )
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
