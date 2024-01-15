@@ -7,37 +7,38 @@ def antall_med_glidende_gjennomsnitt(
 ):
     # SQL query to count number of rows per day and calculate moving averages
     QUERY = f"""
-    WITH PreprocessedData AS (
+    SELECT
+    date,
+    count,
+    AVG(count) OVER (
+        ORDER BY date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS moving_7_day_avg,
+    AVG(count) OVER (
+        ORDER BY date
+        ROWS BETWEEN 27 PRECEDING AND CURRENT ROW
+    ) AS moving_28_day_avg
+    FROM (
+        SELECT date_range.date AS date, IFNULL(original_table.count, 0) AS count
+            FROM (
+                SELECT *
+                FROM UNNEST(GENERATE_DATE_ARRAY('2023-03-01', CURRENT_DATE())) AS date
+            ) AS date_range
+        LEFT JOIN (
         SELECT
-            EXTRACT(DATE FROM {timestamp_felt} AT TIME ZONE 'Europe/Oslo') AS date,
-            korrigerende,
-            COUNT(*) as Totalt
-        FROM `{tabell}`
-        WHERE {timestamp_felt} >= TIMESTAMP("2023-03-01", "Europe/Oslo")
-          {predikat}
-        GROUP BY date, korrigerende
-    ),
-    AveragedData AS (
-        SELECT
-            date,
-            korrigerende,
-            Totalt,
-            AVG(Totalt) OVER(
-                PARTITION BY korrigerende
-                ORDER BY date
-                ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-            ) as MovingAverage7Days,
-            AVG(Totalt) OVER(
-                PARTITION BY korrigerende
-                ORDER BY date
-                ROWS BETWEEN 27 PRECEDING AND CURRENT ROW
-            ) as MovingAverage28Days
-        FROM PreprocessedData
+            DATE({timestamp_felt}) AS date,
+            COUNT(*) AS count
+        FROM
+            `{tabell}`
+        {predikat}
+        GROUP BY
+            DATE({timestamp_felt})
+            ) AS original_table
+        ON date_range.date = original_table.date
     )
-    SELECT *
-    FROM AveragedData
-    WHERE date >= "2023-04-01"
-    ORDER BY date ASC, korrigerende ASC
+    WHERE date >= '2023-03-01'
+    ORDER BY
+    date
     """
 
     query_job = client.query(QUERY)
