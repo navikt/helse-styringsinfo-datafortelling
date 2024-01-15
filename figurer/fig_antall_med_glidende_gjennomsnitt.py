@@ -7,8 +7,8 @@ def antall_med_glidende_gjennomsnitt(
 ):
     # SQL query to count number of rows per day and calculate moving averages
     QUERY = f"""
-    SELECT 
-    date, 
+    SELECT
+    date,
     count,
     AVG(count) OVER (
         ORDER BY date
@@ -36,8 +36,8 @@ def antall_med_glidende_gjennomsnitt(
             ) AS original_table
         ON date_range.date = original_table.date
     )
-    WHERE date > '2023-03-01'
-    ORDER BY 
+    WHERE date >= '2023-03-01'
+    ORDER BY
     date
     """
 
