@@ -16,7 +16,7 @@ def mottatte_søknader(client):
             korrigerende,
             COUNT(*) as Totalt
         FROM `styringsinfo_dataset.styringsinfo_sendt_soknad_view`
-        WHERE soknad_mottatt >= TIMESTAMP("2023-03-01", "Europe/Oslo")
+        WHERE soknad_mottatt >= TIMESTAMP("2023-04-01", "Europe/Oslo")
         GROUP BY date, week, month, korrigerende
         ORDER BY date ASC, korrigerende ASC
     """
