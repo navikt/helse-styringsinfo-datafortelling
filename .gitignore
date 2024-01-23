@@ -172,3 +172,4 @@ index.html
 /.quarto/
 
 /env/
+.DS_Store
