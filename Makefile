@@ -12,7 +12,6 @@ bootstrap: # Setter opp miljø for quarto-rendring
 poetry-update:
 	stat pyproject.toml || poetry init --python=3.11.* --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
 	cat requirements.txt | xargs poetry add
-	poetry env use python3 # Bruker systemets python
 	awk '/^packages/{print "packages = []"; next} 1' pyproject.toml > tmpfile && mv tmpfile pyproject.toml # 'poetry install' feiler hvis det ligger noe i packages.
 	poetry install --no-root
 
