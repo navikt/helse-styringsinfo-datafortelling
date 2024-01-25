@@ -16,8 +16,7 @@ def antall_avsluttet_uten_utbetaling(client):
             COUNT(*) as Totalt
         FROM `styringsinfo_dataset.styringsinfo_vedtak_fattet_view`
         WHERE har_utbetaling=false
-        AND EXTRACT(YEAR FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') = {current_year}
-        AND EXTRACT(MONTH FROM vedtak_fattet AT TIME ZONE 'Europe/Oslo') <= {current_month}
+          AND vedtak_fattet >= TIMESTAMP("2023-04-01", "Europe/Oslo")
         GROUP BY date, week, month
         ORDER BY date ASC
     """
