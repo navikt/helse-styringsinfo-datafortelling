@@ -7,10 +7,10 @@ help:
 
 bootstrap: # Setter opp miljø for quarto-rendring
 	poetry --version || brew install poetry
-	quarto --version || brew install quarto@1.3.450
+	quarto --version || brew install quarto@1.4.549
 
 poetry-update:
-	stat pyproject.toml || poetry init --python=3.11.* --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
+	stat pyproject.toml || poetry init --python=3.12.* --no-interaction --name styringsinfo-datafortelling --description "" --author NAV -l MIT
 	cat requirements.txt | xargs poetry add
 	awk '/^packages/{print "packages = []"; next} 1' pyproject.toml > tmpfile && mv tmpfile pyproject.toml # 'poetry install' feiler hvis det ligger noe i packages.
 	poetry install --no-root
