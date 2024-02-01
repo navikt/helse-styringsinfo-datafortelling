@@ -19,7 +19,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip wheel
 COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-ENV QUARTO_VERSION=1.3.450
+ENV QUARTO_VERSION=1.4.549
 RUN wget --quiet https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz \
     && tar -xzf quarto-${QUARTO_VERSION}-linux-amd64.tar.gz  \
     && mv quarto-${QUARTO_VERSION} /quarto \
