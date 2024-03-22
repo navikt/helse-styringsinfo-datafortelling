@@ -26,10 +26,6 @@ spec:
   concurrencyPolicy: Replace
   secureLogs:
     enabled: true
-  observability:
-    autoInstrumentation:
-      enabled: true
-      runtime: java
   gcp:
     permissions:
       - resource:
